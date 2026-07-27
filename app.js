@@ -879,6 +879,18 @@ window.handleCsvFile = async function(event) {
                 return;
             }
 
+            // Delete all existing products first to perform a clean overwrite
+            const { error: deleteError } = await supabaseClient
+                .from("products")
+                .delete()
+                .neq("id", "");
+
+            if (deleteError) {
+                console.error("Failed to delete existing products:", deleteError);
+                showToast(`Clean overwrite failed: ${deleteError.message}`, true);
+                return;
+            }
+
             // Batch insert to Supabase
             const { data, error } = await supabaseClient
                 .from("products")
