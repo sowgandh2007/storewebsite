@@ -761,29 +761,98 @@ window.handleCsvFile = async function(event) {
             }
 
             const categoryIndex = headers.indexOf("category");
-            const buyPriceIndex = headers.findIndex(h => h === "buyprice" || h === "purchaseprice" || h === "buy" || h === "costprice" || h === "cost");
+            const buyPriceIndex = headers.findIndex(h => h === "buyprice" || h === "purchaseprice" || h === "buy" || h === "costprice" || h === "cost" || h === "buyingprice");
             const sellPriceIndex = headers.findIndex(h => h === "sellprice" || h === "sellingprice" || h === "sell" || h === "price" || h === "storeprice");
             const mrpIndex = headers.findIndex(h => h === "mrp" || h === "marketprice");
             const quantityIndex = headers.findIndex(h => h === "quantity" || h === "stock" || h === "qty" || h === "count");
-            const supplierIndex = headers.findIndex(h => h === "supplier" || h === "vendor");
-            const descriptionIndex = headers.findIndex(h => h === "description" || h === "desc" || h === "details");
+            const supplierIndex = headers.findIndex(h => h === "supplier" || h === "vendor" || h === "brand");
+            const descriptionIndex = headers.findIndex(h => h === "description" || h === "desc" || h === "details" || h === "notes");
             const imageUrlIndex = headers.findIndex(h => h === "imageurl" || h === "image" || h === "photo");
+            const sourceAppIndex = headers.indexOf("sourceapp");
 
             const productsToInsert = [];
+            const validationErrors = [];
+
+            // Data cleaning helper functions
+            const cleanNumber = (val) => {
+                if (val === undefined || val === null || val.trim() === "") return 0;
+                const cleaned = val.replace(/[^\d.-]/g, '');
+                const num = parseFloat(cleaned);
+                return isNaN(num) ? 0 : num;
+            };
+
+            const cleanInteger = (val) => {
+                if (val === undefined || val === null || val.trim() === "") return 0;
+                const cleaned = val.replace(/[^\d-]/g, '');
+                const num = parseInt(cleaned, 10);
+                return isNaN(num) ? 0 : num;
+            };
+
+            const isInvalidNum = (rawStr) => {
+                if (!rawStr) return false;
+                const cleaned = rawStr.replace(/[^\d.-]/g, '');
+                return cleaned === "" || isNaN(parseFloat(cleaned));
+            };
+
+            const isInvalidInt = (rawStr) => {
+                if (!rawStr) return false;
+                const cleaned = rawStr.replace(/[^\d-]/g, '');
+                return cleaned === "" || isNaN(parseInt(cleaned, 10));
+            };
 
             for (let i = 1; i < parsed.length; i++) {
                 const row = parsed[i];
+                const rowNum = i + 1; // Row 1 is header, data rows start at 2
+
+                // Skip completely empty lines
+                if (row.length === 0 || (row.length === 1 && row[0].trim() === "")) continue;
+
                 const name = row[nameIndex] ? row[nameIndex].trim() : "";
-                if (!name) continue; // Skip lines missing a product name
+                if (!name) {
+                    validationErrors.push(`Row ${rowNum}: Required field "Name" is missing.`);
+                    continue;
+                }
+
+                const rawBuyPrice = buyPriceIndex !== -1 && row[buyPriceIndex] ? row[buyPriceIndex].trim() : "";
+                const rawSellPrice = sellPriceIndex !== -1 && row[sellPriceIndex] ? row[sellPriceIndex].trim() : "";
+                const rawMrp = mrpIndex !== -1 && row[mrpIndex] ? row[mrpIndex].trim() : "";
+                const rawQty = quantityIndex !== -1 && row[quantityIndex] ? row[quantityIndex].trim() : "";
+                
+                // Validate fields for warnings/failures
+                if (rawBuyPrice && isInvalidNum(rawBuyPrice)) {
+                    validationErrors.push(`Row ${rowNum}: Buying Price "${rawBuyPrice}" is not a valid number.`);
+                    continue;
+                }
+                if (rawSellPrice && isInvalidNum(rawSellPrice)) {
+                    validationErrors.push(`Row ${rowNum}: Selling Price "${rawSellPrice}" is not a valid number.`);
+                    continue;
+                }
+                if (rawMrp && isInvalidNum(rawMrp)) {
+                    validationErrors.push(`Row ${rowNum}: MRP "${rawMrp}" is not a valid number.`);
+                    continue;
+                }
+                if (rawQty && isInvalidInt(rawQty)) {
+                    validationErrors.push(`Row ${rowNum}: Quantity "${rawQty}" is not a valid integer.`);
+                    continue;
+                }
 
                 const category = categoryIndex !== -1 && row[categoryIndex] ? row[categoryIndex].trim() : "General";
-                const buy_price = buyPriceIndex !== -1 && row[buyPriceIndex] ? parseFloat(row[buyPriceIndex].trim()) || 0 : 0;
-                const sell_price = sellPriceIndex !== -1 && row[sellPriceIndex] ? parseFloat(row[sellPriceIndex].trim()) || 0 : 0;
-                const mrp = mrpIndex !== -1 && row[mrpIndex] ? parseFloat(row[mrpIndex].trim()) || sell_price : sell_price;
-                const quantity = quantityIndex !== -1 && row[quantityIndex] ? parseInt(row[quantityIndex].trim(), 10) || 0 : 0;
+                const buy_price = cleanNumber(rawBuyPrice);
+                const sell_price = cleanNumber(rawSellPrice);
+                const mrp = rawMrp ? cleanNumber(rawMrp) : sell_price;
+                const quantity = cleanInteger(rawQty);
                 const supplier = supplierIndex !== -1 && row[supplierIndex] ? row[supplierIndex].trim() : "";
-                const description = descriptionIndex !== -1 && row[descriptionIndex] ? row[descriptionIndex].trim() : "";
+                let description = descriptionIndex !== -1 && row[descriptionIndex] ? row[descriptionIndex].trim() : "";
                 const image_url = imageUrlIndex !== -1 && row[imageUrlIndex] ? row[imageUrlIndex].trim() : "";
+
+                // Append Source App details if present
+                if (sourceAppIndex !== -1 && row[sourceAppIndex]) {
+                    const sourceApp = row[sourceAppIndex].trim();
+                    if (sourceApp) {
+                        const sourceTag = `Source: ${sourceApp}`;
+                        description = description ? `${description} | ${sourceTag}` : sourceTag;
+                    }
+                }
 
                 productsToInsert.push({
                     name,
@@ -799,7 +868,11 @@ window.handleCsvFile = async function(event) {
             }
 
             if (productsToInsert.length === 0) {
-                showToast("No valid products found in CSV file.", true);
+                if (validationErrors.length > 0) {
+                    alert(`Import failed. The following rows had validation errors:\n\n${validationErrors.join("\n")}`);
+                } else {
+                    showToast("No valid products found in CSV file.", true);
+                }
                 return;
             }
 
@@ -813,7 +886,12 @@ window.handleCsvFile = async function(event) {
                 console.error("Supabase import error:", error);
                 showToast(`Import failed: ${error.message}`, true);
             } else {
-                showToast(`Successfully imported ${data.length} products!`);
+                let msg = `Successfully imported ${data.length} products!`;
+                if (validationErrors.length > 0) {
+                    msg += ` (${validationErrors.length} failed)`;
+                    alert(`Import finished with some warnings:\n\nSuccessfully imported ${data.length} products.\n\nFailed rows:\n${validationErrors.join("\n")}`);
+                }
+                showToast(msg);
                 addActivity("CSV Import", `Batch imported ${data.length} products from CSV`);
                 loadData(false); // Quiet reload
             }
