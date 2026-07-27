@@ -1,0 +1,691 @@
+// app.js - Private Stockly Admin Dashboard Controller
+
+const SUPABASE_URL = "https://wdijjlsuehjivlodmfxp.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkaWpqbHN1ZWhqaXZsb2RtZnhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzMjI4MzksImV4cCI6MjA5ODg5ODgzOX0.RbU-zmK9qIeOada43sKSs4kHSEnrkVGoKcVesmaoCHI";
+
+// Initialize Supabase Client (renamed from 'supabase' to avoid global conflict with the script CDN library)
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Application State
+let products = [];
+let sales = [];
+let activities = [];
+let activeView = "dashboard-view";
+let currentFilter = "all";
+let searchQuery = "";
+
+// Initialize Application
+document.addEventListener("DOMContentLoaded", () => {
+    switchView("dashboard-view");
+    loadData();
+    setupSearch();
+    subscribeToLiveChanges();
+});
+
+// --- REALTIME REALTIME SYNC ---
+function subscribeToLiveChanges() {
+    // Listen to live database changes from Supabase to keep admin UI synced if reservations occur
+    supabaseClient.channel('admin-db-sync')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'reservations' }, payload => {
+            showToast("New Reservation Request received!");
+            addActivity("Reservation", `New request received for ${payload.new.product_name}`);
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, payload => {
+            loadData(false); // Reload data quietly without clearing screen
+        })
+        .subscribe();
+}
+
+// --- FETCH DATA FROM DATABASE ---
+async function loadData(showLoading = true) {
+    try {
+        if (showLoading) {
+            document.getElementById("stat-inventory-val").textContent = "Loading...";
+            document.getElementById("stat-revenue-val").textContent = "Loading...";
+            document.getElementById("stat-profit-val").textContent = "Loading...";
+            document.getElementById("stat-margin-val").textContent = "Loading...";
+        }
+
+        // Fetch products
+        const { data: dbProducts, error: prodError } = await supabaseClient
+            .from('products')
+            .select('*')
+            .order('name', { ascending: true });
+
+        if (prodError) throw prodError;
+        products = dbProducts || [];
+
+        // Fetch sales
+        const { data: dbSales, error: salesError } = await supabaseClient
+            .from('sales')
+            .select('*')
+            .order('date_sold', { ascending: false });
+
+        if (salesError) throw salesError;
+        sales = dbSales || [];
+
+        // Re-render UI
+        updateSummaryStats();
+        renderDashboard();
+        renderInventory();
+        renderSalesLog();
+        populateCategoryFilter();
+    } catch (e) {
+        console.error("Error loading Supabase data:", e);
+        showToast("Database fetch failed", true);
+    }
+}
+
+// --- UPDATE SUMMARY STATISTICS ---
+function updateSummaryStats() {
+    // 1. Total Stock Value (Sum of buy_price * quantity)
+    const inventoryVal = products.reduce((acc, p) => acc + (parseFloat(p.buy_price) * parseInt(p.quantity)), 0);
+    document.getElementById("stat-inventory-val").textContent = `₹${inventoryVal.toFixed(2)}`;
+
+    // 2. Total Revenue (Sum of sold_price * quantity)
+    const revenueVal = sales.reduce((acc, s) => acc + (parseFloat(s.sold_price) * parseInt(s.quantity)), 0);
+    document.getElementById("stat-revenue-val").textContent = `₹${revenueVal.toFixed(2)}`;
+    document.getElementById("sales-cost-val").textContent = `₹${sales.reduce((acc, s) => acc + (parseFloat(s.buy_price) * parseInt(s.quantity)), 0).toFixed(2)}`;
+
+    // 3. Realized Profit (Sum of profit)
+    const profitVal = sales.reduce((acc, s) => acc + parseFloat(s.profit), 0);
+    document.getElementById("stat-profit-val").textContent = `₹${profitVal.toFixed(2)}`;
+    document.getElementById("sales-profit-val").textContent = `₹${profitVal.toFixed(2)}`;
+    document.getElementById("sales-count-val").textContent = sales.reduce((acc, s) => acc + parseInt(s.quantity), 0);
+
+    // 4. Average Profit Margin (%)
+    const totalCostOfSales = sales.reduce((acc, s) => acc + (parseFloat(s.buy_price) * parseInt(s.quantity)), 0);
+    const avgMargin = totalCostOfSales > 0 ? (profitVal / totalCostOfSales) * 100 : 0;
+    document.getElementById("stat-margin-val").textContent = `${Math.round(avgMargin)}%`;
+}
+
+// --- SWITCH APPLICATION VIEWS ---
+window.switchView = function(viewId) {
+    activeView = viewId;
+    
+    // Toggle active link CSS class
+    document.querySelectorAll(".nav-item").forEach(item => {
+        if (item.getAttribute("data-target") === viewId) {
+            item.classList.add("active");
+        } else {
+            item.classList.remove("active");
+        }
+    });
+
+    // Toggle view section visibility
+    document.querySelectorAll(".view-section").forEach(view => {
+        if (view.id === viewId) {
+            view.classList.remove("hidden");
+        } else {
+            view.classList.add("hidden");
+        }
+    });
+};
+
+// --- SETUP SEARCH ---
+function setupSearch() {
+    const input = document.getElementById("inventory-search");
+    if (input) {
+        input.addEventListener("input", (e) => {
+            searchQuery = e.target.value;
+            renderInventory();
+        });
+    }
+}
+
+// --- RENDER DASHBOARD VISUALS ---
+function renderDashboard() {
+    // 1. High Margin Chart
+    const chartContainer = document.getElementById("margin-chart-container");
+    chartContainer.innerHTML = "";
+
+    // Filter products in stock and sort by percentage profit margin
+    const sortedMargin = products
+        .filter(p => p.quantity > 0 && parseFloat(p.buy_price) > 0)
+        .map(p => {
+            const profit = parseFloat(p.sell_price) - parseFloat(p.buy_price);
+            const margin = (profit / parseFloat(p.buy_price)) * 100;
+            return { name: p.name, margin };
+        })
+        .sort((a, b) => b.margin - a.margin)
+        .slice(0, 4);
+
+    if (sortedMargin.length === 0) {
+        chartContainer.innerHTML = `
+            <div class="flex flex-col items-center justify-center h-full text-slate-500 gap-2">
+                <i data-lucide="bar-chart-2" class="w-8 h-8"></i>
+                <span>Add products in stock to display chart</span>
+            </div>
+        `;
+    } else {
+        sortedMargin.forEach(item => {
+            const row = document.createElement("div");
+            row.className = "flex flex-col gap-1.5";
+            row.innerHTML = `
+                <div class="flex justify-between text-xs font-semibold">
+                    <span class="text-slate-300 truncate max-w-[70%]">${item.name}</span>
+                    <span class="text-brand-500 font-bold">${Math.round(item.margin)}% margin</span>
+                </div>
+                <div class="w-full bg-dark-600 rounded-full h-2.5 overflow-hidden border border-slate-800/40">
+                    <div class="bg-brand-500 h-full rounded-full" style="width: ${Math.min(item.margin, 100)}%"></div>
+                </div>
+            `;
+            chartContainer.appendChild(row);
+        });
+    }
+
+    // 2. Recent Activities
+    const activityList = document.getElementById("activity-log-list");
+    activityList.innerHTML = "";
+
+    if (activities.length === 0) {
+        activityList.innerHTML = `
+            <div class="flex flex-col items-center justify-center py-10 text-slate-500 gap-1.5">
+                <i data-lucide="history" class="w-5 h-5"></i>
+                <span>No activities recorded yet</span>
+            </div>
+        `;
+    } else {
+        activities.slice(0, 5).forEach(act => {
+            const item = document.createElement("div");
+            item.className = "flex items-start gap-3 border-b border-slate-850 pb-2.5 last:border-0";
+            
+            const badgeColor = act.type === "Add" ? "bg-indigo-500/10 text-indigo-400" :
+                              act.type === "Edit" ? "bg-amber-500/10 text-amber-400" :
+                              act.type === "Delete" ? "bg-rose-500/10 text-rose-400" :
+                              "bg-emerald-500/10 text-emerald-400";
+                              
+            item.innerHTML = `
+                <div class="w-6 h-6 rounded-md ${badgeColor} flex items-center justify-center shrink-0 font-bold text-[9px] uppercase">${act.type[0]}</div>
+                <div class="flex-grow">
+                    <p class="text-slate-200 leading-tight font-medium">${act.details}</p>
+                    <span class="text-[9px] text-slate-500 font-bold block mt-0.5">${act.time}</span>
+                </div>
+            `;
+            activityList.appendChild(item);
+        });
+    }
+
+    lucide.createIcons();
+}
+
+// --- RENDER PRODUCTS INVENTORY TABLE ---
+function renderInventory() {
+    const tbody = document.getElementById("inventory-table-body");
+    tbody.innerHTML = "";
+
+    // Filters
+    const catSelect = document.getElementById("category-filter");
+    const activeCategory = catSelect ? catSelect.value : "all";
+    const sortVal = document.getElementById("inventory-sort").value;
+
+    let filtered = products.filter(p => {
+        const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                             p.category.toLowerCase().includes(searchQuery.toLowerCase());
+        
+        let matchesStatus = true;
+        if (currentFilter === "instock") matchesStatus = parseInt(p.quantity) > 0;
+        if (currentFilter === "outstock") matchesStatus = parseInt(p.quantity) === 0;
+
+        const matchesCategory = activeCategory === "all" || p.category === activeCategory;
+
+        return matchesSearch && matchesStatus && matchesCategory;
+    });
+
+    // Sorting
+    filtered.sort((a, b) => {
+        if (sortVal === "name-asc") return a.name.localeCompare(b.name);
+        if (sortVal === "name-desc") return b.name.localeCompare(a.name);
+        if (sortVal === "buy-desc") return parseFloat(b.buy_price) - parseFloat(a.buy_price);
+        if (sortVal === "date-asc") return new Date(a.date_added) - new Date(b.date_added);
+        if (sortVal === "date-desc") return new Date(b.date_added) - new Date(a.date_added);
+        if (sortVal === "profit-desc") {
+            const marginA = parseFloat(a.buy_price) > 0 ? (parseFloat(a.sell_price) - parseFloat(a.buy_price)) / parseFloat(a.buy_price) : 0;
+            const marginB = parseFloat(b.buy_price) > 0 ? (parseFloat(b.sell_price) - parseFloat(b.buy_price)) / parseFloat(b.buy_price) : 0;
+            return marginB - marginA;
+        }
+        return 0;
+    });
+
+    if (filtered.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="6" class="p-8 text-center text-slate-500 font-medium">No inventory products match criteria.</td>
+            </tr>
+        `;
+        return;
+    }
+
+    filtered.forEach(p => {
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-800/10 transition-colors";
+        
+        const markup = parseFloat(p.buy_price) > 0 
+            ? ((parseFloat(p.sell_price) - parseFloat(p.buy_price)) / parseFloat(p.buy_price) * 100) 
+            : 0;
+
+        const isLow = parseInt(p.quantity) > 0 && parseInt(p.quantity) <= 3;
+        const stockBadge = parseInt(p.quantity) === 0 
+            ? `<span class="px-2 py-1 text-[10px] font-black text-rose-400 bg-rose-500/10 rounded-md border border-rose-500/10">Out of Stock</span>`
+            : isLow
+            ? `<span class="px-2 py-1 text-[10px] font-black text-amber-400 bg-amber-500/10 rounded-md border border-amber-500/10">Low Stock (${p.quantity})</span>`
+            : `<span class="px-2 py-1 text-[10px] font-black text-emerald-400 bg-emerald-500/10 rounded-md border border-emerald-500/10">${p.quantity} Units</span>`;
+
+        tr.innerHTML = `
+            <td class="p-4">
+                <div class="font-bold text-slate-100 text-sm leading-tight">${p.name}</div>
+                <div class="text-[10px] text-slate-500 mt-1 font-semibold">${p.supplier ? `Supplier: ${p.supplier}` : 'No supplier linked'}</div>
+            </td>
+            <td class="p-4 text-right font-semibold text-slate-300">₹${parseFloat(p.buy_price).toFixed(2)}</td>
+            <td class="p-4 text-right font-semibold text-slate-300">₹${parseFloat(p.sell_price).toFixed(2)}</td>
+            <td class="p-4 text-right font-bold text-brand-500">₹${(parseFloat(p.sell_price) - parseFloat(p.buy_price)).toFixed(2)} (${Math.round(markup)}%)</td>
+            <td class="p-4">
+                <div class="flex items-center gap-2">
+                    ${stockBadge}
+                    <span class="px-2 py-1 text-[10px] font-bold bg-dark-600 rounded-md text-slate-400 border border-slate-700">${p.category}</span>
+                </div>
+            </td>
+            <td class="p-4 text-right">
+                <div class="flex items-center justify-end gap-2">
+                    ${parseInt(p.quantity) > 0 ? `
+                    <button onclick="openCheckoutModal('${p.id}')" title="Record Sale" class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500 hover:text-white transition-all flex items-center justify-center border border-emerald-500/10">
+                        <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                    </button>
+                    ` : ""}
+                    <button onclick="openProductModal('edit', '${p.id}')" title="Edit Item" class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 hover:bg-amber-50 hover:text-white transition-all flex items-center justify-center border border-amber-500/10">
+                        <i data-lucide="pencil" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="handleDeleteProduct('${p.id}')" title="Delete Item" class="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-400 hover:bg-rose-50 hover:text-white transition-all flex items-center justify-center border border-rose-500/10">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+
+    lucide.createIcons();
+}
+
+// --- RENDER SALES LOG HISTORY TABLE ---
+function renderSalesLog() {
+    const tbody = document.getElementById("sales-table-body");
+    tbody.innerHTML = "";
+
+    if (sales.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="6" class="p-8 text-center text-slate-500 font-medium">No transactions recorded in sales log.</td>
+            </tr>
+        `;
+        return;
+    }
+
+    sales.forEach(s => {
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-800/10 transition-colors";
+        
+        const dateStr = new Date(s.date_sold).toLocaleDateString("en-IN", {
+            day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit"
+        });
+
+        tr.innerHTML = `
+            <td class="p-4">
+                <div class="font-bold text-slate-100 text-sm">${s.product_name}</div>
+                <div class="text-[9px] font-black text-slate-500 mt-0.5 uppercase">Quantity: ${s.quantity} units</div>
+            </td>
+            <td class="p-4 text-slate-400 font-semibold">${dateStr}</td>
+            <td class="p-4 text-right font-semibold text-slate-400">₹${parseFloat(s.buy_price).toFixed(2)}</td>
+            <td class="p-4 text-right font-semibold text-slate-200">₹${parseFloat(s.sold_price).toFixed(2)}</td>
+            <td class="p-4 text-right font-bold text-brand-500">₹${parseFloat(s.profit).toFixed(2)}</td>
+            <td class="p-4 text-right">
+                <button onclick="handleDeleteSale('${s.id}')" title="Delete Sale Log" class="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-400 hover:bg-rose-50 hover:text-white transition-all flex items-center justify-center border border-rose-500/10 ml-auto">
+                    <i data-lucide="trash" class="w-4 h-4"></i>
+                </button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+
+    lucide.createIcons();
+}
+
+// --- POPULATE CATEGORIES IN FILTER ---
+function populateCategoryFilter() {
+    const select = document.getElementById("category-filter");
+    if (!select) return;
+
+    const currentVal = select.value;
+    
+    // Extract unique categories
+    const categories = ["all"];
+    products.forEach(p => {
+        if (p.category && !categories.includes(p.category)) {
+            categories.push(p.category);
+        }
+    });
+
+    select.innerHTML = "";
+    categories.forEach(cat => {
+        const opt = document.createElement("option");
+        opt.value = cat;
+        opt.textContent = cat === "all" ? "All Categories" : cat;
+        select.appendChild(opt);
+    });
+
+    // Reapply previously selected value if it still exists
+    if (categories.includes(currentVal)) {
+        select.value = currentVal;
+    }
+}
+
+// --- INVENTORY VIEW FILTER ACTIONS ---
+window.setFilter = function(filterId) {
+    currentFilter = filterId;
+    document.querySelectorAll("[id^=filter-]").forEach(btn => {
+        if (btn.id === `filter-${filterId}`) {
+            btn.className = "px-3.5 py-2 text-xs font-bold rounded-lg border border-slate-800 bg-dark-700 text-white";
+        } else {
+            btn.className = "px-3.5 py-2 text-xs font-semibold rounded-lg border border-slate-800 bg-dark-800 text-slate-400 hover:text-white";
+        }
+    });
+    renderInventory();
+};
+
+window.applyFilters = function() {
+    renderInventory();
+};
+
+// --- ADD / EDIT PRODUCT SUBMIT HANDLER ---
+window.handleProductSubmit = async function(e) {
+    e.preventDefault();
+    
+    const id = document.getElementById("product-id").value;
+    const name = document.getElementById("product-name").value.trim();
+    const buy_price = parseFloat(document.getElementById("product-buy").value) || 0;
+    const sell_price = parseFloat(document.getElementById("product-sell").value) || 0;
+    const mrp = parseFloat(document.getElementById("product-mrp").value) || 0;
+    const quantity = parseInt(document.getElementById("product-quantity").value) || 0;
+    const category = document.getElementById("product-category").value.trim() || "General";
+    const supplier = document.getElementById("product-supplier").value.trim() || "";
+    const description = document.getElementById("product-desc").value.trim() || "";
+
+    const payload = {
+        name,
+        buy_price,
+        sell_price,
+        mrp,
+        quantity,
+        category,
+        supplier,
+        description
+    };
+
+    try {
+        if (id) {
+            // Edit Product in Supabase
+            const { error } = await supabaseClient
+                .from('products')
+                .update(payload)
+                .eq('id', id);
+
+            if (error) throw error;
+            showToast("Product updated successfully");
+            addActivity("Edit", `Updated details for ${name}`);
+        } else {
+            // Add Product in Supabase
+            const newId = "prod-" + Math.floor(100000 + Math.random() * 900000);
+            const { error } = await supabaseClient
+                .from('products')
+                .insert([{ id: newId, ...payload }]);
+
+            if (error) throw error;
+            showToast("Product created successfully");
+            addActivity("Add", `Added ${name} to inventory`);
+        }
+
+        closeProductModal();
+        loadData(false);
+    } catch (err) {
+        console.error(err);
+        showToast("Product save failed", true);
+    }
+};
+
+// --- RECORD PRODUCT SALE SUBMIT HANDLER ---
+window.handleCheckoutSubmit = async function(e) {
+    e.preventDefault();
+
+    const productId = document.getElementById("checkout-product-id").value;
+    const qtyToSell = parseInt(document.getElementById("checkout-qty").value) || 1;
+    const soldPrice = parseFloat(document.getElementById("checkout-price").value) || 0;
+
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    if (qtyToSell > parseInt(product.quantity)) {
+        alert("Cannot record sale. Selling quantity exceeds available stock count.");
+        return;
+    }
+
+    const profitVal = (soldPrice - parseFloat(product.buy_price)) * qtyToSell;
+    const saleId = "SALE-" + Math.floor(100000 + Math.random() * 900000);
+
+    const salePayload = {
+        id: saleId,
+        product_id: productId,
+        product_name: product.name,
+        buy_price: product.buy_price,
+        sold_price: soldPrice,
+        quantity: qtyToSell,
+        profit: profitVal
+    };
+
+    try {
+        // 1. Subtract stock count in products table
+        const newQty = parseInt(product.quantity) - qtyToSell;
+        const { error: updateError } = await supabaseClient
+            .from('products')
+            .update({ quantity: newQty })
+            .eq('id', productId);
+
+        if (updateError) throw updateError;
+
+        // 2. Insert new transaction record into sales log
+        const { error: insertError } = await supabaseClient
+            .from('sales')
+            .insert([salePayload]);
+
+        if (insertError) throw insertError;
+
+        showToast("Sale transaction logged");
+        addActivity("Sale", `Sold ${qtyToSell}x ${product.name}`);
+        closeCheckoutModal();
+        loadData(false);
+    } catch (err) {
+        console.error(err);
+        showToast("Record sale failed", true);
+    }
+};
+
+// --- DELETE HANDLERS ---
+window.handleDeleteProduct = async function(id) {
+    const product = products.find(p => p.id === id);
+    if (!product) return;
+
+    if (!confirm(`Are you sure you want to delete "${product.name}" from your catalog?`)) return;
+
+    try {
+        const { error } = await supabaseClient
+            .from('products')
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
+        showToast("Product deleted");
+        addActivity("Delete", `Removed ${product.name} from catalog`);
+        loadData(false);
+    } catch (err) {
+        console.error(err);
+        showToast("Delete product failed", true);
+    }
+};
+
+window.handleDeleteSale = async function(saleId) {
+    const sale = sales.find(s => s.id === saleId);
+    if (!sale) return;
+
+    if (!confirm(`Delete sales transaction record for "${sale.product_name}"?`)) return;
+
+    try {
+        const { error } = await supabaseClient
+            .from('sales')
+            .delete()
+            .eq('id', saleId);
+
+        if (error) throw error;
+        showToast("Transaction record deleted");
+        addActivity("Delete", `Deleted sale record for ${sale.product_name}`);
+        loadData(false);
+    } catch (err) {
+        console.error(err);
+        showToast("Delete log failed", true);
+    }
+};
+
+// --- MODAL MODALS OPEN/CLOSE CONTROLLERS ---
+window.openProductModal = function(mode, productId = null) {
+    const modal = document.getElementById("product-modal");
+    const title = document.getElementById("product-modal-title");
+    
+    document.getElementById("product-form").reset();
+    document.getElementById("product-id").value = "";
+
+    if (mode === "edit" && productId) {
+        title.textContent = "Edit Product Details";
+        const p = products.find(prod => prod.id === productId);
+        if (p) {
+            document.getElementById("product-id").value = p.id;
+            document.getElementById("product-name").value = p.name;
+            document.getElementById("product-buy").value = p.buy_price;
+            document.getElementById("product-sell").value = p.sell_price;
+            document.getElementById("product-mrp").value = p.mrp || 0.00;
+            document.getElementById("product-quantity").value = p.quantity;
+            document.getElementById("product-category").value = p.category;
+            document.getElementById("product-supplier").value = p.supplier;
+            document.getElementById("product-desc").value = p.description;
+        }
+    } else {
+        title.textContent = "Add New Product";
+    }
+
+    modal.classList.remove("hidden");
+    lucide.createIcons();
+};
+
+window.closeProductModal = function() {
+    document.getElementById("product-modal").classList.add("hidden");
+};
+
+window.openCheckoutModal = function(productId) {
+    const modal = document.getElementById("checkout-modal");
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    document.getElementById("checkout-product-id").value = product.id;
+    document.getElementById("checkout-product-name").textContent = product.name;
+    document.getElementById("checkout-buy-display").textContent = `₹${parseFloat(product.buy_price).toFixed(2)}`;
+    document.getElementById("checkout-sell-display").textContent = `₹${parseFloat(product.sell_price).toFixed(2)}`;
+    
+    document.getElementById("checkout-qty").value = "1";
+    document.getElementById("checkout-qty").max = product.quantity;
+    document.getElementById("checkout-qty-available").textContent = `Available: ${product.quantity}`;
+    document.getElementById("checkout-price").value = product.sell_price;
+
+    modal.classList.remove("hidden");
+    updateProfitPreview();
+    lucide.createIcons();
+};
+
+window.closeCheckoutModal = function() {
+    document.getElementById("checkout-modal").classList.add("hidden");
+};
+
+window.updateProfitPreview = function() {
+    const productId = document.getElementById("checkout-product-id").value;
+    const qty = parseInt(document.getElementById("checkout-qty").value) || 1;
+    const price = parseFloat(document.getElementById("checkout-price").value) || 0;
+
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    const buyPrice = parseFloat(product.buy_price);
+    const profit = (price - buyPrice) * qty;
+
+    const display = document.getElementById("checkout-profit-preview");
+    display.textContent = `₹${profit.toFixed(2)}`;
+    if (profit < 0) {
+        display.className = "text-base font-black text-rose-500";
+    } else {
+        display.className = "text-base font-black text-brand-500";
+    }
+};
+
+// --- RECENT ACTIVITIES MEMORY LOGGER ---
+function addActivity(type, details) {
+    const timeStr = new Date().toLocaleTimeString("en-IN", {
+        hour: "2-digit", minute: "2-digit", second: "2-digit"
+    });
+    
+    activities.unshift({
+        type,
+        details,
+        time: timeStr
+    });
+    
+    // Cap at 15 items in history
+    if (activities.length > 15) activities.pop();
+    
+    // Save to local storage cache so it persists between reloads
+    localStorage.setItem("stockly_activities", JSON.stringify(activities));
+    
+    renderDashboard();
+}
+
+// Load cached activities on load
+if (localStorage.getItem("stockly_activities")) {
+    activities = JSON.parse(localStorage.getItem("stockly_activities"));
+}
+
+// --- TOAST NOTIFICATIONS HELPER ---
+function showToast(message, isError = false) {
+    const container = document.getElementById("toast-container");
+    if (!container) return;
+
+    const toast = document.createElement("div");
+    toast.className = `p-4 rounded-xl border shadow-lg flex items-center gap-2.5 transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto max-w-sm ${
+        isError 
+        ? "bg-rose-500/10 text-rose-400 border-rose-500/20" 
+        : "bg-brand-500/10 text-brand-500 border-brand-500/20"
+    }`;
+    
+    const icon = isError ? "alert-circle" : "check-circle";
+    toast.innerHTML = `
+        <i data-lucide="${icon}" class="w-4.5 h-4.5"></i>
+        <span class="text-xs font-bold">${message}</span>
+    `;
+
+    container.appendChild(toast);
+    lucide.createIcons();
+
+    // Trigger entrance transition
+    setTimeout(() => {
+        toast.classList.remove("translate-y-2", "opacity-0");
+    }, 10);
+
+    // Transition out and destroy
+    setTimeout(() => {
+        toast.classList.add("translate-y-2", "opacity-0");
+        setTimeout(() => toast.remove(), 300);
+    }, 3500);
+}

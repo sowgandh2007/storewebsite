@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stockly Admin | Premium Inventory & Sales Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#0b0f19',
+                            800: '#0f1524',
+                            700: '#151c2e',
+                            600: '#1e2640',
+                        },
+                        brand: {
+                            500: '#10b981',
+                            600: '#059669',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-900 text-slate-100 min-h-screen flex flex-col antialiased">
+
+    <!-- App Shell Layout -->
+    <div class="flex flex-col md:flex-row min-h-screen">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-64 bg-dark-800 border-r border-slate-800 flex flex-col justify-between p-6 select-none shrink-0">
+            <div class="flex flex-col gap-8">
+                <!-- Branding logo -->
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-brand-500 text-white rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/20">
+                        <i data-lucide="package" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-lg font-black tracking-tight text-white">Stockly Admin</span>
+                </div>
+
+                <!-- Navigation links -->
+                <nav class="flex flex-col gap-1.5">
+                    <div class="nav-item active" data-target="dashboard-view" onclick="switchView('dashboard-view')">
+                        <div class="nav-link">
+                            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                            <span>Dashboard Summary</span>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-target="inventory-view" onclick="switchView('inventory-view')">
+                        <div class="nav-link">
+                            <i data-lucide="boxes" class="w-4 h-4"></i>
+                            <span>Store Inventory</span>
+                        </div>
+                    </div>
+                    <div class="nav-item" data-target="sales-view" onclick="switchView('sales-view')">
+                        <div class="nav-link">
+                            <i data-lucide="receipt" class="w-4 h-4"></i>
+                            <span>Sales Log</span>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <!-- Footer indicator -->
+            <div class="border-t border-slate-800 pt-6 mt-6 md:mt-0 flex flex-col gap-1.5">
+                <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider">Database Status</span>
+                <span class="inline-flex items-center gap-1.5 text-xs text-brand-500 font-bold">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span> Cloud Synced (Supabase)
+                </span>
+            </div>
+        </aside>
+
+        <!-- Main Workspace Area -->
+        <main class="flex-grow p-6 md:p-10 flex flex-col gap-8 overflow-x-hidden">
+            
+            <!-- ================= DASHBOARD SUMMARY VIEW ================= -->
+            <section id="dashboard-view" class="view-section animate-fade-in flex flex-col gap-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl font-extrabold text-white tracking-tight">Dashboard</h1>
+                        <p class="text-xs text-slate-400 mt-1">Real-time inventory values and profit performance summary.</p>
+                    </div>
+                    <button onclick="openProductModal('add')" class="bg-brand-500 hover:bg-brand-600 active:bg-brand-600 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center gap-1.5">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Add Product
+                    </button>
+                </div>
+
+                <!-- Stats Counters Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
+                        <div class="flex items-center justify-between text-slate-400 mb-4">
+                            <span class="text-xs font-bold uppercase tracking-wider">Inventory Value</span>
+                            <div class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
+                                <i data-lucide="dollar-sign" class="w-4.5 h-4.5"></i>
+                            </div>
+                        </div>
+                        <div id="stat-inventory-val" class="text-2xl font-black text-white">₹0.00</div>
+                        <span class="text-[10px] text-slate-500 mt-1.5 block">Total cost basis in stock</span>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
+                        <div class="flex items-center justify-between text-slate-400 mb-4">
+                            <span class="text-xs font-bold uppercase tracking-wider">Total Revenue</span>
+                            <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                                <i data-lucide="trending-up" class="w-4.5 h-4.5"></i>
+                            </div>
+                        </div>
+                        <div id="stat-revenue-val" class="text-2xl font-black text-white">₹0.00</div>
+                        <span class="text-[10px] text-slate-500 mt-1.5 block">Gross sales total</span>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
+                        <div class="flex items-center justify-between text-slate-400 mb-4">
+                            <span class="text-xs font-bold uppercase tracking-wider">Realized Profit</span>
+                            <div class="w-8 h-8 rounded-lg bg-teal-500/10 text-teal-400 flex items-center justify-center">
+                                <i data-lucide="banknote" class="w-4.5 h-4.5"></i>
+                            </div>
+                        </div>
+                        <div id="stat-profit-val" class="text-2xl font-black text-white">₹0.00</div>
+                        <span class="text-[10px] text-slate-500 mt-1.5 block">Revenue minus purchase cost</span>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
+                        <div class="flex items-center justify-between text-slate-400 mb-4">
+                            <span class="text-xs font-bold uppercase tracking-wider">Average Margin</span>
+                            <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center">
+                                <i data-lucide="percent" class="w-4.5 h-4.5"></i>
+                            </div>
+                        </div>
+                        <div id="stat-margin-val" class="text-2xl font-black text-white">0%</div>
+                        <span class="text-[10px] text-slate-500 mt-1.5 block">Average profit markup rate</span>
+                    </div>
+                </div>
+
+                <!-- Dashboard Split Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- High Margin Items bar chart -->
+                    <div class="glass-card rounded-3xl p-6 lg:col-span-2 flex flex-col gap-6">
+                        <h2 class="text-base font-bold text-white">Highest Margin Products (In Stock)</h2>
+                        <div class="flex-grow flex flex-col gap-3 min-h-[220px]" id="margin-chart-container">
+                            <!-- Bars loaded dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity Logs list -->
+                    <div class="glass-card rounded-3xl p-6 flex flex-col gap-6">
+                        <h2 class="text-base font-bold text-white">Recent Activities</h2>
+                        <div class="flex flex-col gap-4 overflow-y-auto max-h-[220px] text-xs" id="activity-log-list">
+                            <!-- Activities loaded dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= STORE INVENTORY VIEW ================= -->
+            <section id="inventory-view" class="view-section animate-fade-in flex flex-col gap-6 hidden">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl font-extrabold text-white tracking-tight">Product Inventory</h1>
+                        <p class="text-xs text-slate-400 mt-1">Manage catalog listings, track stock counts, and record sales.</p>
+                    </div>
+                    <button onclick="openProductModal('add')" class="bg-brand-500 hover:bg-brand-600 active:bg-brand-600 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center gap-1.5">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Add Product
+                    </button>
+                </div>
+
+                <!-- Controls & Search Toolbar -->
+                <div class="glass-card rounded-2xl p-4 flex flex-col lg:flex-row gap-4 items-stretch justify-between">
+                    <div class="relative max-w-md w-full">
+                        <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
+                        <input type="text" id="inventory-search" placeholder="Search by product name..." class="w-full pl-11 pr-4 py-2 bg-dark-600 border border-slate-800 focus:outline-none focus:border-brand-500 rounded-xl text-xs font-semibold text-white">
+                    </div>
+
+                    <div class="flex items-center gap-3 flex-wrap">
+                        <button class="px-3.5 py-2 text-xs font-bold rounded-lg border border-slate-800 bg-dark-700 text-white" id="filter-all" onclick="setFilter('all')">All</button>
+                        <button class="px-3.5 py-2 text-xs font-semibold rounded-lg border border-slate-800 bg-dark-800 text-slate-400 hover:text-white" id="filter-instock" onclick="setFilter('instock')">In Stock</button>
+                        <button class="px-3.5 py-2 text-xs font-semibold rounded-lg border border-slate-800 bg-dark-800 text-slate-400 hover:text-white" id="filter-outstock" onclick="setFilter('outstock')">Out of Stock</button>
+                        
+                        <select id="category-filter" onchange="applyFilters()" class="bg-dark-700 border border-slate-800 text-xs font-semibold rounded-lg px-3 py-2 text-white focus:outline-none">
+                            <option value="all">All Categories</option>
+                        </select>
+                        <select id="inventory-sort" onchange="applyFilters()" class="bg-dark-700 border border-slate-800 text-xs font-semibold rounded-lg px-3 py-2 text-white focus:outline-none">
+                            <option value="date-desc">Newest First</option>
+                            <option value="date-asc">Oldest First</option>
+                            <option value="name-asc">Name (A-Z)</option>
+                            <option value="name-desc">Name (Z-A)</option>
+                            <option value="profit-desc">Highest Profit Margin</option>
+                            <option value="buy-desc">Highest Buy Price</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Products Table -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-dark-800 text-slate-400 font-bold border-b border-slate-800 uppercase tracking-wider select-none">
+                                    <th class="p-4">Product Name</th>
+                                    <th class="p-4 text-right">Buy Price</th>
+                                    <th class="p-4 text-right">Sell Price</th>
+                                    <th class="p-4 text-right">Proj. Profit</th>
+                                    <th class="p-4">Stock & Category</th>
+                                    <th class="p-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventory-table-body" class="divide-y divide-slate-800/50">
+                                <!-- Loaded dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= SALES HISTORY LOG VIEW ================= -->
+            <section id="sales-view" class="view-section animate-fade-in flex flex-col gap-6 hidden">
+                <div>
+                    <h1 class="text-2xl font-extrabold text-white tracking-tight">Sales History Log</h1>
+                    <p class="text-xs text-slate-400 mt-1">Audit log of recorded sales and realized margins.</p>
+                </div>
+
+                <!-- Sales summary stat widgets -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Units Sold</span>
+                            <div id="sales-count-val" class="text-2xl font-black text-white mt-1">0</div>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center">
+                            <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Cost Basis</span>
+                            <div id="sales-cost-val" class="text-2xl font-black text-white mt-1">₹0.00</div>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
+                            <i data-lucide="activity" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Net Profit Realized</span>
+                            <div id="sales-profit-val" class="text-2xl font-black text-white mt-1">₹0.00</div>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                            <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Log list -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-dark-800 text-slate-400 font-bold border-b border-slate-800 uppercase tracking-wider select-none">
+                                    <th class="p-4">Product Name</th>
+                                    <th class="p-4">Date Sold</th>
+                                    <th class="p-4 text-right">Buy Price</th>
+                                    <th class="p-4 text-right">Sold Price</th>
+                                    <th class="p-4 text-right">Realized Profit</th>
+                                    <th class="p-4 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sales-table-body" class="divide-y divide-slate-800/50">
+                                <!-- Loaded dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ================= ADD / EDIT PRODUCT MODAL ================= -->
+    <div id="product-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50 flex">
+        <div class="glass-card rounded-3xl max-w-lg w-full overflow-hidden border border-slate-800 shadow-2xl p-6 flex flex-col gap-6 animate-fade-in">
+            <div class="flex justify-between items-center">
+                <h2 id="product-modal-title" class="text-lg font-bold text-white">Add New Product</h2>
+                <button onclick="closeProductModal()" class="w-8 h-8 bg-dark-700 hover:bg-dark-600 text-slate-400 hover:text-white rounded-xl flex items-center justify-center transition-colors">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <form id="product-form" onsubmit="handleProductSubmit(event)" class="space-y-4">
+                <input type="hidden" id="product-id">
+                
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Product Name</label>
+                    <input type="text" id="product-name" required placeholder="e.g. Santoor Sandal Soap" class="form-input">
+                </div>
+
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Buy Price (₹)</label>
+                        <input type="number" id="product-buy" step="0.01" min="0" required placeholder="0.00" class="form-input font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Sell Price (₹)</label>
+                        <input type="number" id="product-sell" step="0.01" min="0" required placeholder="0.00" class="form-input font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">MRP (₹)</label>
+                        <input type="number" id="product-mrp" step="0.01" min="0" required placeholder="0.00" class="form-input font-bold">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Stock Quantity</label>
+                        <input type="number" id="product-quantity" min="0" required placeholder="1" class="form-input font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Category</label>
+                        <input type="text" id="product-category" placeholder="e.g. Bath Soap" class="form-input">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Supplier / Vendor</label>
+                    <input type="text" id="product-supplier" placeholder="e.g. Wipro Distributions" class="form-input">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Description / Notes</label>
+                    <textarea id="product-desc" rows="2" placeholder="Product details..." class="form-input resize-none"></textarea>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t border-slate-800">
+                    <button type="button" onclick="closeProductModal()" class="px-4 py-2.5 text-xs font-semibold rounded-xl bg-dark-700 hover:bg-dark-600 text-slate-400 hover:text-white transition-colors">Cancel</button>
+                    <button type="submit" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-brand-500 hover:bg-brand-600 text-white shadow-md transition-all">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= CHECKOUT / RECORD SALE MODAL ================= -->
+    <div id="checkout-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50 flex">
+        <div class="glass-card rounded-3xl max-w-md w-full p-6 flex flex-col gap-6 animate-fade-in border border-slate-800 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <h2 class="text-lg font-bold text-white">Record Product Sale</h2>
+                <button onclick="closeCheckoutModal()" class="w-8 h-8 bg-dark-700 hover:bg-dark-600 text-slate-400 hover:text-white rounded-xl flex items-center justify-center transition-colors">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <form id="checkout-form" onsubmit="handleCheckoutSubmit(event)" class="space-y-4">
+                <input type="hidden" id="checkout-product-id">
+
+                <div class="bg-dark-800/80 border border-slate-800 rounded-xl p-4 flex flex-col gap-1.5 select-none">
+                    <span class="text-[9px] text-slate-500 font-bold uppercase tracking-wider leading-none">Product Title</span>
+                    <span id="checkout-product-name" class="text-sm font-bold text-white">-</span>
+                    <div class="border-t border-slate-800/50 mt-2 pt-2 grid grid-cols-2 gap-2 text-xs">
+                        <div>
+                            <span class="block text-[8px] text-slate-500 font-bold uppercase leading-none mb-1">Buy Price</span>
+                            <span id="checkout-buy-display" class="font-semibold text-slate-300">₹0.00</span>
+                        </div>
+                        <div>
+                            <span class="block text-[8px] text-slate-500 font-bold uppercase leading-none mb-1">Retail Price</span>
+                            <span id="checkout-sell-display" class="font-semibold text-slate-300">₹0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Units to Sell</label>
+                        <input type="number" id="checkout-qty" min="1" value="1" required class="form-input font-bold" oninput="updateProfitPreview()">
+                        <span id="checkout-qty-available" class="block text-[10px] text-slate-500 mt-1">Available: 0</span>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Sold Price per Unit (₹)</label>
+                        <input type="number" id="checkout-price" step="0.01" min="0" required placeholder="0.00" class="form-input font-bold" oninput="updateProfitPreview()">
+                    </div>
+                </div>
+
+                <!-- Live profit calculator banner -->
+                <div class="bg-emerald-500/10 border border-emerald-500/10 rounded-xl p-3.5 flex justify-between items-center text-xs">
+                    <span class="font-semibold text-emerald-400">Realized Profit Summary</span>
+                    <span id="checkout-profit-preview" class="text-base font-black text-brand-500">₹0.00</span>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t border-slate-800">
+                    <button type="button" onclick="closeCheckoutModal()" class="px-4 py-2.5 text-xs font-semibold rounded-xl bg-dark-700 hover:bg-dark-600 text-slate-400 hover:text-white transition-colors">Cancel</button>
+                    <button type="submit" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition-all">Record Sale</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast alerts container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 flex flex-col gap-2 z-50 pointer-events-none"></div>
+
+    <!-- Lucide & Supabase CDN Libraries -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Core Application Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
