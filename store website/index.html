@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avadhanula Stores | Premium Wholesale Mart</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            950: '#0b0f19',
+                            900: '#0f1524',
+                            800: '#151c2e',
+                            700: '#1e2640',
+                        },
+                        brand: {
+                            500: '#10b981',
+                            600: '#059669',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-950 text-slate-100 min-h-screen flex flex-col justify-between antialiased">
+
+    <!-- Top Utility Bar -->
+    <div class="bg-dark-900 text-slate-350 py-2.5 px-4 text-xs font-semibold border-b border-slate-850 select-none">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <span class="flex items-center gap-1.5 text-slate-400">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-450 animate-pulse"></span> Live Stock Updates Active
+            </span>
+            <a id="top-phone" href="tel:8008668066" class="hover:text-white transition-colors flex items-center gap-1">
+                <i data-lucide="phone" class="w-3.5 h-3.5 text-emerald-400"></i> Call to Confirm: <span id="header-phone-text" class="font-bold text-white">8008668066</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Store Header -->
+    <header class="glass-panel sticky top-0 z-45 select-none">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-brand-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-brand-500/20">
+                    <i data-lucide="shopping-bag" class="w-5.5 h-5.5"></i>
+                </div>
+                <div>
+                    <h1 id="store-title" class="text-xl font-extrabold tracking-tight text-white leading-none">Avadhanula Stores</h1>
+                    <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mt-1.5 text-emerald-450">Smart Shopping • Direct Reservations</p>
+                </div>
+            </div>
+            
+            <!-- Desktop Navigation Menu -->
+            <nav class="hidden md:flex items-center gap-6 text-xs font-bold text-slate-400 uppercase tracking-wider">
+                <a href="#catalog" class="hover:text-brand-500 transition-colors">Catalog</a>
+                <a href="#gallery" class="hover:text-brand-500 transition-colors">Gallery</a>
+                <a href="#services" class="hover:text-brand-500 transition-colors">Other Services</a>
+                <a href="#location" class="hover:text-brand-500 transition-colors">Location</a>
+            </nav>
+            
+            <div class="flex items-center gap-3">
+                <!-- Cart Toggle Trigger Button -->
+                <button onclick="toggleCartDrawer(true)" class="relative bg-dark-900 hover:bg-dark-800 text-slate-200 p-2.5 rounded-xl transition-all flex items-center gap-2 font-extrabold text-xs border border-slate-800 hover-lift">
+                    <i data-lucide="shopping-cart" class="w-4 h-4 text-emerald-400"></i>
+                    <span class="hidden sm:inline">Cart</span>
+                    <span id="cart-badge-count" class="bg-brand-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-sm shadow-brand-500/20">0</span>
+                </button>
+                <span class="hidden lg:inline-flex text-[10px] font-black text-slate-450 bg-dark-900 px-2.5 py-1.5 rounded-xl border border-slate-800 items-center gap-1.5 uppercase tracking-wider">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span> Sync Active
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 py-8 w-full flex-grow flex flex-col gap-10">
+        
+        <!-- Bento-Grid Hero Section -->
+        <section class="bg-gradient-to-br from-slate-950 to-dark-900 rounded-3xl overflow-hidden border border-slate-850 shadow-xl select-none relative animate-fade-in-up">
+            <!-- Subtle emerald glow background elements -->
+            <div class="absolute -left-20 -bottom-20 w-80 h-80 rounded-full bg-brand-500/10 blur-[120px] pointer-events-none"></div>
+            <div class="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none"></div>
+            
+            <!-- Staggered Antigravity Floating Tiles -->
+            <div class="hero-floating-card hero-float-1 absolute left-[3%] top-[12%] w-40 hidden xl:block select-none">
+                <div class="flex flex-col gap-1 text-[10px]">
+                    <span class="font-extrabold text-slate-350 tracking-wider">Santoor Soap</span>
+                    <div class="flex items-center gap-1.5 mt-0.5 font-bold">
+                        <span class="text-brand-400">Our: ₹36</span>
+                        <span class="text-slate-500 line-through text-[9px]">MRP: ₹40</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-floating-card hero-float-2 absolute right-[35%] bottom-[8%] w-44 hidden xl:block select-none">
+                <div class="flex flex-col gap-1 text-[10px]">
+                    <span class="font-extrabold text-slate-350 tracking-wider">Mixer Grinder</span>
+                    <div class="flex items-center gap-1.5 mt-0.5 font-bold">
+                        <span class="text-brand-400">Our: ₹3,499</span>
+                        <span class="text-slate-500 line-through text-[9px]">MRP: ₹4,299</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-floating-card hero-float-3 absolute left-[44%] top-[14%] w-40 hidden xl:block select-none">
+                <div class="flex flex-col gap-1 text-[10px]">
+                    <span class="font-extrabold text-slate-350 tracking-wider">DOMS Stationery</span>
+                    <div class="flex items-center gap-1.5 mt-0.5 font-bold">
+                        <span class="text-brand-400">Our: ₹3</span>
+                        <span class="text-slate-500 line-through text-[9px]">MRP: ₹5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ambient lights behind floating cards -->
+            <div class="absolute left-[8%] top-[20%] w-24 h-24 rounded-full bg-brand-500/5 blur-2xl pointer-events-none"></div>
+            <div class="absolute right-[40%] bottom-[15%] w-24 h-24 rounded-full bg-brand-500/5 blur-2xl pointer-events-none"></div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-8 md:p-12">
+                <!-- Left text info columns -->
+                <div class="lg:col-span-7 flex flex-col gap-5 relative z-10">
+                    <div>
+                        <span class="bg-brand-500/20 text-brand-400 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-brand-500/10 inline-flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-ping"></span> Premium Wholesale Mart
+                        </span>
+                        <h2 id="hero-title" class="text-3xl md:text-5xl font-black tracking-tight mt-4 text-white leading-tight">
+                            Avadhanula Stores
+                        </h2>
+                    </div>
+                    <p id="hero-desc" class="text-slate-350 text-sm leading-relaxed max-w-xl">
+                        Explore our high-fidelity, real-time catalog. Compare wholesale prices directly against market MRP rates, track stock counts dynamically, and submit reservations instantly on WhatsApp.
+                    </p>
+                    <!-- Floating mini-chips / Features -->
+                    <div class="flex flex-wrap gap-2.5 mt-2">
+                        <span class="text-[10px] font-bold text-slate-300 bg-dark-900 border border-slate-800 px-3 py-1.5 rounded-xl flex items-center gap-1.5 backdrop-blur-sm">
+                            <i data-lucide="package" class="w-3.5 h-3.5 text-brand-500"></i> Bento Grid Catalog
+                        </span>
+                        <span class="text-[10px] font-bold text-slate-300 bg-dark-900 border border-slate-800 px-3 py-1.5 rounded-xl flex items-center gap-1.5 backdrop-blur-sm">
+                            <i data-lucide="calculator" class="w-3.5 h-3.5 text-indigo-400"></i> Live Price comparisons
+                        </span>
+                        <span class="text-[10px] font-bold text-slate-300 bg-dark-900 border border-slate-800 px-3 py-1.5 rounded-xl flex items-center gap-1.5 backdrop-blur-sm">
+                            <i data-lucide="calendar-check" class="w-3.5 h-3.5 text-emerald-450"></i> WhatsApp Bookings
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Right visual columns -->
+                <div class="lg:col-span-5 relative flex items-center justify-center">
+                    <!-- Glassmorphic panel holding 3D render image -->
+                    <div class="relative w-full aspect-[16/10] lg:aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 bg-slate-900/40 p-1.5 shadow-2xl shadow-emerald-500/5 group hover:border-brand-500/20 transition-all duration-300">
+                        <img src="hero.jpg" alt="Avadhanula Stores 3D Bento Grid" class="w-full h-full object-cover rounded-xl group-hover:scale-[1.02] transition-transform duration-500">
+                        <!-- Glassmorphic overlay tags -->
+                        <div class="absolute bottom-4 left-4 bg-slate-950/70 border border-white/5 backdrop-blur-md px-3 py-1.5 rounded-xl text-[9px] font-bold text-white flex items-center gap-1 shadow-md select-none">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Glassmorphic UI Orbit active
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filters & Search Toolbar -->
+        <section id="catalog" class="flex flex-col md:flex-row gap-4 items-stretch justify-between bg-dark-900 border border-slate-800 rounded-2xl p-4 shadow-lg scroll-mt-24">
+            <!-- Search bar input -->
+            <div class="relative flex-grow max-w-md">
+                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-550 w-4.5 h-4.5"></i>
+                <input type="text" id="search-input" placeholder="Search products, brands, or categories..." class="w-full pl-11 pr-4 py-2.5 bg-dark-950 border border-slate-800 rounded-xl text-xs font-semibold focus:outline-none focus:border-brand-500 focus:bg-dark-900 text-white transition-all">
+            </div>
+
+            <!-- Categories tags (Desktop) -->
+            <div id="categories-container" class="hidden md:flex items-center gap-2">
+                <!-- Javascript inserts category buttons here -->
+            </div>
+
+            <!-- Categories Dropdown (Mobile) -->
+            <div class="md:hidden relative">
+                <button id="category-menu-btn" class="w-full flex items-center justify-between bg-dark-950 border border-slate-800 py-2.5 px-4 rounded-xl text-xs font-bold text-slate-300">
+                    <span id="active-category-label">All Products</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500"></i>
+                </button>
+                <div id="category-dropdown" class="hidden absolute top-[calc(100%+4px)] left-0 w-full bg-dark-900 border border-slate-800 rounded-xl shadow-2xl z-30 max-h-60 overflow-y-auto">
+                    <!-- Javascript inserts mobile categories list here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading state spinner -->
+        <div id="loading-state" class="py-24 text-center select-none">
+            <div class="w-10 h-10 border-4 border-slate-800 border-t-brand-500 rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-xs text-slate-550 font-bold uppercase tracking-wider">Syncing live catalog data...</p>
+        </div>
+
+        <!-- Products Catalog Grid -->
+        <section id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 hidden">
+            <!-- Javascript inserts product cards dynamically here -->
+        </section>
+
+        <!-- Empty state layout -->
+        <div id="empty-state" class="hidden py-20 text-center select-none max-w-sm mx-auto animate-fade-in-up">
+            <div class="w-16 h-16 bg-dark-900 border border-slate-800 text-slate-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="package-search" class="w-8 h-8"></i>
+            </div>
+            <h3 class="font-bold text-slate-300 text-base mb-1">No products found</h3>
+            <p class="text-xs text-slate-500 leading-relaxed">We couldn't find any products matching your search criteria. Try using different search keywords or filter values.</p>
+        </div>
+
+        <!-- ================= GALLERY SECTION ================= -->
+        <section id="gallery" class="py-12 border-t border-slate-850 select-none scroll-mt-24">
+            <div class="mb-8">
+                <span class="text-[10px] font-bold text-brand-500 uppercase tracking-widest bg-brand-500/10 px-2.5 py-1 rounded-md border border-brand-500/20">Visual Highlights</span>
+                <h2 class="text-2xl font-extrabold text-white mt-2">Store Gallery</h2>
+                <p class="text-xs text-slate-400 mt-1">Sneak peek at our clean aisles, organic soap bars, cosmetic counters, and fresh arrivals.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="gallery-item aspect-square bg-dark-900 group shadow-lg border border-slate-800">
+                    <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&auto=format&fit=crop&q=80" alt="Grocery Aisle" class="w-full h-full object-cover">
+                    <div class="gallery-overlay">
+                        <span class="text-[10px] font-bold text-brand-400 uppercase tracking-wider">Aisle 1</span>
+                        <h4 class="text-sm font-bold text-white leading-tight mt-0.5">Fresh Grocery Items</h4>
+                    </div>
+                </div>
+                <div class="gallery-item aspect-square bg-dark-900 group shadow-lg border border-slate-800">
+                    <img src="https://images.unsplash.com/photo-1607006342411-925f20361f36?w=500&auto=format&fit=crop&q=80" alt="Bath & Body Shop" class="w-full h-full object-cover">
+                    <div class="gallery-overlay">
+                        <span class="text-[10px] font-bold text-brand-400 uppercase tracking-wider">Section 2</span>
+                        <h4 class="text-sm font-bold text-white leading-tight mt-0.5">Handcrafted Soap Display</h4>
+                    </div>
+                </div>
+                <div class="gallery-item aspect-square bg-dark-900 group shadow-lg border border-slate-800">
+                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&auto=format&fit=crop&q=80" alt="Cosmetic Counter" class="w-full h-full object-cover">
+                    <div class="gallery-overlay">
+                        <span class="text-[10px] font-bold text-brand-400 uppercase tracking-wider">Aisle 3</span>
+                        <h4 class="text-sm font-bold text-white leading-tight mt-0.5">Premium Cosmetics</h4>
+                    </div>
+                </div>
+                <div class="gallery-item aspect-square bg-dark-900 group shadow-lg border border-slate-800">
+                    <img src="https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=500&auto=format&fit=crop&q=80" alt="Stationery Shelf" class="w-full h-full object-cover">
+                    <div class="gallery-overlay">
+                        <span class="text-[10px] font-bold text-brand-400 uppercase tracking-wider">Section 4</span>
+                        <h4 class="text-sm font-bold text-white leading-tight mt-0.5">School & Office Essentials</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= OTHER SERVICES SECTION ================= -->
+        <section id="services" class="py-12 border-t border-slate-850 select-none scroll-mt-24">
+            <div class="mb-8">
+                <span class="text-[10px] font-bold text-brand-500 uppercase tracking-widest bg-brand-500/10 px-2.5 py-1 rounded-md border border-brand-500/20">Value Added Options</span>
+                <h2 class="text-2xl font-extrabold text-white mt-2">Our Premium Services</h2>
+                <p class="text-xs text-slate-400 mt-1">Explore additional specialized support and custom tailoring options we offer.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-dark-900 border border-slate-800 rounded-3xl p-6 shadow-lg flex flex-col justify-between hover-lift">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-brand-500/10 text-brand-450 border border-brand-500/20 flex items-center justify-center mb-4">
+                            <i data-lucide="truck" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-2">Home Delivery</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mb-4">Get your wholesale grocery packages delivered directly to your doorstep. Free delivery for local orders above ₹1,000.</p>
+                    </div>
+                    <span class="text-[10px] font-bold text-brand-500 flex items-center gap-1 cursor-pointer hover:underline">Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
+                </div>
+                <div class="bg-dark-900 border border-slate-800 rounded-3xl p-6 shadow-lg flex flex-col justify-between hover-lift">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center mb-4">
+                            <i data-lucide="sparkles" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-2">Custom Soap Orders</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mb-4">Order personalized organic soaps in bulk with custom shapes, scents, and branding wrapper designs for corporate gifting or events.</p>
+                    </div>
+                    <span class="text-[10px] font-bold text-indigo-450 flex items-center gap-1 cursor-pointer hover:underline">Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
+                </div>
+                <div class="bg-dark-900 border border-slate-800 rounded-3xl p-6 shadow-lg flex flex-col justify-between hover-lift">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-400 border border-rose-500/20 flex items-center justify-center mb-4">
+                            <i data-lucide="gift" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-2">Gift Packing</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mb-4">Beautifully wrapped custom hampers containing soaps, cosmetic sets, and premium honey jars, tailored perfectly for festive seasons.</p>
+                    </div>
+                    <span class="text-[10px] font-bold text-rose-450 flex items-center gap-1 cursor-pointer hover:underline">Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= LOCATION & CONTACT SECTION ================= -->
+        <section id="location" class="py-12 border-t border-slate-850 select-none scroll-mt-24">
+            <div class="mb-8">
+                <span class="text-[10px] font-bold text-brand-500 uppercase tracking-widest bg-brand-500/10 px-2.5 py-1 rounded-md border border-brand-500/20">Visit Our Mart</span>
+                <h2 class="text-2xl font-extrabold text-white mt-2">Location & Timings</h2>
+                <p class="text-xs text-slate-400 mt-1">Stop by our brick-and-mortar storefront for direct purchases and wholesale distributions.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Location Details Card -->
+                <div class="bg-dark-900 border border-slate-800 rounded-3xl p-6 shadow-lg flex flex-col gap-6 lg:col-span-1 hover-lift">
+                    <div class="flex flex-col gap-4">
+                        <div class="flex gap-3.5 items-start">
+                            <div class="w-8.5 h-8.5 rounded-xl bg-brand-500/10 text-brand-400 border border-brand-500/20 flex items-center justify-center shrink-0">
+                                <i data-lucide="map-pin" class="w-4.5 h-4.5"></i>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-550 font-extrabold uppercase mb-0.5">Address</span>
+                                <p class="text-xs text-slate-300 leading-relaxed font-bold">12-3 Main Bazar Road, Opposite Central Bank,<br>Visakhapatnam, Andhra Pradesh - 530001</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3.5 items-start">
+                            <div class="w-8.5 h-8.5 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center shrink-0">
+                                <i data-lucide="clock" class="w-4.5 h-4.5"></i>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-550 font-extrabold uppercase mb-0.5">Working Hours</span>
+                                <p class="text-xs text-slate-300 font-bold">Monday - Saturday: 9:00 AM - 9:00 PM<br>Sunday: Closed</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3.5 items-start">
+                            <div class="w-8.5 h-8.5 rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20 flex items-center justify-center shrink-0">
+                                <i data-lucide="phone-call" class="w-4.5 h-4.5"></i>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-550 font-extrabold uppercase mb-0.5">Support & Inquiry</span>
+                                <a href="tel:8008668066" class="text-xs font-black text-brand-500 hover:underline">8008668066</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="tel:8008668066" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-1.5 transition-colors border border-slate-700">
+                        <i data-lucide="phone-call" class="w-4 h-4 text-emerald-450"></i> Call Support Line
+                    </a>
+                </div>
+
+                <!-- Map Mock Card -->
+                <div class="bg-dark-900 border border-slate-800 rounded-3xl p-2.5 shadow-lg lg:col-span-2 overflow-hidden h-[280px] lg:h-auto min-h-[250px] relative hover-lift">
+                    <div class="absolute inset-0 bg-dark-950 flex items-center justify-center flex-col gap-2 p-6 text-center select-none">
+                        <div class="w-12 h-12 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 flex items-center justify-center shadow-md animate-bounce mb-2">
+                            <i data-lucide="map" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-sm font-extrabold text-white">Visakhapatnam Main Bazar Branch</h4>
+                        <p class="text-xs text-slate-450 max-w-sm">Opposite Central Bank Branch. Private parking space and delivery loading docks available behind the main mart.</p>
+                        <a href="https://maps.google.com" target="_blank" class="mt-3 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2 px-3.5 rounded-lg flex items-center gap-1 transition-all shadow-sm">
+                            <i data-lucide="navigation" class="w-3.5 h-3.5"></i> Open Google Maps
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Page Footer -->
+    <footer class="bg-dark-900 border-t border-slate-850 py-8 px-4 mt-16 select-none text-xs">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-brand-600 text-white rounded-xl flex items-center justify-center">
+                    <i data-lucide="shopping-bag" class="w-4.5 h-4.5"></i>
+                </div>
+                <span class="font-bold text-sm text-white">Avadhanula Stores</span>
+            </div>
+            
+            <p class="text-xs text-slate-500 font-semibold">&copy; 2026 Avadhanula Stores. All rights reserved.</p>
+            
+            <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Support Line:</span>
+                <span id="footer-phone" class="text-xs font-extrabold text-white">8008668066</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= SHOPPING CART SIDE DRAWER ================= -->
+    <div id="cart-drawer-container" class="cart-drawer-container">
+        <div class="cart-backdrop" onclick="toggleCartDrawer(false)"></div>
+        <div class="cart-drawer flex flex-col justify-between h-full">
+            <div class="p-5 border-b border-slate-850 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <i data-lucide="shopping-cart" class="w-5 h-5 text-brand-500"></i>
+                    <h3 class="text-base font-extrabold text-white">Your Shopping Cart</h3>
+                </div>
+                <button onclick="toggleCartDrawer(false)" class="w-8 h-8 bg-dark-800 hover:bg-dark-700 text-slate-400 rounded-lg flex items-center justify-center transition-colors">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Cart list -->
+            <div class="flex-grow overflow-y-auto p-5 space-y-4" id="cart-items-container">
+                <!-- Loaded dynamically -->
+            </div>
+
+            <div class="p-5 border-t border-slate-850 bg-dark-950 flex flex-col gap-4">
+                <div class="bg-dark-900 border border-slate-800 rounded-2xl p-4 space-y-2 text-xs shadow-md">
+                    <div class="flex justify-between items-center text-slate-400 font-semibold">
+                        <span>Total Items:</span>
+                        <span id="cart-total-qty" class="text-white font-bold">0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-slate-400 font-semibold">
+                        <span>Total MRP:</span>
+                        <span id="cart-total-mrp" class="text-slate-500 line-through">₹0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center font-bold text-white text-sm">
+                        <span>Wholesale Price:</span>
+                        <span id="cart-total-wholesale" class="text-brand-500 font-black">₹0.00</span>
+                    </div>
+                    <div class="border-t border-slate-800 pt-2 flex justify-between items-center text-emerald-400 font-bold">
+                        <span>Total Savings:</span>
+                        <span id="cart-total-savings" class="bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">₹0.00</span>
+                    </div>
+                </div>
+
+                <form id="cart-checkout-form" onsubmit="handleCartCheckout(event)" class="space-y-3">
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-450 uppercase tracking-widest mb-1">Your Full Name</label>
+                        <input type="text" id="cart-customer-name" required placeholder="e.g. Rahul Sharma" class="w-full bg-dark-900 border border-slate-800 py-2 px-3 rounded-xl text-xs font-semibold focus:outline-none focus:border-brand-500 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-450 uppercase tracking-widest mb-1">WhatsApp Number</label>
+                        <input type="tel" id="cart-customer-phone" required placeholder="e.g. 9876543210" class="w-full bg-dark-900 border border-slate-800 py-2 px-3 rounded-xl text-xs font-semibold focus:outline-none focus:border-brand-500 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-450 uppercase tracking-widest mb-1">Notes (Optional)</label>
+                        <textarea id="cart-customer-notes" rows="1" placeholder="e.g. deliver in morning..." class="w-full bg-dark-900 border border-slate-800 py-2 px-3 rounded-xl text-xs font-semibold focus:outline-none focus:border-brand-500 text-white resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-1.5">
+                        <i data-lucide="check-square" class="w-4 h-4"></i> Reserve & Message WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lucide Icons & Supabase CDN Libraries -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="js/database.js"></script>
+    <script src="js/customer.js"></script>
+</body>
+</html>

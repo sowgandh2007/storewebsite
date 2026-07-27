@@ -86,9 +86,14 @@
                         <h1 class="text-2xl font-extrabold text-white tracking-tight">Dashboard</h1>
                         <p class="text-xs text-slate-400 mt-1">Real-time inventory values and profit performance summary.</p>
                     </div>
-                    <button onclick="openProductModal('add')" class="bg-brand-500 hover:bg-brand-600 active:bg-brand-600 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center gap-1.5">
-                        <i data-lucide="plus" class="w-4 h-4"></i> Add Product
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <button onclick="triggerCsvUpload()" class="bg-dark-700 hover:bg-dark-600 active:bg-dark-600 text-slate-300 font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center gap-1.5 border border-slate-800">
+                            <i data-lucide="upload" class="w-4 h-4 text-emerald-450"></i> Import CSV
+                        </button>
+                        <button onclick="openProductModal('add')" class="bg-brand-500 hover:bg-brand-600 active:bg-brand-600 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center gap-1.5">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Add Product
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Stats Counters Grid -->
@@ -165,9 +170,14 @@
                         <h1 class="text-2xl font-extrabold text-white tracking-tight">Product Inventory</h1>
                         <p class="text-xs text-slate-400 mt-1">Manage catalog listings, track stock counts, and record sales.</p>
                     </div>
-                    <button onclick="openProductModal('add')" class="bg-brand-500 hover:bg-brand-600 active:bg-brand-600 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center gap-1.5">
-                        <i data-lucide="plus" class="w-4 h-4"></i> Add Product
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <button onclick="triggerCsvUpload()" class="bg-dark-700 hover:bg-dark-600 active:bg-dark-600 text-slate-300 font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center gap-1.5 border border-slate-800">
+                            <i data-lucide="upload" class="w-4 h-4 text-emerald-450"></i> Import CSV
+                        </button>
+                        <button onclick="openProductModal('add')" class="bg-brand-500 hover:bg-brand-600 active:bg-brand-600 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center gap-1.5">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Add Product
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Controls & Search Toolbar -->
@@ -399,6 +409,9 @@
 
     <!-- Toast alerts container -->
     <div id="toast-container" class="fixed bottom-6 right-6 flex flex-col gap-2 z-50 pointer-events-none"></div>
+
+    <!-- Hidden CSV File Input -->
+    <input type="file" id="csv-file-input" accept=".csv" class="hidden" onchange="handleCsvFile(event)">
 
     <!-- Lucide & Supabase CDN Libraries -->
     <script src="https://unpkg.com/lucide@latest"></script>

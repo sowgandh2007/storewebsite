@@ -689,3 +689,138 @@ function showToast(message, isError = false) {
         setTimeout(() => toast.remove(), 300);
     }, 3500);
 }
+
+// --- CSV PARSING AND BULK IMPORT LOGIC ---
+function parseCSV(text) {
+    const lines = [];
+    let row = [""];
+    let inQuotes = false;
+
+    for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const nextChar = text[i + 1];
+
+        if (char === '"') {
+            if (inQuotes && nextChar === '"') {
+                row[row.length - 1] += '"';
+                i++; // skip next quote
+            } else {
+                inQuotes = !inQuotes;
+            }
+        } else if (char === ',' && !inQuotes) {
+            row.push("");
+        } else if ((char === '\r' || char === '\n') && !inQuotes) {
+            if (char === '\r' && nextChar === '\n') {
+                i++; // skip \n
+            }
+            lines.push(row.map(cell => cell.trim()));
+            row = [""];
+        } else {
+            row[row.length - 1] += char;
+        }
+    }
+    if (row.length > 1 || row[0] !== "") {
+        lines.push(row.map(cell => cell.trim()));
+    }
+    return lines;
+}
+
+window.triggerCsvUpload = function() {
+    const input = document.getElementById("csv-file-input");
+    if (input) {
+        input.click();
+    }
+};
+
+window.handleCsvFile = async function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Reset value so same file can be uploaded again
+    event.target.value = "";
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+        const text = e.target.result;
+        try {
+            // Parse and filter out empty rows
+            const parsed = parseCSV(text).filter(r => r.some(cell => cell !== ""));
+            if (parsed.length < 2) {
+                showToast("CSV file is empty or missing data rows.", true);
+                return;
+            }
+
+            // Map headers case-insensitively, removing spaces/underscores
+            const headers = parsed[0].map(h => h.toLowerCase().replace(/[\s_]+/g, ''));
+            
+            const nameIndex = headers.indexOf("productname") !== -1 ? headers.indexOf("productname") : headers.indexOf("name");
+            
+            if (nameIndex === -1) {
+                showToast("Required column 'Product Name' or 'Name' is missing in the CSV header.", true);
+                return;
+            }
+
+            const categoryIndex = headers.indexOf("category");
+            const buyPriceIndex = headers.findIndex(h => h === "buyprice" || h === "purchaseprice" || h === "buy" || h === "costprice" || h === "cost");
+            const sellPriceIndex = headers.findIndex(h => h === "sellprice" || h === "sellingprice" || h === "sell" || h === "price" || h === "storeprice");
+            const mrpIndex = headers.findIndex(h => h === "mrp" || h === "marketprice");
+            const quantityIndex = headers.findIndex(h => h === "quantity" || h === "stock" || h === "qty" || h === "count");
+            const supplierIndex = headers.findIndex(h => h === "supplier" || h === "vendor");
+            const descriptionIndex = headers.findIndex(h => h === "description" || h === "desc" || h === "details");
+            const imageUrlIndex = headers.findIndex(h => h === "imageurl" || h === "image" || h === "photo");
+
+            const productsToInsert = [];
+
+            for (let i = 1; i < parsed.length; i++) {
+                const row = parsed[i];
+                const name = row[nameIndex] ? row[nameIndex].trim() : "";
+                if (!name) continue; // Skip lines missing a product name
+
+                const category = categoryIndex !== -1 && row[categoryIndex] ? row[categoryIndex].trim() : "General";
+                const buy_price = buyPriceIndex !== -1 && row[buyPriceIndex] ? parseFloat(row[buyPriceIndex].trim()) || 0 : 0;
+                const sell_price = sellPriceIndex !== -1 && row[sellPriceIndex] ? parseFloat(row[sellPriceIndex].trim()) || 0 : 0;
+                const mrp = mrpIndex !== -1 && row[mrpIndex] ? parseFloat(row[mrpIndex].trim()) || sell_price : sell_price;
+                const quantity = quantityIndex !== -1 && row[quantityIndex] ? parseInt(row[quantityIndex].trim(), 10) || 0 : 0;
+                const supplier = supplierIndex !== -1 && row[supplierIndex] ? row[supplierIndex].trim() : "";
+                const description = descriptionIndex !== -1 && row[descriptionIndex] ? row[descriptionIndex].trim() : "";
+                const image_url = imageUrlIndex !== -1 && row[imageUrlIndex] ? row[imageUrlIndex].trim() : "";
+
+                productsToInsert.push({
+                    name,
+                    category,
+                    buy_price,
+                    sell_price,
+                    mrp,
+                    quantity,
+                    supplier,
+                    description,
+                    image_url
+                });
+            }
+
+            if (productsToInsert.length === 0) {
+                showToast("No valid products found in CSV file.", true);
+                return;
+            }
+
+            // Batch insert to Supabase
+            const { data, error } = await supabaseClient
+                .from("products")
+                .insert(productsToInsert)
+                .select();
+
+            if (error) {
+                console.error("Supabase import error:", error);
+                showToast(`Import failed: ${error.message}`, true);
+            } else {
+                showToast(`Successfully imported ${data.length} products!`);
+                addActivity("CSV Import", `Batch imported ${data.length} products from CSV`);
+                loadData(false); // Quiet reload
+            }
+        } catch (err) {
+            console.error("CSV parse error:", err);
+            showToast("Failed to parse CSV file. Check formatting.", true);
+        }
+    };
+    reader.readAsText(file);
+};

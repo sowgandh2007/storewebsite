@@ -1,0 +1,313 @@
+/* style.css - Custom stylesheet variables and animations (Storefront Dark Theme Version) */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --font-title: 'Outfit', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  
+  /* Primary Theme Color Palette (Sleek Emerald / Forest theme) */
+  --color-primary-50: rgba(16, 185, 129, 0.1);
+  --color-primary-100: rgba(16, 185, 129, 0.2);
+  --color-primary-500: #10b981;
+  --color-primary-600: #059669;
+  --color-primary-700: #047857;
+  
+  /* Dark Space Theme Colors */
+  --bg-main: #0b0f19;
+  --bg-panel: #0f1524;
+  --bg-card: #151c2e;
+  --bg-input: #1e2640;
+  
+  --border-light: rgba(255, 255, 255, 0.05);
+  --border-hover: rgba(255, 255, 255, 0.1);
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  color: var(--text-primary);
+}
+
+/* Glassmorphism Panel styles */
+.glass-panel {
+  background: rgba(15, 21, 36, 0.8);
+  border-bottom: 1px solid var(--border-light);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Custom Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Micro-animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Pulse badge indicator for Pending items */
+.pulse-badge {
+  position: relative;
+}
+.pulse-badge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  background-color: #f59e0b;
+  border-radius: 50%;
+  border: 1.5px solid var(--bg-main);
+  animation: pulse-ring 1.5s infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.7);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+/* Cart Drawer Styles */
+.cart-drawer-container {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  visibility: hidden;
+  transition: visibility 0.3s ease;
+}
+
+.cart-drawer-container.open {
+  visibility: visible;
+}
+
+.cart-backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(11, 15, 25, 0.7);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cart-drawer-container.open .cart-backdrop {
+  opacity: 1;
+}
+
+.cart-drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 440px;
+  background: var(--bg-panel);
+  border-left: 1px solid var(--border-light);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.4);
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-drawer-container.open .cart-drawer {
+  transform: translateX(0);
+}
+
+/* Scroll lock utility */
+body.cart-open {
+  overflow: hidden;
+}
+
+/* Card layout transitions & hover upgrades (spec-compliant, GPU-accelerated) */
+.hover-lift {
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+  will-change: transform, box-shadow;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+/* Scroll-triggered reveal states */
+.card-hidden {
+  opacity: 0 !important;
+  transform: translateY(16px) !important;
+}
+
+.card-reveal-transition {
+  transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1), transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* Category transition fade-out state */
+.catalog-fade-out {
+  opacity: 0 !important;
+  transform: translateY(8px) !important;
+  transition: opacity 150ms ease, transform 150ms ease !important;
+}
+
+/* Hero Section floating cards */
+@keyframes float-1 {
+  0%, 100% { transform: translateY(0px) rotate(-4deg); }
+  50% { transform: translateY(-6px) rotate(-4deg); }
+}
+
+@keyframes float-2 {
+  0%, 100% { transform: translateY(0px) rotate(6deg); }
+  50% { transform: translateY(6px) rotate(6deg); }
+}
+
+@keyframes float-3 {
+  0%, 100% { transform: translateY(0px) rotate(-2deg); }
+  50% { transform: translateY(-5px) rotate(-2deg); }
+}
+
+.hero-float-1 {
+  animation: float-1 4s ease-in-out infinite;
+}
+
+.hero-float-2 {
+  animation: float-2 4.6s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+
+.hero-float-3 {
+  animation: float-3 5.2s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+.hero-floating-card {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* Interactive Quant controls */
+.qty-adjuster-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.qty-adjuster-btn:hover {
+  background: var(--color-primary-500);
+  color: white;
+}
+
+/* Gallery Hover Overlays */
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  border: 1px solid var(--border-light);
+}
+
+.gallery-item img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(11, 15, 25, 0.9) 0%, rgba(11, 15, 25, 0.3) 60%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.25rem;
+}
+
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+
+/* Smooth Scrolling setup */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Preferences: Reduced Motion overrides */
+@media (prefers-reduced-motion: reduce) {
+  .hero-float-1, .hero-float-2, .hero-float-3 {
+    animation: none !important;
+    transform: none !important;
+  }
+  .card-hidden {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .card-reveal-transition {
+    transition: none !important;
+  }
+  .hover-lift:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  .catalog-fade-out {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
