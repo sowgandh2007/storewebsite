@@ -760,6 +760,7 @@ window.handleCsvFile = async function(event) {
                 return;
             }
 
+            const idIndex = headers.indexOf("id") !== -1 ? headers.indexOf("id") : headers.indexOf("productid");
             const categoryIndex = headers.indexOf("category");
             const buyPriceIndex = headers.findIndex(h => h === "buyprice" || h === "purchaseprice" || h === "buy" || h === "costprice" || h === "cost" || h === "buyingprice");
             const sellPriceIndex = headers.findIndex(h => h === "sellprice" || h === "sellingprice" || h === "sell" || h === "price" || h === "storeprice");
@@ -836,6 +837,7 @@ window.handleCsvFile = async function(event) {
                     continue;
                 }
 
+                const id = idIndex !== -1 && row[idIndex] && row[idIndex].trim() ? row[idIndex].trim() : "prod-" + Math.floor(100000 + Math.random() * 900000);
                 const category = categoryIndex !== -1 && row[categoryIndex] ? row[categoryIndex].trim() : "General";
                 const buy_price = cleanNumber(rawBuyPrice);
                 const sell_price = cleanNumber(rawSellPrice);
@@ -855,6 +857,7 @@ window.handleCsvFile = async function(event) {
                 }
 
                 productsToInsert.push({
+                    id,
                     name,
                     category,
                     buy_price,
