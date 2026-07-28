@@ -494,24 +494,24 @@ document.addEventListener("DOMContentLoaded", () => {
             cartRow.className = "flex items-center gap-3 border-b border-slate-850 pb-3 last:border-0";
             
             cartRow.innerHTML = `
-                <div class="flex-grow">
-                    <h4 class="text-xs font-bold text-slate-200 leading-snug">${correctedName}</h4>
-                    <span class="text-[10px] text-slate-550 font-bold block mt-0.5">Category: ${product.category}</span>
+                <div class="flex-grow min-w-0">
+                    <h4 class="text-xs font-bold text-slate-900 leading-snug truncate">${correctedName}</h4>
+                    <span class="text-[10px] text-slate-600 font-bold block mt-0.5">Category: ${product.category}</span>
                     <div class="flex items-baseline gap-2 mt-1">
-                        <span class="text-xs font-extrabold text-brand-500">${currency}${product.selling_price}</span>
+                        <span class="text-xs font-extrabold text-brand-600">${currency}${product.selling_price}</span>
                         ${hasMrp ? `
-                        <span class="text-[10px] text-slate-550 line-through font-semibold">${currency}${product.market_price}</span>
+                        <span class="text-[10px] text-slate-500 line-through font-semibold">${currency}${product.market_price}</span>
                         ` : ""}
                     </div>
                 </div>
                 
-                <div class="flex items-center gap-2 shrink-0 select-none">
-                    <button onclick="changeCartQty('${product.id}', -1)" class="w-6.5 h-6.5 rounded-md bg-dark-800 hover:bg-dark-750 text-slate-300 border border-slate-700 flex items-center justify-center transition-colors">
-                        <i data-lucide="minus" class="w-3.5 h-3.5"></i>
+                <div class="flex items-center gap-1.5 shrink-0 select-none">
+                    <button type="button" onclick="changeCartQty('${product.id}', -1)" class="w-6 h-6 rounded-md bg-dark-900 hover:bg-dark-800 text-slate-800 border border-slate-800 flex items-center justify-center transition-colors">
+                        <i data-lucide="minus" class="w-3 h-3"></i>
                     </button>
-                    <span class="text-xs font-black text-white w-4 text-center">${qty}</span>
-                    <button onclick="changeCartQty('${product.id}', 1)" class="w-6.5 h-6.5 rounded-md bg-dark-800 hover:bg-dark-750 text-slate-300 border border-slate-700 flex items-center justify-center transition-colors">
-                        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                    <span class="text-xs font-black text-slate-900 w-5 text-center">${qty}</span>
+                    <button type="button" onclick="changeCartQty('${product.id}', 1)" class="w-6 h-6 rounded-md bg-dark-900 hover:bg-dark-800 text-slate-800 border border-slate-800 flex items-center justify-center transition-colors">
+                        <i data-lucide="plus" class="w-3 h-3"></i>
                     </button>
                 </div>
             `;
