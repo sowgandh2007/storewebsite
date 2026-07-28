@@ -207,25 +207,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (qtyInCart > 0) {
                     actionButtonHTML = `
                         <div class="flex items-center justify-between bg-dark-950 border border-slate-850 rounded-lg sm:rounded-xl p-1" onclick="event.stopPropagation()">
-                            <button onclick="changeCartQty('${p.id}', -1)" class="qty-adjuster-btn">
+                            <button type="button" onclick="changeCartQty('${p.id}', -1)" class="qty-adjuster-btn">
                                 <i data-lucide="minus" class="w-3 h-3 sm:w-3.5 sm:h-3.5"></i>
                             </button>
                             <span class="text-[10px] sm:text-xs font-black text-slate-900 px-1 sm:px-2 select-none">${qtyInCart} in Cart</span>
-                            <button onclick="changeCartQty('${p.id}', 1)" class="qty-adjuster-btn">
+                            <button type="button" onclick="changeCartQty('${p.id}', 1)" class="qty-adjuster-btn">
                                 <i data-lucide="plus" class="w-3 h-3 sm:w-3.5 sm:h-3.5"></i>
                             </button>
                         </div>
                     `;
                 } else {
                     actionButtonHTML = `
-                        <button onclick="addToCartWithBounce(event, '${p.id}')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                        <button type="button" onclick="addToCartWithBounce(event, '${p.id}')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
                             <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
                         </button>
                     `;
                 }
             } else {
                 actionButtonHTML = `
-                    <button disabled class="w-full bg-dark-850 text-slate-600 font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl cursor-not-allowed flex items-center justify-center gap-1 sm:gap-1.5 border border-slate-850/60">
+                    <button type="button" disabled class="w-full bg-dark-850 text-slate-600 font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl cursor-not-allowed flex items-center justify-center gap-1 sm:gap-1.5 border border-slate-850/60">
                         <i data-lucide="slash" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Out of Stock
                     </button>
                 `;
@@ -380,7 +380,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- ADD-TO-CART MICRO-BOUNCE ---
     window.addToCartWithBounce = function(e, productId) {
-        e.stopPropagation(); // Prevents click bubbling to parent card hover
+        e.preventDefault();      // Prevent any default browser action (page reload / scroll)
+        e.stopPropagation();     // Prevent click bubbling to parent card hover
         const btn = e.currentTarget;
 
         const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
