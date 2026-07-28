@@ -492,7 +492,13 @@ class StoreDatabase {
                 ) : (quantity > 0);
 
                 const imageUrl = item.image_url || item.imageUrl || item.image || "";
-                const description = item.description || item.desc || `${name} in category ${category}.`;
+                let description = item.description || item.desc || "";
+                if (description) {
+                    description = description.replace(/(\s*\|\s*)?\bsource\b[\s:]\s*.*$/gi, '').trim();
+                }
+                if (!description) {
+                    description = `${name} in category ${category}.`;
+                }
 
                 return {
                     id: item.id ? item.id.toString() : `db-${Math.random()}`,
