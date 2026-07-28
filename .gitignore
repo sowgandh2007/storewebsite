@@ -4,3 +4,4 @@ store website/node_modules/
 store website/package-lock.json
 .gemini/
 .agents/
+deploy.ps1
