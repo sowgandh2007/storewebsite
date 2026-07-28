@@ -176,8 +176,11 @@ document.addEventListener("DOMContentLoaded", () => {
             // Spelling correction for name
             const correctedName = p.name ? p.name.replace(/\bcattle\b/gi, 'kettle') : 'Unnamed Item';
             
-            // Clean description (hide Source app details)
-            const cleanDescription = p.description ? p.description.replace(/(\s*\|\s*)?\bsource\b[\s:]\s*.*$/gi, '').trim() : '';
+            // Clean description (hide Source app details and 'in category' fallback text)
+            let cleanDescription = p.description ? p.description.replace(/(\s*\|\s*)?\bsource\b[\s:]\s*.*$/gi, '').replace(/\s*in category\s+[^.]*\.?/gi, '').trim() : '';
+            if (!cleanDescription || cleanDescription === correctedName) {
+                cleanDescription = `High quality wholesale ${correctedName.toLowerCase()}.`;
+            }
 
             // Savings calculation
             const hasMrp = p.market_price && p.market_price > p.selling_price;

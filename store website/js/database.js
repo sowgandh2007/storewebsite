@@ -494,10 +494,10 @@ class StoreDatabase {
                 const imageUrl = item.image_url || item.imageUrl || item.image || "";
                 let description = item.description || item.desc || "";
                 if (description) {
-                    description = description.replace(/(\s*\|\s*)?\bsource\b[\s:]\s*.*$/gi, '').trim();
+                    description = description.replace(/(\s*\|\s*)?\bsource\b[\s:]\s*.*$/gi, '').replace(/\s*in category\s+[^.]*\.?/gi, '').trim();
                 }
                 if (!description) {
-                    description = `${name} in category ${category}.`;
+                    description = `High quality wholesale ${name.toLowerCase()}.`;
                 }
 
                 return {

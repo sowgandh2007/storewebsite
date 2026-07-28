@@ -27,7 +27,8 @@
   --text-muted: #786854;
 }
 
-#lightfall-canvas-container {
+#lightfall-canvas-container,
+#side-rays-canvas-container {
   position: fixed;
   top: 0;
   left: 0;

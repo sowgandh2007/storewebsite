@@ -17,9 +17,9 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛍️</text></svg>">
     
     <!-- Compiled & Minified Tailwind CSS -->
-    <link rel="stylesheet" href="css/tailwind.css?v=2.7">
+    <link rel="stylesheet" href="css/tailwind.css?v=3.1">
     <!-- Custom Bespoke Stylesheet -->
-    <link rel="stylesheet" href="css/style.css?v=2.7">
+    <link rel="stylesheet" href="css/style.css?v=3.1">
     <noscript>
         <style>
             #loading-state { display: none !important; }
@@ -29,8 +29,10 @@
     </noscript>
 </head>
 <body class="bg-dark-950 text-slate-900 min-h-screen flex flex-col justify-between antialiased overflow-x-hidden w-full max-w-full">
-    <!-- Lightfall WebGL Background Canvas -->
-    <div id="lightfall-canvas-container"></div>
+    <!-- SideRays WebGL Background Canvas -->
+    <div id="side-rays-canvas-container"></div>
+    <!-- Disabled Lightfall Canvas Container (Preserved) -->
+    <!-- <div id="lightfall-canvas-container"></div> -->
 
     <!-- Top Utility Bar -->
     <div class="bg-dark-900 text-slate-700 py-2.5 px-4 text-xs font-semibold border-b border-slate-850">
@@ -731,8 +733,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <!-- Custom Scripts -->
-    <script src="js/database.js?v=2.7"></script>
-    <script src="js/customer.js?v=2.7"></script>
-    <script type="module" src="js/lightfall.js?v=2.7"></script>
+    <script src="js/database.js?v=3.1"></script>
+    <script src="js/customer.js?v=3.1"></script>
+    <script type="module" src="js/side-rays.js?v=3.1"></script>
+    <!-- Disabled Lightfall Script (Preserved) -->
+    <!-- <script type="module" src="js/lightfall.js?v=3.1"></script> -->
 </body>
 </html>
