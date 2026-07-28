@@ -9,16 +9,23 @@ jobs:
   web-deploy:
     name: FTP Deploy
     runs-on: ubuntu-latest
+
     steps:
-    - name: Get latest code
-      uses: actions/checkout@v3
-    
-    - name: Sync files via FTP
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: store website/    # Deploy ONLY the storefront files
-        server-dir: avadhanulastores.shop/htdocs/           # Upload to public htdocs directory for the custom domain
-        state-name: .ftp-deploy-state # Keeps track of uploaded files to speed up deployments
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy via FTP to avadhanulastores.shop
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ftpupload.net
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: "./store website/"
+          server-dir: avadhanulastores.shop/htdocs/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/tailwind-input.css
+          state-name: .ftp-deploy-state
+          log-level: verbose
