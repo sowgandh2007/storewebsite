@@ -847,14 +847,7 @@ window.handleCsvFile = async function(event) {
                 let description = descriptionIndex !== -1 && row[descriptionIndex] ? row[descriptionIndex].trim() : "";
                 const image_url = imageUrlIndex !== -1 && row[imageUrlIndex] ? row[imageUrlIndex].trim() : "";
 
-                // Append Source App details if present
-                if (sourceAppIndex !== -1 && row[sourceAppIndex]) {
-                    const sourceApp = row[sourceAppIndex].trim();
-                    if (sourceApp) {
-                        const sourceTag = `Source: ${sourceApp}`;
-                        description = description ? `${description} | ${sourceTag}` : sourceTag;
-                    }
-                }
+
 
                 productsToInsert.push({
                     id,
