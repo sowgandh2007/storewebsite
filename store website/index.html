@@ -82,7 +82,7 @@
     </header>
 
     <!-- Main Content Container -->
-    <main class="max-w-7xl mx-auto px-4 py-8 w-full max-w-full flex-grow flex flex-col gap-10 overflow-x-hidden">
+    <main class="max-w-7xl mx-auto px-3 sm:px-4 py-3 sm:py-8 w-full max-w-full flex-grow flex flex-col gap-4 sm:gap-10 overflow-x-hidden">
         
         <!-- Bento-Grid Hero Section -->
         <section class="bg-dark-900 rounded-3xl overflow-hidden border border-slate-850 shadow-xl select-none relative animate-fade-in-up">
@@ -94,22 +94,22 @@
             <div class="absolute left-[8%] top-[20%] w-24 h-24 rounded-full bg-brand-500/5 blur-2xl pointer-events-none"></div>
             <div class="absolute right-[40%] bottom-[15%] w-24 h-24 rounded-full bg-brand-500/5 blur-2xl pointer-events-none"></div>
             
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-8 md:p-12">
+            <div class="grid grid-cols-5 lg:grid-cols-12 gap-3 sm:gap-8 items-center p-3 sm:p-8 md:p-12">
                 <!-- Left text info columns -->
-                <div class="lg:col-span-7 flex flex-col gap-5 relative z-10">
+                <div class="col-span-3 lg:col-span-7 flex flex-col gap-2 sm:gap-5 relative z-10">
                     <div>
-                        <span class="bg-brand-500/15 text-brand-600 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-brand-500/20 inline-flex items-center gap-1.5">
+                        <span class="hidden sm:inline-flex bg-brand-500/15 text-brand-600 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-brand-500/20 items-center gap-1.5">
                             <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-ping"></span> Premium Wholesale Mart
                         </span>
-                        <h2 id="hero-title" class="text-3xl md:text-5xl font-black tracking-tight mt-4 text-slate-900 leading-tight">
+                        <h2 id="hero-title" class="text-lg sm:text-3xl md:text-5xl font-black tracking-tight sm:mt-4 text-slate-900 leading-tight">
                             Avadhanula Stores
                         </h2>
                     </div>
-                    <p id="hero-desc" class="text-slate-700 text-sm leading-relaxed max-w-xl">
+                    <p id="hero-desc" class="hidden sm:block text-slate-700 text-sm leading-relaxed max-w-xl">
                         Explore our high-fidelity, real-time catalog. Compare wholesale prices directly against market MRP rates, track stock counts dynamically, and submit reservations instantly on WhatsApp.
                     </p>
                     <!-- Floating mini-chips / Features -->
-                    <div class="flex flex-wrap gap-2.5 mt-2">
+                    <div class="hidden sm:flex flex-wrap gap-2.5 mt-2">
                         <span class="text-[10px] font-bold text-slate-800 bg-dark-950 border border-slate-800 px-3 py-1.5 rounded-xl flex items-center gap-1.5 backdrop-blur-sm">
                             <i data-lucide="package" class="w-3.5 h-3.5 text-brand-500"></i> Bento Grid Catalog
                         </span>
@@ -120,10 +120,19 @@
                             <i data-lucide="calendar-check" class="w-3.5 h-3.5 text-brand-600"></i> WhatsApp Bookings
                         </span>
                     </div>
+                    <!-- Mobile-only compact chips -->
+                    <div class="flex sm:hidden flex-col gap-1 mt-1">
+                        <span class="text-[9px] font-bold text-slate-700 flex items-center gap-1">
+                            <i data-lucide="package" class="w-3 h-3 text-brand-500"></i> Live Catalog
+                        </span>
+                        <span class="text-[9px] font-bold text-slate-700 flex items-center gap-1">
+                            <i data-lucide="calendar-check" class="w-3 h-3 text-brand-600"></i> WhatsApp Reservations
+                        </span>
+                    </div>
                 </div>
 
                 <!-- Right visual columns -->
-                <div class="lg:col-span-5 relative flex items-center justify-center py-6 px-4">
+                <div class="col-span-2 lg:col-span-5 relative flex items-center justify-center py-1 sm:py-6 px-1 sm:px-4">
                     <!-- Glassmorphic panel holding 3D render image -->
                     <div class="relative w-full aspect-[16/10] lg:aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 bg-slate-900/40 p-1.5 shadow-2xl shadow-emerald-500/5 group hover:border-brand-500/20 transition-all duration-300">
                         
@@ -160,7 +169,7 @@
 
                         <img src="hero.jpg?v=2.7" alt="Avadhanula Stores 3D Bento Grid" class="w-full h-full object-cover rounded-xl group-hover:scale-[1.02] transition-transform duration-500">
                         <!-- Glassmorphic overlay tags -->
-                        <div class="absolute bottom-4 left-4 bg-dark-950/80 border border-slate-800 backdrop-blur-md px-3 py-1.5 rounded-xl text-[9px] font-bold text-slate-900 flex items-center gap-1 shadow-md select-none">
+                        <div class="hidden sm:flex absolute bottom-4 left-4 bg-dark-950/80 border border-slate-800 backdrop-blur-md px-3 py-1.5 rounded-xl text-[9px] font-bold text-slate-900 items-center gap-1 shadow-md select-none">
                             <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Glassmorphic UI Orbit active
                         </div>
                     </div>
@@ -169,7 +178,7 @@
         </section>
 
         <!-- Filters & Search Toolbar -->
-        <section id="catalog" class="flex flex-col md:flex-row gap-4 items-stretch justify-between bg-dark-900 border border-slate-800 rounded-2xl p-4 shadow-lg scroll-mt-24 max-w-full overflow-hidden">
+        <section id="catalog" class="flex flex-col md:flex-row gap-2 sm:gap-4 items-stretch justify-between bg-dark-900 border border-slate-800 rounded-2xl p-2.5 sm:p-4 shadow-lg scroll-mt-24 max-w-full overflow-hidden">
             <!-- Search bar input -->
             <div class="relative flex-grow max-w-md">
                 <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 w-4.5 h-4.5"></i>
@@ -222,7 +231,7 @@
                         <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Santoor sandalwood and turmeric bathing soap. Pack of 4 bars of 100g each. Rejuvenates skin for a natural, healthy glow.</p>
                     </div>
                     <div class="mt-auto">
-                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
                                 <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
                                 <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="180">₹180</span>
@@ -258,7 +267,7 @@
                         <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Santoor White Soap bar. Enriched with natural oils and skin hydration agents for soft skin texture.</p>
                     </div>
                     <div class="mt-auto">
-                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
                                 <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
                                 <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="150">₹150</span>
@@ -294,7 +303,7 @@
                         <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Preethi 750 Watt high-performance Mixer Grinder. Perfect for wet and dry grinding, featuring rust-free stainless steel jars.</p>
                     </div>
                     <div class="mt-auto">
-                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
                                 <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
                                 <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="8500">₹8,500</span>
@@ -330,7 +339,7 @@
                         <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Prestige 750W durable mixer grinder. Features sleek styling, speed controls, overload protection, and high-efficiency blades.</p>
                     </div>
                     <div class="mt-auto">
-                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
                                 <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
                                 <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="3200">₹3,200</span>
@@ -366,7 +375,7 @@
                         <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Havells high-speed air ceiling fan. Energy efficient, double ball-bearing design, and rust-free body coating.</p>
                     </div>
                     <div class="mt-auto">
-                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
                                 <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
                                 <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="2200">₹2,200</span>
@@ -402,7 +411,7 @@
                         <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Orient Electric Kettle. 1.5 Litres capacity, automatic shut-off safety sensor, and stainless steel heating plate.</p>
                     </div>
                     <div class="mt-auto">
-                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
                                 <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
                                 <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="450">₹450</span>
@@ -438,7 +447,7 @@
                         <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Pigeon Multipurpose Electric Kettle. Fast-boiling operation, comfortable grip, cordless swivel base, and dry boil protection.</p>
                     </div>
                     <div class="mt-auto">
-                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
                                 <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
                                 <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="450">₹450</span>
@@ -474,7 +483,7 @@
                         <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Prestige Electric Kettle. Durable construction with single-touch lock lid, automatic cutout, and power indicator light.</p>
                     </div>
                     <div class="mt-auto">
-                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
                                 <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
                                 <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="450">₹450</span>
@@ -502,14 +511,14 @@
         </div>
 
         <!-- ================= GALLERY SECTION ================= -->
-        <section id="gallery" class="py-12 border-t border-slate-850 select-none scroll-mt-24">
-            <div class="mb-8">
+        <section id="gallery" class="py-6 sm:py-12 border-t border-slate-850 select-none scroll-mt-24">
+            <div class="mb-4 sm:mb-8">
                 <span class="text-[10px] font-bold text-brand-600 uppercase tracking-widest bg-brand-500/15 px-2.5 py-1 rounded-md border border-brand-500/20">Visual Highlights</span>
-                <h2 class="text-2xl font-extrabold text-slate-900 mt-2">Store Gallery</h2>
-                <p class="text-xs text-slate-700 mt-1">Sneak peek at our clean aisles, organic soap bars, cosmetic counters, and fresh arrivals.</p>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2">Store Gallery</h2>
+                <p class="text-xs text-slate-700 mt-1 hidden sm:block">Sneak peek at our clean aisles, organic soap bars, cosmetic counters, and fresh arrivals.</p>
             </div>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
                 <div class="gallery-item aspect-square bg-dark-900 group shadow-lg border border-slate-800">
                     <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&auto=format&fit=crop&q=80" alt="Grocery Aisle" class="w-full h-full object-cover">
                     <div class="gallery-overlay">
@@ -542,41 +551,41 @@
         </section>
 
         <!-- ================= OTHER SERVICES SECTION ================= -->
-        <section id="services" class="py-12 border-t border-slate-850 select-none scroll-mt-24">
-            <div class="mb-8">
+        <section id="services" class="py-6 sm:py-12 border-t border-slate-850 select-none scroll-mt-24">
+            <div class="mb-4 sm:mb-8">
                 <span class="text-[10px] font-bold text-brand-600 uppercase tracking-widest bg-brand-500/15 px-2.5 py-1 rounded-md border border-brand-500/20">Value Added Options</span>
-                <h2 class="text-2xl font-extrabold text-slate-900 mt-2">Our Premium Services</h2>
-                <p class="text-xs text-slate-700 mt-1">Explore additional specialized support and custom tailoring options we offer.</p>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2">Our Premium Services</h2>
+                <p class="text-xs text-slate-700 mt-1 hidden sm:block">Explore additional specialized support and custom tailoring options we offer.</p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-dark-900 border border-slate-800 rounded-3xl p-6 shadow-lg flex flex-col justify-between hover-lift">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6">
+                <div class="bg-dark-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-lg flex flex-col justify-between hover-lift">
                     <div>
-                        <div class="w-12 h-12 rounded-2xl bg-brand-500/15 text-brand-600 border border-brand-500/20 flex items-center justify-center mb-4">
-                            <i data-lucide="store" class="w-6 h-6"></i>
+                        <div class="w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-brand-500/15 text-brand-600 border border-brand-500/20 flex items-center justify-center mb-2 sm:mb-4">
+                            <i data-lucide="store" class="w-4 h-4 sm:w-6 sm:h-6"></i>
                         </div>
-                        <h3 class="text-base font-bold text-slate-900 mb-2">Store Pickup & Showcase</h3>
-                        <p class="text-xs text-slate-700 leading-relaxed mb-4">Browse our real-time catalog online and collect your wholesale packages directly from our store showroom. Verify details instantly via WhatsApp.</p>
+                        <h3 class="text-xs sm:text-base font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-1">Store Pickup</h3>
+                        <p class="hidden sm:block text-xs text-slate-700 leading-relaxed mb-4">Browse our real-time catalog online and collect your wholesale packages directly from our store showroom. Verify details instantly via WhatsApp.</p>
                     </div>
                     <span class="text-[10px] font-bold text-brand-600 flex items-center gap-1 cursor-pointer hover:underline">Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
                 </div>
-                <div class="bg-dark-900 border border-slate-800 rounded-3xl p-6 shadow-lg flex flex-col justify-between hover-lift">
+                <div class="bg-dark-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-lg flex flex-col justify-between hover-lift">
                     <div>
-                        <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-700 border border-amber-500/20 flex items-center justify-center mb-4">
-                            <i data-lucide="sparkles" class="w-6 h-6"></i>
+                        <div class="w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-amber-500/15 text-amber-700 border border-amber-500/20 flex items-center justify-center mb-2 sm:mb-4">
+                            <i data-lucide="sparkles" class="w-4 h-4 sm:w-6 sm:h-6"></i>
                         </div>
-                        <h3 class="text-base font-bold text-slate-900 mb-2">Custom Soap Orders</h3>
-                        <p class="text-xs text-slate-700 leading-relaxed mb-4">Order personalized organic soaps in bulk with custom shapes, scents, and branding wrapper designs for corporate gifting or events.</p>
+                        <h3 class="text-xs sm:text-base font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-none">Custom Soap</h3>
+                        <p class="hidden sm:block text-xs text-slate-700 leading-relaxed mb-4">Order personalized organic soaps in bulk with custom shapes, scents, and branding wrapper designs for corporate gifting or events.</p>
                     </div>
                     <span class="text-[10px] font-bold text-amber-700 flex items-center gap-1 cursor-pointer hover:underline">Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
                 </div>
-                <div class="bg-dark-900 border border-slate-800 rounded-3xl p-6 shadow-lg flex flex-col justify-between hover-lift">
+                <div class="bg-dark-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-lg flex flex-col justify-between hover-lift">
                     <div>
-                        <div class="w-12 h-12 rounded-2xl bg-rose-500/15 text-rose-700 border border-rose-500/20 flex items-center justify-center mb-4">
-                            <i data-lucide="gift" class="w-6 h-6"></i>
+                        <div class="w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-rose-500/15 text-rose-700 border border-rose-500/20 flex items-center justify-center mb-2 sm:mb-4">
+                            <i data-lucide="gift" class="w-4 h-4 sm:w-6 sm:h-6"></i>
                         </div>
-                        <h3 class="text-base font-bold text-slate-900 mb-2">Gift Packing</h3>
-                        <p class="text-xs text-slate-700 leading-relaxed mb-4">Beautifully wrapped custom hampers containing soaps, cosmetic sets, and premium honey jars, tailored perfectly for festive seasons.</p>
+                        <h3 class="text-xs sm:text-base font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-none">Gift Packing</h3>
+                        <p class="hidden sm:block text-xs text-slate-700 leading-relaxed mb-4">Beautifully wrapped custom hampers containing soaps, cosmetic sets, and premium honey jars, tailored perfectly for festive seasons.</p>
                     </div>
                     <span class="text-[10px] font-bold text-rose-700 flex items-center gap-1 cursor-pointer hover:underline">Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
                 </div>
@@ -584,11 +593,11 @@
         </section>
 
         <!-- ================= LOCATION & CONTACT SECTION ================= -->
-        <section id="location" class="py-12 border-t border-slate-850 scroll-mt-24">
-            <div class="mb-8">
+        <section id="location" class="py-6 sm:py-12 border-t border-slate-850 scroll-mt-24">
+            <div class="mb-4 sm:mb-8">
                 <span class="text-[10px] font-bold text-brand-600 uppercase tracking-widest bg-brand-500/15 px-2.5 py-1 rounded-md border border-brand-500/20">Visit Our Mart</span>
-                <h2 class="text-2xl font-extrabold text-slate-900 mt-2">Location & Timings</h2>
-                <p class="text-xs text-slate-700 mt-1">Stop by our brick-and-mortar storefront for direct purchases and wholesale distributions.</p>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2">Location & Timings</h2>
+                <p class="text-xs text-slate-700 mt-1 hidden sm:block">Stop by our brick-and-mortar storefront for direct purchases and wholesale distributions.</p>
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">

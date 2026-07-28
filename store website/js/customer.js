@@ -246,7 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                     
                     <div>
-                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
                                 <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
                                 <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="${p.selling_price}">${currency}0</span>
