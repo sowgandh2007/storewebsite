@@ -1,0 +1,6 @@
+node_modules/
+package-lock.json
+store website/node_modules/
+store website/package-lock.json
+.gemini/
+.agents/
