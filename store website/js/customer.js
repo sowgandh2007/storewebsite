@@ -192,11 +192,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Stock level availability indicator
             const stockBadge = p.available 
-                ? `<span class="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 bg-brand-500/10 px-2 py-1 rounded-md border border-brand-500/20">
-                     <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Available
+                ? `<span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                     <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
                    </span>`
-                : `<span class="inline-flex items-center gap-1.5 text-[10px] font-bold text-rose-450 bg-rose-500/10 px-2 py-1 rounded-md border border-rose-500/25">
-                     <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Out of Stock
+                : `<span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-rose-700 bg-rose-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-rose-500/25 shrink-0">
+                     <span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span> Out of Stock
                    </span>`;
 
             // Cart Quantity controls
@@ -206,55 +206,55 @@ document.addEventListener("DOMContentLoaded", () => {
             if (p.available) {
                 if (qtyInCart > 0) {
                     actionButtonHTML = `
-                        <div class="flex items-center justify-between bg-dark-950 border border-slate-850 rounded-xl p-1" onclick="event.stopPropagation()">
+                        <div class="flex items-center justify-between bg-dark-950 border border-slate-850 rounded-lg sm:rounded-xl p-1" onclick="event.stopPropagation()">
                             <button onclick="changeCartQty('${p.id}', -1)" class="qty-adjuster-btn">
-                                <i data-lucide="minus" class="w-3.5 h-3.5"></i>
+                                <i data-lucide="minus" class="w-3 h-3 sm:w-3.5 sm:h-3.5"></i>
                             </button>
-                            <span class="text-xs font-black text-slate-900 px-2 select-none">${qtyInCart} in Cart</span>
+                            <span class="text-[10px] sm:text-xs font-black text-slate-900 px-1 sm:px-2 select-none">${qtyInCart} in Cart</span>
                             <button onclick="changeCartQty('${p.id}', 1)" class="qty-adjuster-btn">
-                                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                <i data-lucide="plus" class="w-3 h-3 sm:w-3.5 sm:h-3.5"></i>
                             </button>
                         </div>
                     `;
                 } else {
                     actionButtonHTML = `
-                        <button onclick="addToCartWithBounce(event, '${p.id}')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-xs py-2.5 px-4 rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1.5 will-change-transform">
-                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Add to Cart
+                        <button onclick="addToCartWithBounce(event, '${p.id}')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
                         </button>
                     `;
                 }
             } else {
                 actionButtonHTML = `
-                    <button disabled class="w-full bg-dark-850 text-slate-600 font-bold text-xs py-2.5 px-4 rounded-xl cursor-not-allowed flex items-center justify-center gap-1.5 border border-slate-850/60">
-                        <i data-lucide="slash" class="w-4 h-4"></i> Out of Stock
+                    <button disabled class="w-full bg-dark-850 text-slate-600 font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl cursor-not-allowed flex items-center justify-center gap-1 sm:gap-1.5 border border-slate-850/60">
+                        <i data-lucide="slash" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Out of Stock
                     </button>
                 `;
             }
 
             card.innerHTML = `
-                <div class="p-5 flex-grow flex flex-col justify-between">
+                <div class="p-3 sm:p-5 flex-grow flex flex-col justify-between">
                     <div>
-                        <div class="flex items-center justify-between gap-2 mb-2.5">
-                            <span class="text-[10px] font-bold text-slate-600 uppercase tracking-widest">${p.category}</span>
+                        <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">${p.category}</span>
                             ${stockBadge}
                         </div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <h3 class="font-bold text-slate-900 text-base group-hover:text-brand-600 transition-colors leading-snug">${correctedName}</h3>
+                        <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">${correctedName}</h3>
                             ${badgeHTML}
                         </div>
-                        <p class="text-xs text-slate-700 line-clamp-2 leading-relaxed mb-4">${cleanDescription}</p>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">${cleanDescription}</p>
                     </div>
                     
                     <div>
-                        <div class="flex items-baseline gap-2 mb-4 bg-dark-950 rounded-xl p-2.5 border border-slate-850">
+                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
-                                <span class="block text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
-                                <span class="text-xl font-black text-slate-900 price-value" data-price="${p.selling_price}">${currency}0</span>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="${p.selling_price}">${currency}0</span>
                             </div>
                             ${hasMrp ? `
-                            <div class="border-l border-slate-800 pl-2.5 ml-1">
-                                <span class="block text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
-                                <span class="text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="${p.market_price}">${currency}0</span>
+                            <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="${p.market_price}">${currency}0</span>
                             </div>
                             ` : ""}
                         </div>

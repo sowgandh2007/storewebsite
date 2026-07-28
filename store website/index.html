@@ -17,9 +17,9 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛍️</text></svg>">
     
     <!-- Compiled & Minified Tailwind CSS -->
-    <link rel="stylesheet" href="css/tailwind.css?v=3.1">
+    <link rel="stylesheet" href="css/tailwind.css?v=3.2">
     <!-- Custom Bespoke Stylesheet -->
-    <link rel="stylesheet" href="css/style.css?v=3.1">
+    <link rel="stylesheet" href="css/style.css?v=3.2">
     <noscript>
         <style>
             #loading-state { display: none !important; }
@@ -200,40 +200,40 @@
         </div>
 
         <!-- Products Catalog Grid -->
-        <section id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <section id="products-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
             <!-- Statically pre-rendered default products for SEO and fast first paint -->
             
             <!-- Santoor Soap Card -->
             <div class="star-border-container hover-lift card-hidden card-reveal-transition group">
                 <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
-                <div class="inner-content p-5">
+                <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
                     <div>
-                        <div class="flex items-center justify-between gap-2 mb-2.5">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Bath Soap</span>
-                            <span class="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 bg-brand-500/10 px-2 py-1 rounded-md border border-brand-500/20">
-                                <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Available
+                        <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">Bath Soap</span>
+                            <span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
                             </span>
                         </div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <h3 class="font-bold text-slate-100 text-base group-hover:text-brand-500 transition-colors leading-snug">SANTOOR new soap 100 gm pack of 4 pc</h3>
-                            <span class="bg-rose-500 text-white text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-sm">Save 10%</span>
+                        <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">SANTOOR new soap 100 gm pack of 4 pc</h3>
+                            <span class="bg-rose-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-sm whitespace-nowrap">Save 10%</span>
                         </div>
-                        <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">Santoor sandalwood and turmeric bathing soap. Pack of 4 bars of 100g each. Rejuvenates skin for a natural, healthy glow.</p>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Santoor sandalwood and turmeric bathing soap. Pack of 4 bars of 100g each. Rejuvenates skin for a natural, healthy glow.</p>
                     </div>
                     <div class="mt-auto">
-                        <div class="flex items-baseline gap-2 mb-4 bg-dark-950 rounded-xl p-2.5 border border-slate-850">
+                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">Our Price</span>
-                                <span class="text-xl font-black text-white price-value" data-price="180">₹180</span>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="180">₹180</span>
                             </div>
-                            <div class="border-l border-slate-800 pl-2.5 ml-1">
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">MRP</span>
-                                <span class="text-xs text-slate-500 line-through font-semibold mrp-value" data-mrp="199">₹199</span>
+                            <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="199">₹199</span>
                             </div>
                         </div>
-                        <button onclick="addToCartWithBounce(event, 'prod-1')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-xs py-2.5 px-4 rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1.5 will-change-transform">
-                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Add to Cart
+                        <button onclick="addToCartWithBounce(event, 'prod-1')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
                         </button>
                     </div>
                 </div>
@@ -243,33 +243,33 @@
             <div class="star-border-container hover-lift card-hidden card-reveal-transition group">
                 <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
-                <div class="inner-content p-5">
+                <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
                     <div>
-                        <div class="flex items-center justify-between gap-2 mb-2.5">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Bath Soap</span>
-                            <span class="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 bg-brand-500/10 px-2 py-1 rounded-md border border-brand-500/20">
-                                <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Available
+                        <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">Bath Soap</span>
+                            <span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
                             </span>
                         </div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <h3 class="font-bold text-slate-100 text-base group-hover:text-brand-500 transition-colors leading-snug">SANTOOR WHITE</h3>
-                            <span class="bg-rose-500 text-white text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-sm">Save 9%</span>
+                        <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">SANTOOR WHITE</h3>
+                            <span class="bg-rose-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-sm whitespace-nowrap">Save 9%</span>
                         </div>
-                        <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">Santoor White Soap bar. Enriched with natural oils and skin hydration agents for soft skin texture.</p>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Santoor White Soap bar. Enriched with natural oils and skin hydration agents for soft skin texture.</p>
                     </div>
                     <div class="mt-auto">
-                        <div class="flex items-baseline gap-2 mb-4 bg-dark-950 rounded-xl p-2.5 border border-slate-850">
+                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">Our Price</span>
-                                <span class="text-xl font-black text-white price-value" data-price="150">₹150</span>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="150">₹150</span>
                             </div>
-                            <div class="border-l border-slate-800 pl-2.5 ml-1">
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">MRP</span>
-                                <span class="text-xs text-slate-500 line-through font-semibold mrp-value" data-mrp="165">₹165</span>
+                            <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="165">₹165</span>
                             </div>
                         </div>
-                        <button onclick="addToCartWithBounce(event, 'prod-2')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-xs py-2.5 px-4 rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1.5 will-change-transform">
-                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Add to Cart
+                        <button onclick="addToCartWithBounce(event, 'prod-2')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
                         </button>
                     </div>
                 </div>
@@ -279,33 +279,33 @@
             <div class="star-border-container hover-lift card-hidden card-reveal-transition group">
                 <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
-                <div class="inner-content p-5">
+                <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
                     <div>
-                        <div class="flex items-center justify-between gap-2 mb-2.5">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Electronics</span>
-                            <span class="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 bg-brand-500/10 px-2 py-1 rounded-md border border-brand-500/20">
-                                <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Available
+                        <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">Electronics</span>
+                            <span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
                             </span>
                         </div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <h3 class="font-bold text-slate-100 text-base group-hover:text-brand-500 transition-colors leading-snug">PREETHI 750 WT MIXIE</h3>
-                            <span class="bg-rose-500 text-white text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-sm">Save 15%</span>
+                        <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">PREETHI 750 WT MIXIE</h3>
+                            <span class="bg-rose-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-sm whitespace-nowrap">Save 15%</span>
                         </div>
-                        <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">Preethi 750 Watt high-performance Mixer Grinder. Perfect for wet and dry grinding, featuring rust-free stainless steel jars.</p>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Preethi 750 Watt high-performance Mixer Grinder. Perfect for wet and dry grinding, featuring rust-free stainless steel jars.</p>
                     </div>
                     <div class="mt-auto">
-                        <div class="flex items-baseline gap-2 mb-4 bg-dark-950 rounded-xl p-2.5 border border-slate-850">
+                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">Our Price</span>
-                                <span class="text-xl font-black text-white price-value" data-price="8500">₹8,500</span>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="8500">₹8,500</span>
                             </div>
-                            <div class="border-l border-slate-800 pl-2.5 ml-1">
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">MRP</span>
-                                <span class="text-xs text-slate-500 line-through font-semibold mrp-value" data-mrp="9999">₹9,999</span>
+                            <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="9999">₹9,999</span>
                             </div>
                         </div>
-                        <button onclick="addToCartWithBounce(event, 'prod-3')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-xs py-2.5 px-4 rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1.5 will-change-transform">
-                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Add to Cart
+                        <button onclick="addToCartWithBounce(event, 'prod-3')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
                         </button>
                     </div>
                 </div>
@@ -315,33 +315,33 @@
             <div class="star-border-container hover-lift card-hidden card-reveal-transition group">
                 <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
-                <div class="inner-content p-5">
+                <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
                     <div>
-                        <div class="flex items-center justify-between gap-2 mb-2.5">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Electronics</span>
-                            <span class="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 bg-brand-500/10 px-2 py-1 rounded-md border border-brand-500/20">
-                                <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Available
+                        <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">Electronics</span>
+                            <span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
                             </span>
                         </div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <h3 class="font-bold text-slate-100 text-base group-hover:text-brand-500 transition-colors leading-snug">PRESTIGE 750 WT MIXIE</h3>
-                            <span class="bg-rose-500 text-white text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-sm">Save 16%</span>
+                        <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">PRESTIGE 750 WT MIXIE</h3>
+                            <span class="bg-rose-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-sm whitespace-nowrap">Save 16%</span>
                         </div>
-                        <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">Prestige 750W durable mixer grinder. Features sleek styling, speed controls, overload protection, and high-efficiency blades.</p>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Prestige 750W durable mixer grinder. Features sleek styling, speed controls, overload protection, and high-efficiency blades.</p>
                     </div>
                     <div class="mt-auto">
-                        <div class="flex items-baseline gap-2 mb-4 bg-dark-950 rounded-xl p-2.5 border border-slate-850">
+                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">Our Price</span>
-                                <span class="text-xl font-black text-white price-value" data-price="3200">₹3,200</span>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="3200">₹3,200</span>
                             </div>
-                            <div class="border-l border-slate-800 pl-2.5 ml-1">
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">MRP</span>
-                                <span class="text-xs text-slate-500 line-through font-semibold mrp-value" data-mrp="3799">₹3,799</span>
+                            <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="3799">₹3,799</span>
                             </div>
                         </div>
-                        <button onclick="addToCartWithBounce(event, 'prod-4')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-xs py-2.5 px-4 rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1.5 will-change-transform">
-                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Add to Cart
+                        <button onclick="addToCartWithBounce(event, 'prod-4')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
                         </button>
                     </div>
                 </div>
@@ -351,33 +351,33 @@
             <div class="star-border-container hover-lift card-hidden card-reveal-transition group">
                 <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
-                <div class="inner-content p-5">
+                <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
                     <div>
-                        <div class="flex items-center justify-between gap-2 mb-2.5">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Electronics</span>
-                            <span class="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 bg-brand-500/10 px-2 py-1 rounded-md border border-brand-500/20">
-                                <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Available
+                        <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">Electronics</span>
+                            <span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
                             </span>
                         </div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <h3 class="font-bold text-slate-100 text-base group-hover:text-brand-500 transition-colors leading-snug">HAVELLS CEILING FAN</h3>
-                            <span class="bg-rose-500 text-white text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-sm">Save 12%</span>
+                        <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">HAVELLS CEILING FAN</h3>
+                            <span class="bg-rose-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-sm whitespace-nowrap">Save 12%</span>
                         </div>
-                        <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">Havells high-speed air ceiling fan. Energy efficient, double ball-bearing design, and rust-free body coating.</p>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Havells high-speed air ceiling fan. Energy efficient, double ball-bearing design, and rust-free body coating.</p>
                     </div>
                     <div class="mt-auto">
-                        <div class="flex items-baseline gap-2 mb-4 bg-dark-950 rounded-xl p-2.5 border border-slate-850">
+                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">Our Price</span>
-                                <span class="text-xl font-black text-white price-value" data-price="2200">₹2,200</span>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="2200">₹2,200</span>
                             </div>
-                            <div class="border-l border-slate-800 pl-2.5 ml-1">
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">MRP</span>
-                                <span class="text-xs text-slate-500 line-through font-semibold mrp-value" data-mrp="2499">₹2,499</span>
+                            <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="2499">₹2,499</span>
                             </div>
                         </div>
-                        <button onclick="addToCartWithBounce(event, 'prod-5')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-xs py-2.5 px-4 rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1.5 will-change-transform">
-                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Add to Cart
+                        <button onclick="addToCartWithBounce(event, 'prod-5')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
                         </button>
                     </div>
                 </div>
@@ -387,33 +387,33 @@
             <div class="star-border-container hover-lift card-hidden card-reveal-transition group">
                 <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
-                <div class="inner-content p-5">
+                <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
                     <div>
-                        <div class="flex items-center justify-between gap-2 mb-2.5">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Electronics</span>
-                            <span class="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 bg-brand-500/10 px-2 py-1 rounded-md border border-brand-500/20">
-                                <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Available
+                        <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">Electronics</span>
+                            <span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
                             </span>
                         </div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <h3 class="font-bold text-slate-100 text-base group-hover:text-brand-500 transition-colors leading-snug">ORIENT KETTLE</h3>
-                            <span class="bg-rose-500 text-white text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-sm">Save 25%</span>
+                        <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">ORIENT KETTLE</h3>
+                            <span class="bg-rose-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-sm whitespace-nowrap">Save 25%</span>
                         </div>
-                        <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">Orient Electric Kettle. 1.5 Litres capacity, automatic shut-off safety sensor, and stainless steel heating plate.</p>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Orient Electric Kettle. 1.5 Litres capacity, automatic shut-off safety sensor, and stainless steel heating plate.</p>
                     </div>
                     <div class="mt-auto">
-                        <div class="flex items-baseline gap-2 mb-4 bg-dark-950 rounded-xl p-2.5 border border-slate-850">
+                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">Our Price</span>
-                                <span class="text-xl font-black text-white price-value" data-price="450">₹450</span>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="450">₹450</span>
                             </div>
-                            <div class="border-l border-slate-800 pl-2.5 ml-1">
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">MRP</span>
-                                <span class="text-xs text-slate-500 line-through font-semibold mrp-value" data-mrp="599">₹599</span>
+                            <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="599">₹599</span>
                             </div>
                         </div>
-                        <button onclick="addToCartWithBounce(event, 'prod-6')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-xs py-2.5 px-4 rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1.5 will-change-transform">
-                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Add to Cart
+                        <button onclick="addToCartWithBounce(event, 'prod-6')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
                         </button>
                     </div>
                 </div>
@@ -423,33 +423,33 @@
             <div class="star-border-container hover-lift card-hidden card-reveal-transition group">
                 <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
-                <div class="inner-content p-5">
+                <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
                     <div>
-                        <div class="flex items-center justify-between gap-2 mb-2.5">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Electronics</span>
-                            <span class="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 bg-brand-500/10 px-2 py-1 rounded-md border border-brand-500/20">
-                                <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Available
+                        <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">Electronics</span>
+                            <span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
                             </span>
                         </div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <h3 class="font-bold text-slate-100 text-base group-hover:text-brand-500 transition-colors leading-snug">PIGEON KETTLE</h3>
-                            <span class="bg-rose-500 text-white text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-sm">Save 25%</span>
+                        <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">PIGEON KETTLE</h3>
+                            <span class="bg-rose-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-sm whitespace-nowrap">Save 25%</span>
                         </div>
-                        <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">Pigeon Multipurpose Electric Kettle. Fast-boiling operation, comfortable grip, cordless swivel base, and dry boil protection.</p>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Pigeon Multipurpose Electric Kettle. Fast-boiling operation, comfortable grip, cordless swivel base, and dry boil protection.</p>
                     </div>
                     <div class="mt-auto">
-                        <div class="flex items-baseline gap-2 mb-4 bg-dark-950 rounded-xl p-2.5 border border-slate-850">
+                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">Our Price</span>
-                                <span class="text-xl font-black text-white price-value" data-price="450">₹450</span>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="450">₹450</span>
                             </div>
-                            <div class="border-l border-slate-800 pl-2.5 ml-1">
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">MRP</span>
-                                <span class="text-xs text-slate-500 line-through font-semibold mrp-value" data-mrp="599">₹599</span>
+                            <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="599">₹599</span>
                             </div>
                         </div>
-                        <button onclick="addToCartWithBounce(event, 'prod-7')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-xs py-2.5 px-4 rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1.5 will-change-transform">
-                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Add to Cart
+                        <button onclick="addToCartWithBounce(event, 'prod-7')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
                         </button>
                     </div>
                 </div>
@@ -459,33 +459,33 @@
             <div class="star-border-container hover-lift card-hidden card-reveal-transition group">
                 <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
-                <div class="inner-content p-5">
+                <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
                     <div>
-                        <div class="flex items-center justify-between gap-2 mb-2.5">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Electronics</span>
-                            <span class="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 bg-brand-500/10 px-2 py-1 rounded-md border border-brand-500/20">
-                                <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Available
+                        <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">Electronics</span>
+                            <span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
                             </span>
                         </div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <h3 class="font-bold text-slate-100 text-base group-hover:text-brand-500 transition-colors leading-snug">PRESTIGE KETTLE</h3>
-                            <span class="bg-rose-500 text-white text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-sm">Save 25%</span>
+                        <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">PRESTIGE KETTLE</h3>
+                            <span class="bg-rose-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-sm whitespace-nowrap">Save 25%</span>
                         </div>
-                        <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">Prestige Electric Kettle. Durable construction with single-touch lock lid, automatic cutout, and power indicator light.</p>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Prestige Electric Kettle. Durable construction with single-touch lock lid, automatic cutout, and power indicator light.</p>
                     </div>
                     <div class="mt-auto">
-                        <div class="flex items-baseline gap-2 mb-4 bg-dark-950 rounded-xl p-2.5 border border-slate-850">
+                        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">Our Price</span>
-                                <span class="text-xl font-black text-white price-value" data-price="450">₹450</span>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="450">₹450</span>
                             </div>
-                            <div class="border-l border-slate-800 pl-2.5 ml-1">
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">MRP</span>
-                                <span class="text-xs text-slate-500 line-through font-semibold mrp-value" data-mrp="599">₹599</span>
+                            <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="599">₹599</span>
                             </div>
                         </div>
-                        <button onclick="addToCartWithBounce(event, 'prod-8')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-xs py-2.5 px-4 rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1.5 will-change-transform">
-                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Add to Cart
+                        <button onclick="addToCartWithBounce(event, 'prod-8')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
                         </button>
                     </div>
                 </div>
@@ -733,9 +733,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <!-- Custom Scripts -->
-    <script src="js/database.js?v=3.1"></script>
-    <script src="js/customer.js?v=3.1"></script>
-    <script type="module" src="js/side-rays.js?v=3.1"></script>
+    <script src="js/database.js?v=3.2"></script>
+    <script src="js/customer.js?v=3.2"></script>
+    <script type="module" src="js/side-rays.js?v=3.2"></script>
     <!-- Disabled Lightfall Script (Preserved) -->
     <!-- <script type="module" src="js/lightfall.js?v=3.1"></script> -->
 </body>
