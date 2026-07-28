@@ -20,5 +20,5 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: store website/    # Deploy ONLY the storefront files
-        server-dir: htdocs/           # Upload to public htdocs directory
+        server-dir: avadhanulastores.shop/htdocs/           # Upload to public htdocs directory for the custom domain
         state-name: .ftp-deploy-state # Keeps track of uploaded files to speed up deployments
