@@ -173,10 +173,17 @@ document.addEventListener("DOMContentLoaded", () => {
             // Set animation classes (initially hidden, transitions on entry)
             card.className = "bg-dark-900 rounded-2xl overflow-hidden border border-slate-850 shadow-md hover-lift card-hidden card-reveal-transition flex flex-col group";
             
+            // Spelling correction for name
+            const correctedName = p.name ? p.name.replace(/\bcattle\b/gi, 'kettle') : 'Unnamed Item';
+            
+            // Clean description (hide Source app details)
+            const cleanDescription = p.description ? p.description.replace(/(\s*\|\s*)?Source:\s*.*$/i, '') : '';
+
             // Savings calculation
-            const savings = p.market_price - p.selling_price;
-            const savingsPercent = Math.round((savings / p.market_price) * 100);
-            const badgeHTML = savings > 0 
+            const hasMrp = p.market_price && p.market_price > p.selling_price;
+            const savings = hasMrp ? p.market_price - p.selling_price : 0;
+            const savingsPercent = hasMrp ? Math.round((savings / p.market_price) * 100) : 0;
+            const badgeHTML = (hasMrp && savings > 0)
                 ? `<span class="bg-rose-500 text-white text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-sm">Save ${savingsPercent}%</span>`
                 : "";
 
@@ -229,10 +236,10 @@ document.addEventListener("DOMContentLoaded", () => {
                             ${stockBadge}
                         </div>
                         <div class="flex items-center gap-2 mb-2">
-                            <h3 class="font-bold text-slate-100 text-base group-hover:text-brand-500 transition-colors leading-snug">${p.name}</h3>
+                            <h3 class="font-bold text-slate-100 text-base group-hover:text-brand-500 transition-colors leading-snug">${correctedName}</h3>
                             ${badgeHTML}
                         </div>
-                        <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">${p.description}</p>
+                        <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">${cleanDescription}</p>
                     </div>
                     
                     <div>
@@ -241,7 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">Our Price</span>
                                 <span class="text-xl font-black text-white price-value" data-price="${p.selling_price}">${currency}0</span>
                             </div>
-                            ${savings > 0 ? `
+                            ${hasMrp ? `
                             <div class="border-l border-slate-800 pl-2.5 ml-1">
                                 <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">MRP</span>
                                 <span class="text-xs text-slate-500 line-through font-semibold mrp-value" data-mrp="${p.market_price}">${currency}0</span>
@@ -476,16 +483,19 @@ document.addEventListener("DOMContentLoaded", () => {
             totalMrpSum += itemMrp;
             totalSavingsSum += itemSavings;
 
+            const correctedName = product.name ? product.name.replace(/\bcattle\b/gi, 'kettle') : 'Unnamed Item';
+            const hasMrp = product.market_price && product.market_price > product.selling_price;
+
             const cartRow = document.createElement("div");
             cartRow.className = "flex items-center gap-3 border-b border-slate-850 pb-3 last:border-0";
             
             cartRow.innerHTML = `
                 <div class="flex-grow">
-                    <h4 class="text-xs font-bold text-slate-200 leading-snug">${product.name}</h4>
+                    <h4 class="text-xs font-bold text-slate-200 leading-snug">${correctedName}</h4>
                     <span class="text-[10px] text-slate-550 font-bold block mt-0.5">Category: ${product.category}</span>
                     <div class="flex items-baseline gap-2 mt-1">
                         <span class="text-xs font-extrabold text-brand-500">${currency}${product.selling_price}</span>
-                        ${product.market_price > product.selling_price ? `
+                        ${hasMrp ? `
                         <span class="text-[10px] text-slate-550 line-through font-semibold">${currency}${product.market_price}</span>
                         ` : ""}
                     </div>
@@ -582,7 +592,8 @@ document.addEventListener("DOMContentLoaded", () => {
             totalSum += itemTotal;
             totalSavings += savings;
 
-            message += `${index + 1}. *${res.product_name}* (Qty: ${res.quantity}) - ₹${res.selling_price}/unit\n`;
+            const resName = res.product_name ? res.product_name.replace(/\bcattle\b/gi, 'kettle') : 'Unnamed Item';
+            message += `${index + 1}. *${resName}* (Qty: ${res.quantity}) - ₹${res.selling_price}/unit\n`;
         });
 
         message += `\n*Wholesale Total*: ₹${totalSum.toFixed(2)}\n`;

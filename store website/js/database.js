@@ -480,7 +480,8 @@ class StoreDatabase {
                 // Pricing
                 const rawSell = item.sellPrice || item.sell_price || item.price || item.selling_price || 0;
                 const sellingPrice = parseFloat(rawSell);
-                const marketPrice = (item.mrp !== undefined && item.mrp !== null) ? parseFloat(item.mrp) : (item.market_price ? parseFloat(item.market_price) : Math.ceil(sellingPrice * 1.15));
+                const dbMrp = (item.mrp !== undefined && item.mrp !== null) ? parseFloat(item.mrp) : (item.market_price ? parseFloat(item.market_price) : 0);
+                const marketPrice = (dbMrp > 0 && dbMrp !== sellingPrice) ? dbMrp : null;
                 
                 // Stock levels
                 const rawStock = item.quantity !== undefined ? item.quantity : (item.stock !== undefined ? item.stock : 1);
