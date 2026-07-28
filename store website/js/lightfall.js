@@ -168,32 +168,42 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('lightfall-canvas-container');
   if (!container) return;
 
-  const colors = ['#10b981', '#059669', '#34d399'];
-  const backgroundColor = '#0a0e14';
+  const colors = ['#d97706', '#f59e0b', '#fbbf24', '#b45309'];
+  const backgroundColor = '#faf6ee';
   const speed = 0.5;
   const streakCount = 3;
   const streakWidth = 1.0;
   const streakLength = 1.2;
-  const glow = 1.2;
+  const glow = 0.9;
   const density = 0.4;
   const twinkle = 0.8;
   const zoom = 2.5;
-  const backgroundGlow = 0.3;
-  const opacity = 0.8;
+  const backgroundGlow = 0.15;
+  const opacity = 0.85;
   const mouseInteraction = true;
   const mouseStrength = 0.6;
   const mouseRadius = 0.8;
   const mouseDampening = 0.15;
 
-  const renderer = new Renderer({
-    dpr: window.devicePixelRatio || 1,
-    alpha: true,
-    antialias: true
-  });
+  let renderer;
+  try {
+    renderer = new Renderer({
+      dpr: Math.min(window.devicePixelRatio || 1, 2),
+      alpha: true,
+      antialias: true
+    });
+  } catch (e) {
+    console.warn("WebGL context failed to initialize on this device:", e);
+    return;
+  }
   
   const gl = renderer.gl;
-  const canvas = gl.canvas;
+  if (!gl) {
+    console.warn("WebGL not supported or disabled on this GPU context.");
+    return;
+  }
 
+  const canvas = gl.canvas;
   canvas.style.width = '100%';
   canvas.style.height = '100%';
   canvas.style.display = 'block';
@@ -202,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const { arr, count, avg } = prepColors(colors);
 
   const uniforms = {
-    iResolution: { value: [gl.drawingBufferWidth, gl.drawingBufferHeight, 1] },
+    iResolution: { value: [gl.drawingBufferWidth || window.innerWidth, gl.drawingBufferHeight || window.innerHeight, 1] },
     iMouse: { value: [0, 0] },
     iTime: { value: 0 },
     uColor0: { value: arr[0] },
@@ -237,19 +247,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const resize = () => {
     const rect = container.getBoundingClientRect();
-    renderer.setSize(rect.width, rect.height);
-    uniforms.iResolution.value = [gl.drawingBufferWidth, gl.drawingBufferHeight, 1];
+    const width = rect.width || window.innerWidth || document.documentElement.clientWidth;
+    const height = rect.height || window.innerHeight || document.documentElement.clientHeight;
+    if (width > 0 && height > 0) {
+      renderer.setSize(width, height);
+      uniforms.iResolution.value = [gl.drawingBufferWidth, gl.drawingBufferHeight, 1];
+    }
   };
 
   resize();
   window.addEventListener('resize', resize);
+  window.addEventListener('load', resize);
+  window.addEventListener('orientationchange', () => setTimeout(resize, 100));
+  setTimeout(resize, 100);
+  setTimeout(resize, 500);
 
   let mouseTarget = [0, 0];
   const onPointerMove = e => {
+    if (!canvas) return;
     const rect = canvas.getBoundingClientRect();
     const scale = renderer.dpr || 1;
-    const x = (e.clientX - rect.left) * scale;
-    const y = (rect.height - (e.clientY - rect.top)) * scale;
+    const clientX = e.clientX ?? (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+    const clientY = e.clientY ?? (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+    const x = (clientX - rect.left) * scale;
+    const y = (rect.height - (clientY - rect.top)) * scale;
     mouseTarget = [x, y];
     if (mouseDampening <= 0) {
       uniforms.iMouse.value = [x, y];
@@ -257,7 +278,8 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   if (mouseInteraction) {
-    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    window.addEventListener('touchmove', onPointerMove, { passive: true });
   }
 
   let lastTime = 0;
@@ -281,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       renderer.render({ scene: mesh });
     } catch (e) {
-      console.error(e);
+      // Prevent loop termination on transient WebGL errors
     }
   };
   requestAnimationFrame(loop);

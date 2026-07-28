@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <button onclick="changeCartQty('${p.id}', -1)" class="qty-adjuster-btn">
                                 <i data-lucide="minus" class="w-3.5 h-3.5"></i>
                             </button>
-                            <span class="text-xs font-black text-slate-100 px-2 select-none">${qtyInCart} in Cart</span>
+                            <span class="text-xs font-black text-slate-900 px-2 select-none">${qtyInCart} in Cart</span>
                             <button onclick="changeCartQty('${p.id}', 1)" class="qty-adjuster-btn">
                                 <i data-lucide="plus" class="w-3.5 h-3.5"></i>
                             </button>
@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             } else {
                 actionButtonHTML = `
-                    <button disabled class="w-full bg-dark-850 text-slate-500 font-bold text-xs py-2.5 px-4 rounded-xl cursor-not-allowed flex items-center justify-center gap-1.5 border border-slate-850/60">
+                    <button disabled class="w-full bg-dark-850 text-slate-600 font-bold text-xs py-2.5 px-4 rounded-xl cursor-not-allowed flex items-center justify-center gap-1.5 border border-slate-850/60">
                         <i data-lucide="slash" class="w-4 h-4"></i> Out of Stock
                     </button>
                 `;
@@ -232,26 +232,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="p-5 flex-grow flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between gap-2 mb-2.5">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">${p.category}</span>
+                            <span class="text-[10px] font-bold text-slate-600 uppercase tracking-widest">${p.category}</span>
                             ${stockBadge}
                         </div>
                         <div class="flex items-center gap-2 mb-2">
-                            <h3 class="font-bold text-slate-100 text-base group-hover:text-brand-500 transition-colors leading-snug">${correctedName}</h3>
+                            <h3 class="font-bold text-slate-900 text-base group-hover:text-brand-600 transition-colors leading-snug">${correctedName}</h3>
                             ${badgeHTML}
                         </div>
-                        <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">${cleanDescription}</p>
+                        <p class="text-xs text-slate-700 line-clamp-2 leading-relaxed mb-4">${cleanDescription}</p>
                     </div>
                     
                     <div>
                         <div class="flex items-baseline gap-2 mb-4 bg-dark-950 rounded-xl p-2.5 border border-slate-850">
                             <div>
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">Our Price</span>
-                                <span class="text-xl font-black text-white price-value" data-price="${p.selling_price}">${currency}0</span>
+                                <span class="block text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-xl font-black text-slate-900 price-value" data-price="${p.selling_price}">${currency}0</span>
                             </div>
                             ${hasMrp ? `
                             <div class="border-l border-slate-800 pl-2.5 ml-1">
-                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">MRP</span>
-                                <span class="text-xs text-slate-500 line-through font-semibold mrp-value" data-mrp="${p.market_price}">${currency}0</span>
+                                <span class="block text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="${p.market_price}">${currency}0</span>
                             </div>
                             ` : ""}
                         </div>

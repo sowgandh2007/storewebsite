@@ -1,4 +1,4 @@
-/* style.css - Custom stylesheet variables and animations (Storefront Dark Theme Version) */
+/* style.css - Custom stylesheet variables and animations (Storefront Cream Theme Version) */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
@@ -6,25 +6,37 @@
   --font-title: 'Outfit', sans-serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;
   
-  /* Primary Theme Color Palette (Sleek Emerald / Forest theme) */
-  --color-primary-50: rgba(16, 185, 129, 0.1);
-  --color-primary-100: rgba(16, 185, 129, 0.2);
-  --color-primary-500: #10b981;
-  --color-primary-600: #059669;
-  --color-primary-700: #047857;
+  /* Primary Theme Color Palette (Warm Gold / Amber accent) */
+  --color-primary-50: rgba(217, 119, 6, 0.1);
+  --color-primary-100: rgba(217, 119, 6, 0.2);
+  --color-primary-500: #d97706;
+  --color-primary-600: #b45309;
+  --color-primary-700: #92400e;
   
-  /* Dark Space Theme Colors */
-  --bg-main: #0b0f19;
-  --bg-panel: #0f1524;
-  --bg-card: #151c2e;
-  --bg-input: #1e2640;
+  /* Warm Cream Light Theme Colors */
+  --bg-main: #FAF6EE;
+  --bg-panel: #F3EBDD;
+  --bg-card: #EAE0CF;
+  --bg-input: #E2D6C0;
   
-  --border-light: rgba(255, 255, 255, 0.05);
-  --border-hover: rgba(255, 255, 255, 0.1);
+  --border-light: rgba(120, 80, 40, 0.12);
+  --border-hover: rgba(120, 80, 40, 0.22);
   
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-primary: #292219;
+  --text-secondary: #544737;
+  --text-muted: #786854;
+}
+
+#lightfall-canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
 }
 
 html, body {
@@ -47,7 +59,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Glassmorphism Panel styles */
 .glass-panel {
-  background: rgba(15, 21, 36, 0.8);
+  background: rgba(243, 235, 221, 0.85);
   border-bottom: 1px solid var(--border-light);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
