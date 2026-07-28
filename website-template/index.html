@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{BRAND_NAME}} | Premium Wholesale Mart</title>
+    <meta name="description" content="{{BRAND_NAME}} is your premium wholesale mart offering soaps, electronics, and daily essentials at unbeatable wholesale prices. Reservable online via WhatsApp.">
+    
+    <!-- Open Graph Metadata for Social Sharing (WhatsApp, etc.) -->
+    <meta property="og:title" content="{{BRAND_NAME}} | Premium Wholesale Mart">
+    <meta property="og:description" content="Explore our high-fidelity, real-time catalog. Compare wholesale prices directly against market MRP rates and order instantly on WhatsApp.">
+    <meta property="og:image" content="https://yourdomain.com/hero.jpg">
+    <meta property="og:url" content="https://yourdomain.com/">
+    <meta property="og:type" content="website">
+
+    <!-- Modern Emoji Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛍️</text></svg>">
+    
+    <!-- Compiled & Minified Tailwind CSS -->
+    <link rel="stylesheet" href="css/tailwind.css?v=1.0">
+    <!-- Custom Bespoke Stylesheet -->
+    <link rel="stylesheet" href="css/style.css?v=1.0">
+    <noscript>
+        <style>
+            #loading-state { display: none !important; }
+            #products-grid { display: grid !important; }
+            .card-hidden { opacity: 1 !important; transform: none !important; }
+        </style>
+    </noscript>
+</head>
+<body class="bg-dark-950 text-slate-100 min-h-screen flex flex-col justify-between antialiased">
+    <!-- Lightfall WebGL Background Canvas -->
+    <div id="lightfall-canvas-container"></div>
+
+    <!-- Top Utility Bar -->
+    <div class="bg-dark-900 text-slate-350 py-2.5 px-4 text-xs font-semibold border-b border-slate-850">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <span class="flex items-center gap-1.5 text-slate-400">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-450 animate-pulse"></span> Live Stock Updates Active
+            </span>
+            <a id="top-phone" href="tel:{{PHONE_NUMBER}}" class="hover:text-white transition-colors flex items-center gap-1">
+                <i data-lucide="phone" class="w-3.5 h-3.5 text-emerald-400"></i> Call to Confirm: <span id="header-phone-text" class="font-bold text-white">{{PHONE_NUMBER}}</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Store Header -->
+    <header class="glass-panel sticky top-0 z-45">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-brand-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-brand-500/20">
+                    <i data-lucide="shopping-bag" class="w-5.5 h-5.5"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-lg tracking-tight text-white leading-none mb-1">{{BRAND_NAME}}</h1>
+                    <span class="text-[9px] font-extrabold text-brand-450 uppercase tracking-widest leading-none">Wholesale Mart</span>
+                </div>
+            </div>
+
+            <!-- Cart Trigger Button -->
+            <div class="flex items-center gap-3">
+                <button onclick="toggleCartDrawer()" class="relative bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-extrabold text-xs py-2.5 px-4 rounded-xl transition-all duration-100 flex items-center gap-2 shadow-lg shadow-brand-500/10">
+                    <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Cart</span>
+                    <span id="cart-badge-count" class="bg-brand-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-sm shadow-brand-500/20">0</span>
+                </button>
+                <span class="hidden lg:inline-flex text-[10px] font-black text-slate-450 bg-dark-900 px-2.5 py-1.5 rounded-xl border border-slate-800 items-center gap-1.5 uppercase tracking-wider">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span> Sync Active
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 py-8 w-full flex-grow flex flex-col gap-10">
+        
+        <!-- Bento-Grid Hero Section -->
+        <section class="bg-gradient-to-br from-slate-950 to-dark-900 rounded-3xl overflow-hidden border border-slate-850 shadow-xl select-none relative animate-fade-in-up">
+            <!-- Subtle emerald glow background elements -->
+            <div class="absolute -left-20 -bottom-20 w-80 h-80 rounded-full bg-brand-500/10 blur-[120px] pointer-events-none"></div>
+            <div class="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none"></div>
+
+            <!-- Ambient lights behind floating cards -->
+            <div class="absolute left-[8%] top-[20%] w-24 h-24 rounded-full bg-brand-500/5 blur-2xl pointer-events-none"></div>
+            <div class="absolute right-[40%] bottom-[15%] w-24 h-24 rounded-full bg-brand-500/5 blur-2xl pointer-events-none"></div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-8 md:p-12">
+                <!-- Left text info columns -->
+                <div class="lg:col-span-7 flex flex-col gap-5 relative z-10">
+                    <div>
+                        <span class="bg-brand-500/20 text-brand-400 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-brand-500/10 inline-flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-ping"></span> Premium Wholesale Mart
+                        </span>
+                        <h2 id="hero-title" class="text-3xl md:text-5xl font-black tracking-tight mt-4 text-white leading-tight">
+                            {{BRAND_NAME}}
+                        </h2>
+                    </div>
+                    <p id="hero-desc" class="text-slate-350 text-sm leading-relaxed max-w-xl">
+                        Explore our high-fidelity, real-time catalog. Compare wholesale prices directly against market MRP rates, track stock counts dynamically, and submit reservations instantly on WhatsApp.
+                    </p>
+                    <!-- Floating mini-chips / Features -->
+                    <div class="flex flex-wrap gap-2.5 mt-2">
+                        <span class="text-[10px] font-bold text-slate-300 bg-dark-900 border border-slate-800 px-3 py-1.5 rounded-xl flex items-center gap-1.5 backdrop-blur-sm">
+                            <i data-lucide="package" class="w-3.5 h-3.5 text-brand-500"></i> Bento Grid Catalog
+                        </span>
+                        <span class="text-[10px] font-bold text-slate-300 bg-dark-900 border border-slate-800 px-3 py-1.5 rounded-xl flex items-center gap-1.5 backdrop-blur-sm">
+                            <i data-lucide="calculator" class="w-3.5 h-3.5 text-indigo-400"></i> Live Price comparisons
+                        </span>
+                        <span class="text-[10px] font-bold text-slate-300 bg-dark-900 border border-slate-800 px-3 py-1.5 rounded-xl flex items-center gap-1.5 backdrop-blur-sm">
+                            <i data-lucide="calendar-check" class="w-3.5 h-3.5 text-emerald-450"></i> WhatsApp Bookings
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Right visual columns -->
+                <div class="lg:col-span-5 relative flex items-center justify-center py-6 px-4">
+                    <!-- Glassmorphic panel holding 3D render image -->
+                    <div class="relative w-full aspect-[16/10] lg:aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 bg-slate-900/40 p-1.5 shadow-2xl shadow-emerald-500/5 group hover:border-brand-500/20 transition-all duration-300">
+                        
+                        <!-- Staggered Antigravity Floating Tiles - anchored inside image container for pixel-perfect overlay -->
+                        <div class="hero-floating-card hero-float-1 absolute left-[3%] top-[12%] w-32 sm:w-36 p-2 select-none">
+                            <div class="flex flex-col gap-1 text-[9px] sm:text-[10px]">
+                                <span class="font-extrabold text-slate-350 tracking-wider">Premium Soap</span>
+                                <div class="flex items-center gap-1.5 mt-0.5 font-bold">
+                                    <span class="text-brand-400">Our: ₹150</span>
+                                    <span class="text-slate-500 line-through text-[8px] sm:text-[9px]">MRP: ₹175</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hero-floating-card hero-float-3 absolute left-[44%] top-[14%] w-32 sm:w-36 p-2 select-none">
+                            <div class="flex flex-col gap-1 text-[9px] sm:text-[10px]">
+                                <span class="font-extrabold text-slate-350 tracking-wider">Electric Kettle</span>
+                                <div class="flex items-center gap-1.5 mt-0.5 font-bold">
+                                    <span class="text-brand-400">Our: ₹450</span>
+                                    <span class="text-slate-500 line-through text-[8px] sm:text-[9px]">MRP: ₹599</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hero-floating-card hero-float-2 absolute right-[35%] bottom-[8%] w-36 sm:w-40 p-2 select-none">
+                            <div class="flex flex-col gap-1 text-[9px] sm:text-[10px]">
+                                <span class="font-extrabold text-slate-350 tracking-wider">Ceiling Fan</span>
+                                <div class="flex items-center gap-1.5 mt-0.5 font-bold">
+                                    <span class="text-brand-400">Our: ₹2,200</span>
+                                    <span class="text-slate-500 line-through text-[8px] sm:text-[9px]">MRP: ₹2,499</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Insert your hero showcase banner image here (replace placeholder) -->
+                        <div class="w-full h-full bg-dark-950 flex items-center justify-center text-center p-8 min-h-[220px]">
+                            <p class="text-xs text-slate-550 font-bold uppercase tracking-wider">Upload hero.jpg here</p>
+                        </div>
+                        <!-- Glassmorphic overlay tags -->
+                        <div class="absolute bottom-4 left-4 bg-slate-950/70 border border-white/5 backdrop-blur-md px-3 py-1.5 rounded-xl text-[9px] font-bold text-white flex items-center gap-1 shadow-md select-none">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Glassmorphic UI Orbit active
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filters & Search Toolbar -->
+        <section id="catalog" class="flex flex-col md:flex-row gap-4 items-stretch justify-between bg-dark-900 border border-slate-800 rounded-2xl p-4 shadow-lg scroll-mt-24">
+            <!-- Search bar input -->
+            <div class="relative flex-grow max-w-md">
+                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-550 w-4.5 h-4.5"></i>
+                <input type="text" id="search-input" placeholder="Search products, brands, or categories..." class="w-full pl-11 pr-4 py-2.5 bg-dark-950 border border-slate-800 rounded-xl text-xs font-semibold focus:outline-none focus:border-brand-500 focus:bg-dark-900 text-white transition-all">
+            </div>
+
+            <!-- Categories tags (Desktop) -->
+            <div id="categories-container" class="hidden md:flex items-center gap-2">
+                <!-- Javascript inserts category buttons here -->
+            </div>
+
+            <!-- Categories Dropdown (Mobile) -->
+            <div class="md:hidden relative">
+                <button id="category-menu-btn" class="w-full flex items-center justify-between bg-dark-950 border border-slate-800 py-2.5 px-4 rounded-xl text-xs font-bold text-slate-300">
+                    <span id="active-category-label">All Products</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500"></i>
+                </button>
+                <div id="category-dropdown" class="hidden absolute top-[calc(100%+4px)] left-0 w-full bg-dark-900 border border-slate-800 rounded-xl shadow-2xl z-30 max-h-60 overflow-y-auto">
+                    <!-- Javascript inserts mobile categories list here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading state spinner -->
+        <div id="loading-state" class="py-24 text-center select-none">
+            <div class="w-10 h-10 border-4 border-slate-800 border-t-brand-500 rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-xs text-slate-550 font-bold uppercase tracking-wider">Syncing live catalog data...</p>
+        </div>
+
+        <!-- Products Catalog Grid -->
+        <section id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Statically pre-rendered default products for SEO and fast first paint -->
+            
+            <!-- Santoor Soap Card -->
+            <div class="star-border-container hover-lift card-hidden card-reveal-transition group">
+                <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="inner-content p-5">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2.5">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Bath Soap</span>
+                            <span class="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 bg-brand-500/10 px-2 py-1 rounded-md border border-brand-500/20">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Available
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <h3 class="font-bold text-slate-100 text-base group-hover:text-brand-500 transition-colors leading-snug">Premium Soap Bar 100g</h3>
+                            <span class="bg-rose-500 text-white text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-md shadow-sm">Save 14%</span>
+                        </div>
+                        <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">Organic ingredients with essential oils and hydrating extracts.</p>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="flex items-baseline gap-2 mb-4 bg-dark-950 rounded-xl p-2.5 border border-slate-850">
+                            <div>
+                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-xl font-black text-white price-value" data-price="150">₹150</span>
+                            </div>
+                            <div class="border-l border-slate-800 pl-2.5 ml-1">
+                                <span class="block text-[9px] text-slate-550 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-xs text-slate-500 line-through font-semibold mrp-value" data-mrp="175">₹175</span>
+                            </div>
+                        </div>
+                        <button onclick="addToCartWithBounce(event, 'prod-1')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-xs py-2.5 px-4 rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Empty state layout -->
+        <div id="empty-state" class="hidden py-20 text-center select-none max-w-sm mx-auto animate-fade-in-up">
+            <div class="w-16 h-16 bg-dark-900 border border-slate-800 text-slate-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="package-search" class="w-8 h-8"></i>
+            </div>
+            <h3 class="font-bold text-slate-300 text-base mb-1">No products found</h3>
+            <p class="text-xs text-slate-500 leading-relaxed">We couldn't find any products matching your search criteria. Try using different search keywords or filter values.</p>
+        </div>
+
+        <!-- ================= OTHER SERVICES SECTION ================= -->
+        <section id="services" class="py-12 border-t border-slate-850 select-none scroll-mt-24">
+            <div class="mb-8">
+                <span class="text-[10px] font-bold text-brand-500 uppercase tracking-widest bg-brand-500/10 px-2.5 py-1 rounded-md border border-brand-500/20">Value Added Options</span>
+                <h2 class="text-2xl font-extrabold text-white mt-2">Our Premium Services</h2>
+                <p class="text-xs text-slate-400 mt-1">Explore additional specialized support and custom tailoring options we offer.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-dark-900 border border-slate-800 rounded-3xl p-6 shadow-lg flex flex-col justify-between hover-lift">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-brand-500/10 text-brand-450 border border-brand-500/20 flex items-center justify-center mb-4">
+                            <i data-lucide="store" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-2">Store Pickup & Showcase</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mb-4">Browse our real-time catalog online and collect your wholesale packages directly from our store showroom. Verify details instantly via WhatsApp.</p>
+                    </div>
+                    <span class="text-[10px] font-bold text-brand-500 flex items-center gap-1 cursor-pointer hover:underline">Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Page Footer -->
+    <footer class="bg-dark-900 border-t border-slate-850 py-8 px-4 mt-16 text-xs">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-brand-600 text-white rounded-xl flex items-center justify-center">
+                    <i data-lucide="shopping-bag" class="w-4.5 h-4.5"></i>
+                </div>
+                <span class="font-bold text-sm text-white">{{BRAND_NAME}}</span>
+            </div>
+            
+            <p class="text-xs text-slate-500 font-semibold">&copy; 2026 {{BRAND_NAME}}. All rights reserved.</p>
+            
+            <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Support Line:</span>
+                <span id="footer-phone" class="text-xs font-extrabold text-white">{{PHONE_NUMBER}}</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= SHOPPING CART DRAWER ================= -->
+    <div id="cart-drawer-container" class="cart-drawer-container fixed inset-0 z-50 pointer-events-none">
+        <!-- Background Overlay backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 opacity-0 pointer-events-none cursor-pointer" onclick="toggleCartDrawer()"></div>
+        
+        <!-- Cart panel side-sheet -->
+        <div class="cart-drawer absolute right-0 top-0 h-full w-full max-w-md bg-dark-900 border-l border-slate-850 flex flex-col pointer-events-auto">
+            <!-- Header bar -->
+            <div class="p-4 border-b border-slate-850 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="shopping-cart" class="w-4.5 h-4.5 text-brand-400"></i>
+                    <h3 class="text-sm font-black text-white uppercase tracking-wider">Product Cart Drawer</h3>
+                </div>
+                <button onclick="toggleCartDrawer()" class="w-8 h-8 bg-dark-950 border border-slate-800 text-slate-400 hover:text-white rounded-xl flex items-center justify-center transition-colors">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Scrollable cart listings -->
+            <div id="cart-items-container" class="p-4 flex-grow overflow-y-auto flex flex-col gap-3.5">
+                <!-- Cart items are populated dynamically by JS -->
+            </div>
+
+            <!-- Footer summary panel -->
+            <div class="p-4 border-t border-slate-850 bg-dark-950 flex flex-col gap-4">
+                <div class="flex flex-col gap-2 bg-dark-900 border border-slate-850 rounded-2xl p-4 text-xs">
+                    <div class="flex justify-between font-semibold text-slate-450">
+                        <span>Items Count:</span>
+                        <span id="cart-total-qty" class="text-white font-extrabold">0</span>
+                    </div>
+                    <div class="flex justify-between font-semibold text-slate-450">
+                        <span>Retail Sum (MRP):</span>
+                        <span id="cart-total-mrp" class="text-slate-300">₹0</span>
+                    </div>
+                    <div class="border-t border-slate-850/60 my-1"></div>
+                    <div class="flex justify-between font-black text-sm text-brand-450">
+                        <span>Wholesale Subtotal:</span>
+                        <span id="cart-total-wholesale" class="text-white text-base">₹0</span>
+                    </div>
+                    <div class="flex justify-between font-bold text-[10px] uppercase text-emerald-400 bg-brand-500/10 px-2 py-1 rounded-md border border-brand-500/20 mt-1">
+                        <span>Total Savings:</span>
+                        <span id="cart-total-savings">₹0</span>
+                    </div>
+                </div>
+
+                <!-- Checkout WhatsApp reservation form -->
+                <form id="cart-checkout-form" class="flex flex-col gap-2.5">
+                    <input type="text" id="checkout-name" required placeholder="Enter Your Full Name..." class="w-full px-4 py-2.5 bg-dark-900 border border-slate-800 rounded-xl text-xs focus:outline-none focus:border-brand-500 text-slate-100 placeholder-slate-500 transition-colors">
+                    <input type="text" id="checkout-address" required placeholder="Enter Delivery/Mart Address..." class="w-full px-4 py-2.5 bg-dark-900 border border-slate-800 rounded-xl text-xs focus:outline-none focus:border-brand-500 text-slate-100 placeholder-slate-500 transition-colors">
+                    <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-extrabold text-xs py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-1.5">
+                        <i data-lucide="check-circle" class="w-4.5 h-4.5"></i> Submit Reservation via WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lucide Icons & Supabase CDN Libraries -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="js/database.js?v=1.0"></script>
+    <script src="js/customer.js?v=1.0"></script>
+    <script type="module" src="js/lightfall.js?v=1.0"></script>
+</body>
+</html>

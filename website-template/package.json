@@ -1,0 +1,12 @@
+{
+  "name": "premium-static-template",
+  "version": "1.0.0",
+  "description": "Premium WebGL & Bento Grid Showcase Template",
+  "scripts": {
+    "build": "tailwindcss -i ./css/tailwind-input.css -o ./css/tailwind.css --minify",
+    "dev": "tailwindcss -i ./css/tailwind-input.css -o ./css/tailwind.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}
