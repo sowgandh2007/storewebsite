@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const correctedName = p.name ? p.name.replace(/\bcattle\b/gi, 'kettle') : 'Unnamed Item';
             
             // Clean description (hide Source app details)
-            const cleanDescription = p.description ? p.description.replace(/(\s*\|\s*)?Source:\s*.*$/i, '') : '';
+            const cleanDescription = p.description ? p.description.replace(/(\s*\|\s*)?\bsource\b[\s:]\s*.*$/gi, '').trim() : '';
 
             // Savings calculation
             const hasMrp = p.market_price && p.market_price > p.selling_price;
