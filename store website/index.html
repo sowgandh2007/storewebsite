@@ -37,8 +37,8 @@
     <!-- Top Utility Bar -->
     <div class="bg-dark-900 text-slate-700 py-2.5 px-4 text-xs font-semibold border-b border-dark-850">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <span class="flex items-center gap-1.5 text-slate-700">
-                <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span> Live Stock Updates Active
+            <span class="flex items-center gap-1.5 text-slate-700 font-bold">
+                <i data-lucide="store" class="w-3.5 h-3.5 text-brand-600"></i> Wholesale Store & Directory
             </span>
             <a id="top-phone" href="tel:8008668066" class="hover:text-brand-600 transition-colors flex items-center gap-1">
                 <i data-lucide="phone" class="w-3.5 h-3.5 text-brand-500"></i> Call to Confirm: <span id="header-phone-text" class="font-bold text-slate-900">8008668066</span>
@@ -55,7 +55,7 @@
                 </div>
                 <div>
                     <h1 id="store-title" class="text-xl font-extrabold tracking-tight text-slate-900 leading-none">Avadhanula Stores</h1>
-                    <p class="text-[10px] text-brand-600 font-extrabold uppercase tracking-wider mt-1.5">Smart Shopping • Direct Reservations</p>
+                    <p class="text-[10px] text-brand-600 font-extrabold uppercase tracking-wider mt-1.5">Wholesale Prices • Order via WhatsApp</p>
                 </div>
             </div>
             
@@ -86,13 +86,8 @@
         
         <!-- Bento-Grid Hero Section -->
         <section class="bg-dark-900 rounded-3xl overflow-hidden border border-dark-850 shadow-xl select-none relative animate-fade-in-up">
-            <!-- Subtle amber glow background elements -->
-            <div class="absolute -left-20 -bottom-20 w-80 h-80 rounded-full bg-brand-500/10 blur-[120px] pointer-events-none"></div>
-            <div class="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-amber-500/10 blur-[120px] pointer-events-none"></div>
-
-            <!-- Ambient lights behind floating cards -->
-            <div class="absolute left-[8%] top-[20%] w-24 h-24 rounded-full bg-brand-500/5 blur-2xl pointer-events-none"></div>
-            <div class="absolute right-[40%] bottom-[15%] w-24 h-24 rounded-full bg-brand-500/5 blur-2xl pointer-events-none"></div>
+            <!-- Single subtle background ambient glow -->
+            <div class="absolute -right-10 -top-10 w-64 h-64 rounded-full bg-brand-500/5 blur-[90px] pointer-events-none"></div>
             
             <div class="grid grid-cols-5 lg:grid-cols-12 gap-3 sm:gap-8 items-center p-3 sm:p-8 md:p-12">
                 <!-- Left text info columns -->
@@ -106,27 +101,27 @@
                         </h2>
                     </div>
                     <p id="hero-desc" class="hidden sm:block text-slate-700 text-sm leading-relaxed max-w-xl">
-                        Explore our high-fidelity, real-time catalog. Compare wholesale prices directly against market MRP rates, track stock counts dynamically, and submit reservations instantly on WhatsApp.
+                        Browse our wholesale product catalog. Compare our wholesale rates directly with market MRP prices and place your orders instantly on WhatsApp.
                     </p>
                     <!-- Floating mini-chips / Features -->
                     <div class="hidden sm:flex flex-wrap gap-2.5 mt-2">
                         <span class="text-[10px] font-bold text-slate-800 bg-dark-950 border border-slate-800 px-3 py-1.5 rounded-xl flex items-center gap-1.5 backdrop-blur-sm">
-                            <i data-lucide="package" class="w-3.5 h-3.5 text-brand-500"></i> Bento Grid Catalog
+                            <i data-lucide="package" class="w-3.5 h-3.5 text-brand-500"></i> Full Product Catalog
                         </span>
                         <span class="text-[10px] font-bold text-slate-800 bg-dark-950 border border-slate-800 px-3 py-1.5 rounded-xl flex items-center gap-1.5 backdrop-blur-sm">
-                            <i data-lucide="calculator" class="w-3.5 h-3.5 text-amber-600"></i> Live Price comparisons
+                            <i data-lucide="calculator" class="w-3.5 h-3.5 text-amber-600"></i> Wholesale & MRP Rates
                         </span>
                         <span class="text-[10px] font-bold text-slate-800 bg-dark-950 border border-slate-800 px-3 py-1.5 rounded-xl flex items-center gap-1.5 backdrop-blur-sm">
-                            <i data-lucide="calendar-check" class="w-3.5 h-3.5 text-brand-600"></i> WhatsApp Bookings
+                            <i data-lucide="calendar-check" class="w-3.5 h-3.5 text-brand-600"></i> Order on WhatsApp
                         </span>
                     </div>
                     <!-- Mobile-only compact chips -->
                     <div class="flex sm:hidden flex-col gap-1 mt-1">
                         <span class="text-[9px] font-bold text-slate-700 flex items-center gap-1">
-                            <i data-lucide="package" class="w-3 h-3 text-brand-500"></i> Live Catalog
+                            <i data-lucide="package" class="w-3 h-3 text-brand-500"></i> Product Catalog
                         </span>
                         <span class="text-[9px] font-bold text-slate-700 flex items-center gap-1">
-                            <i data-lucide="calendar-check" class="w-3 h-3 text-brand-600"></i> WhatsApp Reservations
+                            <i data-lucide="calendar-check" class="w-3 h-3 text-brand-600"></i> WhatsApp Orders
                         </span>
                     </div>
                 </div>
@@ -205,7 +200,7 @@
         <!-- Loading state spinner -->
         <div id="loading-state" class="py-24 text-center select-none">
             <div class="w-10 h-10 border-4 border-slate-800 border-t-brand-500 rounded-full animate-spin mx-auto mb-4"></div>
-            <p class="text-xs text-slate-550 font-bold uppercase tracking-wider">Syncing live catalog data...</p>
+            <p class="text-xs text-slate-550 font-bold uppercase tracking-wider">Loading catalog...</p>
         </div>
 
         <!-- Products Catalog Grid -->
