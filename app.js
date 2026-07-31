@@ -87,15 +87,24 @@ function updateSummaryStats() {
     document.getElementById("stat-revenue-val").textContent = `₹${revenueVal.toFixed(2)}`;
     document.getElementById("sales-cost-val").textContent = `₹${sales.reduce((acc, s) => acc + (parseFloat(s.buy_price) * parseInt(s.quantity)), 0).toFixed(2)}`;
 
-    // 3. Realized Profit (Sum of profit)
-    const profitVal = sales.reduce((acc, s) => acc + parseFloat(s.profit), 0);
+    // 3. Estimated Inventory Profit (sum of (sell_price - buy_price) × quantity for all in-stock items)
+    const profitVal = products.reduce((acc, p) => {
+        const qty = parseInt(p.quantity) || 0;
+        const sell = parseFloat(p.sell_price) || 0;
+        const buy = parseFloat(p.buy_price) || 0;
+        return acc + ((sell - buy) * qty);
+    }, 0);
     document.getElementById("stat-profit-val").textContent = `₹${profitVal.toFixed(2)}`;
-    document.getElementById("sales-profit-val").textContent = `₹${profitVal.toFixed(2)}`;
+
+    // Also update sales-realized profit separately (from actual sales history)
+    const realizedProfit = sales.reduce((acc, s) => acc + parseFloat(s.profit || 0), 0);
+    document.getElementById("sales-profit-val").textContent = `₹${realizedProfit.toFixed(2)}`;
+    document.getElementById("sales-cost-val").textContent = `₹${sales.reduce((acc, s) => acc + (parseFloat(s.buy_price) * parseInt(s.quantity)), 0).toFixed(2)}`;
     document.getElementById("sales-count-val").textContent = sales.reduce((acc, s) => acc + parseInt(s.quantity), 0);
 
-    // 4. Average Profit Margin (%)
-    const totalCostOfSales = sales.reduce((acc, s) => acc + (parseFloat(s.buy_price) * parseInt(s.quantity)), 0);
-    const avgMargin = totalCostOfSales > 0 ? (profitVal / totalCostOfSales) * 100 : 0;
+    // 4. Average Profit Margin (% across inventory)
+    const totalBuyCost = products.reduce((acc, p) => acc + (parseFloat(p.buy_price) * parseInt(p.quantity || 0)), 0);
+    const avgMargin = totalBuyCost > 0 ? (profitVal / totalBuyCost) * 100 : 0;
     document.getElementById("stat-margin-val").textContent = `${Math.round(avgMargin)}%`;
 }
 
@@ -410,6 +419,8 @@ window.handleProductSubmit = async function(e) {
     const supplier = document.getElementById("product-supplier").value.trim() || "";
     const description = document.getElementById("product-desc").value.trim() || "";
 
+    const image_url = document.getElementById("product-image-url").value.trim();
+
     const payload = {
         name,
         buy_price,
@@ -418,7 +429,8 @@ window.handleProductSubmit = async function(e) {
         quantity,
         category,
         supplier,
-        description
+        description,
+        image_url
     };
 
     try {
@@ -560,6 +572,8 @@ window.openProductModal = function(mode, productId = null) {
     
     document.getElementById("product-form").reset();
     document.getElementById("product-id").value = "";
+    // Always clear image state first
+    clearProductImage(true);
 
     if (mode === "edit" && productId) {
         title.textContent = "Edit Product Details";
@@ -574,6 +588,12 @@ window.openProductModal = function(mode, productId = null) {
             document.getElementById("product-category").value = p.category;
             document.getElementById("product-supplier").value = p.supplier;
             document.getElementById("product-desc").value = p.description;
+            // Populate existing image if any
+            if (p.image_url) {
+                document.getElementById("product-image-url").value = p.image_url;
+                document.getElementById("img-preview").src = p.image_url;
+                document.getElementById("img-preview-wrap").classList.remove("hidden");
+            }
         }
     } else {
         title.textContent = "Add New Product";
@@ -909,4 +929,79 @@ window.handleCsvFile = async function(event) {
         }
     };
     reader.readAsText(file);
+};
+
+// ============================================================
+// PRODUCT IMAGE UPLOAD HELPERS
+// ============================================================
+
+// Called when user picks a file or takes a camera shot
+window.previewProductImage = async function(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    // Show instant local preview
+    const reader = new FileReader();
+    reader.onload = e => {
+        document.getElementById("img-preview").src = e.target.result;
+        document.getElementById("img-preview-wrap").classList.remove("hidden");
+    };
+    reader.readAsDataURL(file);
+
+    // Upload to Supabase Storage in background
+    const statusEl = document.getElementById("img-upload-status");
+    statusEl.textContent = "Uploading image...";
+    statusEl.className = "text-[10px] text-amber-400 mt-1.5";
+    statusEl.classList.remove("hidden");
+
+    try {
+        const url = await uploadProductImageToSupabase(file);
+        document.getElementById("product-image-url").value = url;
+        statusEl.textContent = "✓ Image uploaded successfully";
+        statusEl.className = "text-[10px] text-emerald-400 mt-1.5";
+    } catch (err) {
+        console.error("Image upload failed:", err);
+        statusEl.textContent = "⚠ Upload failed — image won't be saved";
+        statusEl.className = "text-[10px] text-rose-400 mt-1.5";
+    }
+};
+
+// Upload a File object to Supabase Storage, return public URL
+async function uploadProductImageToSupabase(file) {
+    const ext = file.name.split(".").pop() || "jpg";
+    const fileName = `product_${Date.now()}_${Math.random().toString(36).slice(2,8)}.${ext}`;
+
+    const { data, error } = await supabaseClient
+        .storage
+        .from("product-images")
+        .upload(fileName, file, { cacheControl: "3600", upsert: false });
+
+    if (error) throw error;
+
+    const { data: urlData } = supabaseClient
+        .storage
+        .from("product-images")
+        .getPublicUrl(fileName);
+
+    return urlData.publicUrl;
+}
+
+// Clear image preview + hidden URL field
+window.clearProductImage = function(silent = false) {
+    document.getElementById("product-image-url").value = "";
+    document.getElementById("img-preview").src = "";
+    document.getElementById("img-preview-wrap").classList.add("hidden");
+    const statusEl = document.getElementById("img-upload-status");
+    if (!silent) {
+        statusEl.textContent = "Image removed";
+        statusEl.className = "text-[10px] text-slate-400 mt-1.5";
+        statusEl.classList.remove("hidden");
+    } else {
+        statusEl.classList.add("hidden");
+    }
+    // Reset both file inputs
+    const fi = document.getElementById("product-image-file");
+    const ci = document.getElementById("product-image-camera");
+    if (fi) fi.value = "";
+    if (ci) ci.value = "";
 };

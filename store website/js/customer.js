@@ -232,6 +232,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             card.innerHTML = `
+                ${p.image_url ? `
+                <div class="w-full h-32 sm:h-40 overflow-hidden bg-dark-950 shrink-0">
+                    <img src="${p.image_url}" alt="${correctedName}" loading="lazy"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                         onerror="this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center text-slate-700\'><svg xmlns=\'http://www.w3.org/2000/svg\' width=\'32\' height=\'32\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\' viewBox=\'0 0 24 24\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><path d=\'m21 15-5-5L5 21\'/></svg></div>'">
+                </div>` : ''}
                 <div class="p-3 sm:p-5 flex-grow flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
