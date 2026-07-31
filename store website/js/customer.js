@@ -170,8 +170,8 @@ document.addEventListener("DOMContentLoaded", () => {
         filtered.forEach(p => {
             const card = document.createElement("div");
             
-            // Set animation classes (initially hidden, transitions on entry)
-            card.className = "bg-dark-900 rounded-2xl overflow-hidden border border-slate-850 shadow-md hover-lift card-hidden card-reveal-transition flex flex-col group";
+            // Cards rendered fully visible immediately without scroll reveal animation
+            card.className = "bg-dark-900 rounded-2xl overflow-hidden border border-slate-850 shadow-md hover-lift flex flex-col group";
             
             // Spelling correction for name
             const correctedName = p.name ? p.name.replace(/\bcattle\b/gi, 'kettle') : 'Unnamed Item';
@@ -273,11 +273,17 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         lucide.createIcons();
-        setupRevealObserver();
+        showAllCardsImmediately();
     }
 
-    // --- INTERSECTION OBSERVER FOR STAGGER REVEALS ---
-    function setupRevealObserver() {
+    // --- INSTANT CARD REVEAL (NO SCROLL DELAYS) ---
+    function showAllCardsImmediately() {
+        const cards = productsGrid.querySelectorAll(".hover-lift");
+        cards.forEach(card => {
+            card.classList.remove("card-hidden");
+            showCardPricesImmediately(card);
+        });
+    }
         if (revealObserver) {
             revealObserver.disconnect();
         }
