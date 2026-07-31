@@ -161,11 +161,11 @@ function initBeams(container, opts = {}) {
     const renderer = new THREE.WebGLRenderer({
         canvas,
         antialias: false,          // off on all devices – saves fill-rate
-        alpha: true,               // transparent background for blending with glass cards
+        alpha: false,
         powerPreference: 'low-power',
     });
     renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 1.5));
-    renderer.setClearColor(0x000000, 0);
+    renderer.setClearColor(0x000000, 1);
 
     function setSize() {
         const w = container.clientWidth;
@@ -176,6 +176,7 @@ function initBeams(container, opts = {}) {
 
     // ── Scene / camera ────────────────────────────────────────────────────────
     const scene  = new THREE.Scene();
+    scene.background = new THREE.Color(0x000000);
     const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
     camera.position.set(0, 0, 20);
 
@@ -304,11 +305,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initBeams(container, {
         beamWidth:      2,
-        beamHeight:     18,    // taller to fill the full products area height
-        beamNumber:     10,    // slightly fewer so cards stay readable
-        lightColor:     '#F59E0B',   // warm amber — matches the store theme
-        speed:          1.5,   // a little slower feels less distracting
-        noiseIntensity: 1.5,
+        beamHeight:     15,
+        beamNumber:     12,
+        lightColor:     '#00f56f',   // React Bits <Beams /> signature neon green
+        speed:          2,
+        noiseIntensity: 1.75,
         scale:          0.2,
         rotation:       0,
     });
