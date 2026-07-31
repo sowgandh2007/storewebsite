@@ -167,11 +167,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (emptyState) emptyState.classList.add("hidden");
 
-        filtered.forEach(p => {
+        filtered.forEach((p, idx) => {
             const card = document.createElement("div");
             
-            // Sleek dark glass card styling so Beams WebGL effect (#00f56f) shines through dark translucent cards
-            card.className = "bg-slate-900/80 backdrop-blur-md rounded-2xl overflow-hidden border border-slate-700/60 shadow-xl hover:border-emerald-500/50 hover-lift card-hidden card-reveal-transition flex flex-col group transition-all duration-300";
+            // Alternating glowing Red & Blue neon outlines for product cards
+            const glowOutline = idx % 2 === 0
+                ? "border-2 border-rose-500/80 shadow-[0_0_15px_rgba(244,63,94,0.3)] hover:border-blue-500 hover:shadow-[0_0_22px_rgba(59,130,246,0.5)]"
+                : "border-2 border-blue-500/80 shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:border-rose-500 hover:shadow-[0_0_22px_rgba(244,63,94,0.5)]";
+            
+            card.className = `bg-dark-900/90 backdrop-blur-md rounded-2xl overflow-hidden ${glowOutline} hover-lift card-hidden card-reveal-transition flex flex-col group transition-all duration-300`;
             
             // Spelling correction for name
             const correctedName = p.name ? p.name.replace(/\bcattle\b/gi, 'kettle') : 'Unnamed Item';
@@ -192,11 +196,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Stock level availability indicator
             const stockBadge = p.available 
-                ? `<span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-400 bg-emerald-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-emerald-500/30 shrink-0">
-                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> In Stock
+                ? `<span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                     <span class="w-1.5 h-1.5 rounded-full bg-brand-600 animate-pulse"></span> In Stock
                    </span>`
-                : `<span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-rose-400 bg-rose-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-rose-500/30 shrink-0">
-                     <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span> Out of Stock
+                : `<span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-rose-700 bg-rose-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-rose-500/25 shrink-0">
+                     <span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span> Out of Stock
                    </span>`;
 
             // Cart Quantity controls
@@ -206,11 +210,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (p.available) {
                 if (qtyInCart > 0) {
                     actionButtonHTML = `
-                        <div class="flex items-center justify-between bg-slate-950/80 border border-slate-700/80 rounded-lg sm:rounded-xl p-1" onclick="event.stopPropagation()">
+                        <div class="flex items-center justify-between bg-dark-950 border border-slate-850 rounded-lg sm:rounded-xl p-1" onclick="event.stopPropagation()">
                             <button type="button" onclick="changeCartQty('${p.id}', -1)" class="qty-adjuster-btn">
                                 <i data-lucide="minus" class="w-3 h-3 sm:w-3.5 sm:h-3.5"></i>
                             </button>
-                            <span class="text-[10px] sm:text-xs font-black text-white px-1 sm:px-2 select-none">${qtyInCart} in Cart</span>
+                            <span class="text-[10px] sm:text-xs font-black text-slate-900 px-1 sm:px-2 select-none">${qtyInCart} in Cart</span>
                             <button type="button" onclick="changeCartQty('${p.id}', 1)" class="qty-adjuster-btn">
                                 <i data-lucide="plus" class="w-3 h-3 sm:w-3.5 sm:h-3.5"></i>
                             </button>
@@ -218,14 +222,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     `;
                 } else {
                     actionButtonHTML = `
-                        <button type="button" onclick="addToCartWithBounce(event, '${p.id}')" class="w-full bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                        <button type="button" onclick="addToCartWithBounce(event, '${p.id}')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
                             <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
                         </button>
                     `;
                 }
             } else {
                 actionButtonHTML = `
-                    <button type="button" disabled class="w-full bg-slate-800/80 text-slate-500 font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl cursor-not-allowed flex items-center justify-center gap-1 sm:gap-1.5 border border-slate-700/60">
+                    <button type="button" disabled class="w-full bg-dark-850 text-slate-600 font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl cursor-not-allowed flex items-center justify-center gap-1 sm:gap-1.5 border border-slate-850/60">
                         <i data-lucide="slash" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Out of Stock
                     </button>
                 `;
@@ -233,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             card.innerHTML = `
                 ${p.image_url ? `
-                <div class="w-full h-32 sm:h-40 overflow-hidden bg-slate-950 shrink-0">
+                <div class="w-full h-32 sm:h-40 overflow-hidden bg-dark-950 shrink-0">
                     <img src="${p.image_url}" alt="${correctedName}" loading="lazy"
                          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                          onerror="this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center text-slate-700\'><svg xmlns=\'http://www.w3.org/2000/svg\' width=\'32\' height=\'32\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\' viewBox=\'0 0 24 24\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><path d=\'m21 15-5-5L5 21\'/></svg></div>'">
@@ -241,26 +245,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="p-3 sm:p-5 flex-grow flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
-                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider truncate max-w-[60%]">${p.category}</span>
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">${p.category}</span>
                             ${stockBadge}
                         </div>
                         <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
-                            <h3 class="font-bold text-white text-xs sm:text-base group-hover:text-emerald-400 transition-colors leading-snug line-clamp-2">${correctedName}</h3>
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">${correctedName}</h3>
                             ${badgeHTML}
                         </div>
-                        <p class="text-[10px] sm:text-xs text-slate-300 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">${cleanDescription}</p>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">${cleanDescription}</p>
                     </div>
                     
                     <div>
-                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-slate-950/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-800/80">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
                             <div>
-                                <span class="block text-[8px] sm:text-[9px] text-slate-400 font-extrabold uppercase leading-none">Our Price</span>
-                                <span class="text-base sm:text-xl font-black text-emerald-400 price-value" data-price="${p.selling_price}">${currency}0</span>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="${p.selling_price}">${currency}0</span>
                             </div>
                             ${hasMrp ? `
                             <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
-                                <span class="block text-[8px] sm:text-[9px] text-slate-400 font-extrabold uppercase leading-none">MRP</span>
-                                <span class="text-[10px] sm:text-xs text-slate-400 line-through font-semibold mrp-value" data-mrp="${p.market_price}">${currency}0</span>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="${p.market_price}">${currency}0</span>
                             </div>
                             ` : ""}
                         </div>
