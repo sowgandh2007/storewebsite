@@ -167,15 +167,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (emptyState) emptyState.classList.add("hidden");
 
-        filtered.forEach((p, idx) => {
+        filtered.forEach(p => {
             const card = document.createElement("div");
             
-            // Alternating glowing Red & Blue neon outlines for product cards
-            const glowOutline = idx % 2 === 0
-                ? "border-2 border-rose-500/80 shadow-[0_0_15px_rgba(244,63,94,0.3)] hover:border-blue-500 hover:shadow-[0_0_22px_rgba(59,130,246,0.5)]"
-                : "border-2 border-blue-500/80 shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:border-rose-500 hover:shadow-[0_0_22px_rgba(244,63,94,0.5)]";
-            
-            card.className = `bg-dark-900/90 backdrop-blur-md rounded-2xl overflow-hidden ${glowOutline} hover-lift card-hidden card-reveal-transition flex flex-col group transition-all duration-300`;
+            // Set animation classes (initially hidden, transitions on entry)
+            card.className = "bg-dark-900 rounded-2xl overflow-hidden border border-slate-850 shadow-md hover-lift card-hidden card-reveal-transition flex flex-col group";
             
             // Spelling correction for name
             const correctedName = p.name ? p.name.replace(/\bcattle\b/gi, 'kettle') : 'Unnamed Item';
@@ -197,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Stock level availability indicator
             const stockBadge = p.available 
                 ? `<span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
-                     <span class="w-1.5 h-1.5 rounded-full bg-brand-600 animate-pulse"></span> In Stock
+                     <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
                    </span>`
                 : `<span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-rose-700 bg-rose-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-rose-500/25 shrink-0">
                      <span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span> Out of Stock

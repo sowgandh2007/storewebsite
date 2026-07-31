@@ -208,16 +208,12 @@
             <p class="text-xs text-slate-550 font-bold uppercase tracking-wider">Syncing live catalog data...</p>
         </div>
 
-        <!-- Products Catalog Grid (wrapped for PixelSnow background) -->
-        <div class="relative rounded-3xl overflow-hidden p-2 sm:p-4">
-            <!-- PixelSnow WebGL background behind all product cards -->
-            <div id="pixel-snow-canvas-container" style="position:absolute;inset:0;z-index:0;pointer-events:none;"></div>
-
-        <section id="products-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 relative z-10">
+        <!-- Products Catalog Grid -->
+        <section id="products-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
             <!-- Statically pre-rendered default products for SEO and fast first paint -->
             
             <!-- Santoor Soap Card -->
-            <div class="bg-dark-900/90 backdrop-blur-md rounded-2xl overflow-hidden border-2 border-rose-500/80 shadow-[0_0_15px_rgba(244,63,94,0.3)] hover:border-blue-500 hover:shadow-[0_0_22px_rgba(59,130,246,0.5)] hover-lift card-hidden card-reveal-transition flex flex-col group transition-all duration-300">
+            <div class="star-border-container hover-lift card-hidden card-reveal-transition group">
                 <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
@@ -253,7 +249,7 @@
             </div>
 
             <!-- Santoor White Card -->
-            <div class="bg-dark-900/90 backdrop-blur-md rounded-2xl overflow-hidden border-2 border-rose-500/80 shadow-[0_0_15px_rgba(244,63,94,0.3)] hover:border-blue-500 hover:shadow-[0_0_22px_rgba(59,130,246,0.5)] hover-lift card-hidden card-reveal-transition flex flex-col group transition-all duration-300">
+            <div class="star-border-container hover-lift card-hidden card-reveal-transition group">
                 <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
@@ -289,7 +285,7 @@
             </div>
 
             <!-- Preethi Mixie Card -->
-            <div class="bg-dark-900/90 backdrop-blur-md rounded-2xl overflow-hidden border-2 border-rose-500/80 shadow-[0_0_15px_rgba(244,63,94,0.3)] hover:border-blue-500 hover:shadow-[0_0_22px_rgba(59,130,246,0.5)] hover-lift card-hidden card-reveal-transition flex flex-col group transition-all duration-300">
+            <div class="star-border-container hover-lift card-hidden card-reveal-transition group">
                 <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
@@ -325,7 +321,7 @@
             </div>
 
             <!-- Prestige Mixie Card -->
-            <div class="bg-dark-900/90 backdrop-blur-md rounded-2xl overflow-hidden border-2 border-rose-500/80 shadow-[0_0_15px_rgba(244,63,94,0.3)] hover:border-blue-500 hover:shadow-[0_0_22px_rgba(59,130,246,0.5)] hover-lift card-hidden card-reveal-transition flex flex-col group transition-all duration-300">
+            <div class="star-border-container hover-lift card-hidden card-reveal-transition group">
                 <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
@@ -361,7 +357,7 @@
             </div>
 
             <!-- Havells Fan Card -->
-            <div class="bg-dark-900/90 backdrop-blur-md rounded-2xl overflow-hidden border-2 border-rose-500/80 shadow-[0_0_15px_rgba(244,63,94,0.3)] hover:border-blue-500 hover:shadow-[0_0_22px_rgba(59,130,246,0.5)] hover-lift card-hidden card-reveal-transition flex flex-col group transition-all duration-300">
+            <div class="star-border-container hover-lift card-hidden card-reveal-transition group">
                 <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
@@ -397,7 +393,7 @@
             </div>
 
             <!-- Orient Kettle Card -->
-            <div class="bg-dark-900/90 backdrop-blur-md rounded-2xl overflow-hidden border-2 border-rose-500/80 shadow-[0_0_15px_rgba(244,63,94,0.3)] hover:border-blue-500 hover:shadow-[0_0_22px_rgba(59,130,246,0.5)] hover-lift card-hidden card-reveal-transition flex flex-col group transition-all duration-300">
+            <div class="star-border-container hover-lift card-hidden card-reveal-transition group">
                 <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
@@ -433,7 +429,7 @@
             </div>
 
             <!-- Pigeon Kettle Card -->
-            <div class="bg-dark-900/90 backdrop-blur-md rounded-2xl overflow-hidden border-2 border-rose-500/80 shadow-[0_0_15px_rgba(244,63,94,0.3)] hover:border-blue-500 hover:shadow-[0_0_22px_rgba(59,130,246,0.5)] hover-lift card-hidden card-reveal-transition flex flex-col group transition-all duration-300">
+            <div class="star-border-container hover-lift card-hidden card-reveal-transition group">
                 <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
@@ -469,7 +465,7 @@
             </div>
 
             <!-- Prestige Kettle Card -->
-            <div class="bg-dark-900/90 backdrop-blur-md rounded-2xl overflow-hidden border-2 border-rose-500/80 shadow-[0_0_15px_rgba(244,63,94,0.3)] hover:border-blue-500 hover:shadow-[0_0_22px_rgba(59,130,246,0.5)] hover-lift card-hidden card-reveal-transition flex flex-col group transition-all duration-300">
+            <div class="star-border-container hover-lift card-hidden card-reveal-transition group">
                 <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
                 <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
@@ -506,14 +502,13 @@
         </section>
 
         <!-- Empty state layout -->
-        <div id="empty-state" class="hidden py-20 text-center select-none max-w-sm mx-auto animate-fade-in-up relative z-10">
+        <div id="empty-state" class="hidden py-20 text-center select-none max-w-sm mx-auto animate-fade-in-up">
             <div class="w-16 h-16 bg-dark-900 border border-slate-800 text-slate-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <i data-lucide="package-search" class="w-8 h-8"></i>
             </div>
             <h3 class="font-bold text-slate-800 text-base mb-1">No products found</h3>
             <p class="text-xs text-slate-600 leading-relaxed">We couldn't find any products matching your search criteria. Try using different search keywords or filter values.</p>
         </div>
-        </div><!-- /end beams-products-wrapper -->
 
         <!-- ================= GALLERY SECTION ================= -->
         <section id="gallery" class="py-6 sm:py-12 border-t border-slate-850 select-none scroll-mt-24">
@@ -749,10 +744,7 @@
     <!-- Custom Scripts -->
     <script src="js/database.js?v=3.2"></script>
     <script src="js/customer.js?v=3.2"></script>
-    <!-- PixelSnow WebGL background (Three.js port of React Bits <PixelSnow />) -->
-    <script type="module" src="js/pixel-snow.js?v=1.0"></script>
-    <!-- SideRays disabled — replaced by Beams -->
-    <!-- <script type="module" src="js/side-rays.js?v=3.2"></script> -->
+    <script type="module" src="js/side-rays.js?v=3.2"></script>
     <!-- Disabled Lightfall Script (Preserved) -->
     <!-- <script type="module" src="js/lightfall.js?v=3.1"></script> -->
 </body>
