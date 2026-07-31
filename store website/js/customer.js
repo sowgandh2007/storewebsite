@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let searchQuery = "";
     let activeCategory = "all";
     let cart = {}; // Cart schema: { productId: quantity }
-    let revealObserver = null;
 
     // Load cart from LocalStorage cache
     if (localStorage.getItem("store_cart")) {
@@ -283,60 +282,6 @@ document.addEventListener("DOMContentLoaded", () => {
             card.classList.remove("card-hidden");
             showCardPricesImmediately(card);
         });
-    }
-        if (revealObserver) {
-            revealObserver.disconnect();
-        }
-
-        const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-        revealObserver = new IntersectionObserver((entries) => {
-            // Filter targets intersecting viewport
-            const intersecting = entries.filter(e => e.isIntersecting);
-            if (intersecting.length === 0) return;
-
-            intersecting.forEach(entry => {
-                const card = entry.target;
-                revealObserver.unobserve(card);
-
-                // Find index to calculate stagger delay
-                const parent = card.parentNode;
-                if (!parent) {
-                    card.classList.remove("card-hidden");
-                    animateCardPrices(card);
-                    return;
-                }
-                const cardsArray = Array.from(parent.children);
-                const index = cardsArray.indexOf(card);
-
-                // Delay math: 80ms stagger, max 800ms total, skip delays for card > 8th index
-                let delay = 0;
-                if (!isReduced) {
-                    if (index < 8) {
-                        delay = index * 80;
-                    } else {
-                        delay = 800;
-                    }
-                }
-
-                if (isReduced) {
-                    card.classList.remove("card-hidden");
-                    showCardPricesImmediately(card);
-                } else {
-                    setTimeout(() => {
-                        card.classList.remove("card-hidden");
-                        animateCardPrices(card);
-                    }, delay);
-                }
-            });
-        }, {
-            threshold: 0.05,
-            rootMargin: "0px 0px -20px 0px"
-        });
-
-        // Attach elements
-        const hiddenCards = productsGrid.querySelectorAll(".card-hidden");
-        hiddenCards.forEach(card => revealObserver.observe(card));
     }
 
     // --- PRICE ANIMATIONS (requestAnimationFrame) ---
