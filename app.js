@@ -405,10 +405,26 @@ window.applyFilters = function() {
     renderInventory();
 };
 
+let pendingImageUploadPromise = null;
+
 // --- ADD / EDIT PRODUCT SUBMIT HANDLER ---
 window.handleProductSubmit = async function(e) {
     e.preventDefault();
     
+    // If an image upload is in progress, wait for it to complete
+    if (pendingImageUploadPromise) {
+        const statusEl = document.getElementById("img-upload-status");
+        if (statusEl) {
+            statusEl.textContent = "⏳ Waiting for photo upload to finish...";
+            statusEl.className = "text-[10px] text-amber-400 mt-1.5 font-bold";
+        }
+        try {
+            await pendingImageUploadPromise;
+        } catch (err) {
+            console.warn("Image upload failed before save:", err);
+        }
+    }
+
     const id = document.getElementById("product-id").value;
     const name = document.getElementById("product-name").value.trim();
     const buy_price = parseFloat(document.getElementById("product-buy").value) || 0;
@@ -950,20 +966,26 @@ window.previewProductImage = async function(input) {
 
     // Upload to Supabase Storage in background
     const statusEl = document.getElementById("img-upload-status");
-    statusEl.textContent = "Uploading image...";
-    statusEl.className = "text-[10px] text-amber-400 mt-1.5";
+    statusEl.textContent = "Uploading image to cloud...";
+    statusEl.className = "text-[10px] text-amber-400 mt-1.5 font-bold";
     statusEl.classList.remove("hidden");
 
-    try {
-        const url = await uploadProductImageToSupabase(file);
-        document.getElementById("product-image-url").value = url;
-        statusEl.textContent = "✓ Image uploaded successfully";
-        statusEl.className = "text-[10px] text-emerald-400 mt-1.5";
-    } catch (err) {
-        console.error("Image upload failed:", err);
-        statusEl.textContent = "⚠ Upload failed — image won't be saved";
-        statusEl.className = "text-[10px] text-rose-400 mt-1.5";
-    }
+    pendingImageUploadPromise = (async () => {
+        try {
+            const url = await uploadProductImageToSupabase(file);
+            document.getElementById("product-image-url").value = url;
+            statusEl.textContent = "✓ Image uploaded successfully";
+            statusEl.className = "text-[10px] text-emerald-400 mt-1.5 font-bold";
+            return url;
+        } catch (err) {
+            console.error("Image upload failed:", err);
+            statusEl.textContent = "⚠ Upload failed — " + (err.message || "check network/Supabase");
+            statusEl.className = "text-[10px] text-rose-400 mt-1.5 font-bold";
+            throw err;
+        } finally {
+            pendingImageUploadPromise = null;
+        }
+    })();
 };
 
 // Upload a File object to Supabase Storage, return public URL
