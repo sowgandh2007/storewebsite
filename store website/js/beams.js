@@ -305,11 +305,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initBeams(container, {
         beamWidth:      2,
-        beamHeight:     15,
-        beamNumber:     12,
+        beamHeight:     18,    // taller to fill the full products area height
+        beamNumber:     10,    // slightly fewer so cards stay readable
         lightColor:     '#F59E0B',   // warm amber — matches the store theme
-        speed:          2,
-        noiseIntensity: 1.75,
+        speed:          1.5,   // a little slower feels less distracting
+        noiseIntensity: 1.5,
         scale:          0.2,
         rotation:       0,
     });
