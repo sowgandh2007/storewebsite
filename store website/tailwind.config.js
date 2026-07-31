@@ -28,7 +28,19 @@ module.exports = {
           950: '#faf6ee',
         },
         slate: {
-          850: '#eae0cf', // warm border color matching --border-light
+          50:  '#faf6ee',
+          100: '#f3ebdd',
+          200: '#eae0cf',
+          300: '#e2d6c0',
+          400: '#a3907c',
+          500: '#786854', // --text-muted
+          550: '#665643',
+          600: '#544737', // --text-secondary
+          700: '#42372a',
+          800: '#292219', // --text-primary
+          850: '#eae0cf', // --border-light / warm cream border
+          900: '#1c1610', // deep warm espresso
+          950: '#120e0a',
         }
       },
       zIndex: {
