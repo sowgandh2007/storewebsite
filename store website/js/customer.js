@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const card = document.createElement("div");
             
             // Cards rendered fully visible immediately without scroll reveal animation
-            card.className = "bg-dark-900 rounded-2xl overflow-hidden border border-slate-850 shadow-md hover-lift flex flex-col group";
+            card.className = "bg-dark-900 rounded-2xl overflow-hidden border border-dark-850 shadow-md hover-lift flex flex-col group";
             
             // Spelling correction for name
             const correctedName = p.name ? p.name.replace(/\bcattle\b/gi, 'kettle') : 'Unnamed Item';
@@ -205,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (p.available) {
                 if (qtyInCart > 0) {
                     actionButtonHTML = `
-                        <div class="flex items-center justify-between bg-dark-950 border border-slate-850 rounded-lg sm:rounded-xl p-1" onclick="event.stopPropagation()">
+                        <div class="flex items-center justify-between bg-dark-950 border border-dark-850 rounded-lg sm:rounded-xl p-1" onclick="event.stopPropagation()">
                             <button type="button" onclick="changeCartQty('${p.id}', -1)" class="qty-adjuster-btn">
                                 <i data-lucide="minus" class="w-3 h-3 sm:w-3.5 sm:h-3.5"></i>
                             </button>
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             } else {
                 actionButtonHTML = `
-                    <button type="button" disabled class="w-full bg-dark-850 text-slate-600 font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl cursor-not-allowed flex items-center justify-center gap-1 sm:gap-1.5 border border-slate-850/60">
+                    <button type="button" disabled class="w-full bg-dark-850 text-slate-600 font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl cursor-not-allowed flex items-center justify-center gap-1 sm:gap-1.5 border border-dark-850/60">
                         <i data-lucide="slash" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Out of Stock
                     </button>
                 `;
@@ -251,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                     
                     <div>
-                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-dark-850">
                             <div>
                                 <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
                                 <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="${p.selling_price}">${currency}0</span>
@@ -448,7 +448,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const hasMrp = product.market_price && product.market_price > product.selling_price;
 
             const cartRow = document.createElement("div");
-            cartRow.className = "flex items-center gap-3 border-b border-slate-850 pb-3 last:border-0";
+            cartRow.className = "flex items-center gap-3 border-b border-dark-850 pb-3 last:border-0";
             
             cartRow.innerHTML = `
                 <div class="flex-grow min-w-0">

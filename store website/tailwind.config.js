@@ -26,6 +26,9 @@ module.exports = {
           850: '#eae0cf',
           900: '#f3ebdd',
           950: '#faf6ee',
+        },
+        slate: {
+          850: '#eae0cf', // warm border color matching --border-light
         }
       },
       zIndex: {
