@@ -161,11 +161,11 @@ function initBeams(container, opts = {}) {
     const renderer = new THREE.WebGLRenderer({
         canvas,
         antialias: false,          // off on all devices – saves fill-rate
-        alpha: false,
+        alpha: true,               // transparent background for blending with glass cards
         powerPreference: 'low-power',
     });
     renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 1.5));
-    renderer.setClearColor(0x000000, 1);
+    renderer.setClearColor(0x000000, 0);
 
     function setSize() {
         const w = container.clientWidth;
@@ -176,7 +176,6 @@ function initBeams(container, opts = {}) {
 
     // ── Scene / camera ────────────────────────────────────────────────────────
     const scene  = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
     const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
     camera.position.set(0, 0, 20);
 

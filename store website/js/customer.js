@@ -170,8 +170,8 @@ document.addEventListener("DOMContentLoaded", () => {
         filtered.forEach(p => {
             const card = document.createElement("div");
             
-            // Set animation classes (initially hidden, transitions on entry)
-            card.className = "bg-dark-900 rounded-2xl overflow-hidden border border-slate-850 shadow-md hover-lift card-hidden card-reveal-transition flex flex-col group";
+            // Translucent glass card styling so Beams WebGL effect shines through product descriptions
+            card.className = "bg-dark-900/60 backdrop-blur-md rounded-2xl overflow-hidden border border-amber-500/20 shadow-lg hover:border-amber-500/40 hover-lift card-hidden card-reveal-transition flex flex-col group transition-all duration-300";
             
             // Spelling correction for name
             const correctedName = p.name ? p.name.replace(/\bcattle\b/gi, 'kettle') : 'Unnamed Item';
@@ -252,7 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                     
                     <div>
-                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950/60 backdrop-blur-sm rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-slate-850/60">
                             <div>
                                 <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
                                 <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="${p.selling_price}">${currency}0</span>
