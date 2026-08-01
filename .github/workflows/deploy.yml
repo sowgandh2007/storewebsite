@@ -15,6 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy via FTP to avadhanulastores.shop
+        if: ${{ secrets.FTP_USERNAME != '' }}
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ftpupload.net
