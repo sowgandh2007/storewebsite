@@ -1,14 +1,746 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>y2k-fashion-store</title>
-    <script type="module" crossorigin src="/assets/index-17CcNKtr.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-qk8sybIQ.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avadhanula Stores | Premium Wholesale Mart</title>
+    <meta name="description" content="Avadhanula Stores is your premium wholesale mart offering soaps, electronics, and daily essentials at unbeatable wholesale prices. Reservable online via WhatsApp.">
+    
+    <!-- Open Graph Metadata for Social Sharing (WhatsApp, etc.) -->
+    <meta property="og:title" content="Avadhanula Stores | Premium Wholesale Mart">
+    <meta property="og:description" content="Explore our high-fidelity, real-time catalog. Compare wholesale prices directly against market MRP rates and order instantly on WhatsApp.">
+    <meta property="og:image" content="https://avadhanulastores.shop/hero.jpg">
+    <meta property="og:url" content="https://avadhanulastores.shop/">
+    <meta property="og:type" content="website">
+
+    <!-- Modern Emoji Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛍️</text></svg>">
+    
+    <!-- Compiled & Minified Tailwind CSS -->
+    <link rel="stylesheet" href="css/tailwind.css?v=3.2">
+    <!-- Custom Bespoke Stylesheet -->
+    <link rel="stylesheet" href="css/style.css?v=3.2">
+    <noscript>
+        <style>
+            #loading-state { display: none !important; }
+            #products-grid { display: grid !important; }
+            .card-hidden { opacity: 1 !important; transform: none !important; }
+        </style>
+    </noscript>
+</head>
+<body class="bg-dark-950 text-slate-900 min-h-screen flex flex-col justify-between antialiased overflow-x-hidden w-full max-w-full">
+    <!-- SideRays WebGL Background Canvas -->
+    <div id="side-rays-canvas-container"></div>
+    <!-- Disabled Lightfall Canvas Container (Preserved) -->
+    <!-- <div id="lightfall-canvas-container"></div> -->
+
+    <!-- Top Utility Bar -->
+    <div class="bg-dark-900 text-slate-700 py-2.5 px-4 text-xs font-semibold border-b border-dark-850">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <span class="flex items-center gap-1.5 text-slate-700 font-bold">
+                <i data-lucide="store" class="w-3.5 h-3.5 text-brand-600"></i> Wholesale Store & Directory
+            </span>
+            <a id="top-phone" href="tel:8008668066" class="hover:text-brand-600 transition-colors flex items-center gap-1">
+                <i data-lucide="phone" class="w-3.5 h-3.5 text-brand-500"></i> Call to Confirm: <span id="header-phone-text" class="font-bold text-slate-900">8008668066</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Store Header -->
+    <header class="glass-panel sticky top-0 z-45">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-brand-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-brand-500/20">
+                    <i data-lucide="shopping-bag" class="w-5.5 h-5.5"></i>
+                </div>
+                <div>
+                    <h1 id="store-title" class="text-xl font-extrabold tracking-tight text-slate-900 leading-none">Avadhanula Stores</h1>
+                    <p class="text-[10px] text-brand-600 font-extrabold uppercase tracking-wider mt-1.5">Wholesale Prices • Order via WhatsApp</p>
+                </div>
+            </div>
+            
+            <!-- Desktop Navigation Menu -->
+            <nav class="hidden md:flex items-center gap-6 text-xs font-bold text-slate-700 uppercase tracking-wider">
+                <a href="#catalog" class="hover:text-brand-600 transition-colors">Catalog</a>
+                <a href="#gallery" class="hover:text-brand-600 transition-colors">Gallery</a>
+                <a href="#services" class="hover:text-brand-600 transition-colors">Other Services</a>
+                <a href="#location" class="hover:text-brand-600 transition-colors">Location</a>
+            </nav>
+            
+            <div class="flex items-center gap-3">
+                <!-- Cart Toggle Trigger Button -->
+                <button onclick="toggleCartDrawer(true)" class="relative bg-dark-900 hover:bg-dark-800 text-slate-800 p-2.5 rounded-xl transition-all flex items-center gap-2 font-extrabold text-xs border border-slate-800 hover-lift">
+                    <i data-lucide="shopping-cart" class="w-4 h-4 text-brand-500"></i>
+                    <span class="hidden sm:inline">Cart</span>
+                    <span id="cart-badge-count" class="bg-brand-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-sm shadow-brand-500/20">0</span>
+                </button>
+                <span class="hidden lg:inline-flex text-[10px] font-black text-slate-700 bg-dark-900 px-2.5 py-1.5 rounded-xl border border-slate-800 items-center gap-1.5 uppercase tracking-wider">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span> Sync Active
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-3 sm:px-4 py-3 sm:py-8 w-full max-w-full flex-grow flex flex-col gap-4 sm:gap-10 overflow-x-hidden">
+        
+        <!-- Bento-Grid Hero Section -->
+        <section class="bg-dark-900 rounded-3xl overflow-hidden border border-dark-850 shadow-xl select-none relative animate-fade-in-up">
+            <!-- Single subtle background ambient glow -->
+            <div class="absolute -right-10 -top-10 w-64 h-64 rounded-full bg-brand-500/5 blur-[90px] pointer-events-none"></div>
+            
+            <div class="grid grid-cols-5 lg:grid-cols-12 gap-3 sm:gap-8 items-center p-3 sm:p-8 md:p-12">
+                <!-- Left text info columns -->
+                <div class="col-span-5 sm:col-span-3 lg:col-span-7 flex flex-col gap-2 sm:gap-5 relative z-10">
+                    <div>
+                        <span class="hidden sm:inline-flex bg-brand-500/15 text-brand-600 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-brand-500/20 items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-ping"></span> Premium Wholesale Mart
+                        </span>
+                        <h2 id="hero-title" class="text-lg sm:text-3xl md:text-5xl font-black tracking-tight sm:mt-4 text-slate-900 leading-tight">
+                            Avadhanula Stores
+                        </h2>
+                    </div>
+                    <p id="hero-desc" class="hidden sm:block text-slate-700 text-sm leading-relaxed max-w-xl">
+                        Browse our wholesale product catalog. Compare our wholesale rates directly with market MRP prices and place your orders instantly on WhatsApp.
+                    </p>
+                    <!-- Floating mini-chips / Features -->
+                    <div class="hidden sm:flex flex-wrap gap-2.5 mt-2">
+                        <span class="text-[10px] font-bold text-slate-800 bg-dark-950 border border-slate-800 px-3 py-1.5 rounded-xl flex items-center gap-1.5 backdrop-blur-sm">
+                            <i data-lucide="package" class="w-3.5 h-3.5 text-brand-500"></i> Full Product Catalog
+                        </span>
+                        <span class="text-[10px] font-bold text-slate-800 bg-dark-950 border border-slate-800 px-3 py-1.5 rounded-xl flex items-center gap-1.5 backdrop-blur-sm">
+                            <i data-lucide="calculator" class="w-3.5 h-3.5 text-amber-600"></i> Wholesale & MRP Rates
+                        </span>
+                        <span class="text-[10px] font-bold text-slate-800 bg-dark-950 border border-slate-800 px-3 py-1.5 rounded-xl flex items-center gap-1.5 backdrop-blur-sm">
+                            <i data-lucide="calendar-check" class="w-3.5 h-3.5 text-brand-600"></i> Order on WhatsApp
+                        </span>
+                    </div>
+                    <!-- Mobile-only compact chips -->
+                    <div class="flex sm:hidden flex-col gap-1 mt-1">
+                        <span class="text-[9px] font-bold text-slate-700 flex items-center gap-1">
+                            <i data-lucide="package" class="w-3 h-3 text-brand-500"></i> Product Catalog
+                        </span>
+                        <span class="text-[9px] font-bold text-slate-700 flex items-center gap-1">
+                            <i data-lucide="calendar-check" class="w-3 h-3 text-brand-600"></i> WhatsApp Orders
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Right visual columns -->
+                <div class="hidden sm:flex col-span-2 lg:col-span-5 relative items-center justify-center py-1 sm:py-6 px-1 sm:px-4">
+                    <!-- Glassmorphic panel holding 3D render image -->
+                    <div class="relative w-full aspect-[16/10] lg:aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 bg-slate-900/40 p-1.5 shadow-2xl shadow-emerald-500/5 group hover:border-brand-500/20 transition-all duration-300">
+                        
+                        <!-- Staggered Antigravity Floating Tiles - anchored inside image container for pixel-perfect overlay -->
+                        <div class="hero-floating-card hero-float-1 absolute left-[3%] top-[12%] w-32 sm:w-36 p-2 select-none">
+                            <div class="flex flex-col gap-1 text-[9px] sm:text-[10px]">
+                                <span class="font-extrabold text-slate-800 tracking-wider">Santoor Soap</span>
+                                <div class="flex items-center gap-1.5 mt-0.5 font-bold">
+                                    <span class="text-brand-600">Our: ₹36</span>
+                                    <span class="text-slate-600 line-through text-[8px] sm:text-[9px]">MRP: ₹40</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hero-floating-card hero-float-3 absolute left-[44%] top-[14%] w-32 sm:w-36 p-2 select-none">
+                            <div class="flex flex-col gap-1 text-[9px] sm:text-[10px]">
+                                <span class="font-extrabold text-slate-800 tracking-wider">DOMS Stationery</span>
+                                <div class="flex items-center gap-1.5 mt-0.5 font-bold">
+                                    <span class="text-brand-600">Our: ₹3</span>
+                                    <span class="text-slate-600 line-through text-[8px] sm:text-[9px]">MRP: ₹5</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hero-floating-card hero-float-2 absolute right-[35%] bottom-[8%] w-36 sm:w-40 p-2 select-none">
+                            <div class="flex flex-col gap-1 text-[9px] sm:text-[10px]">
+                                <span class="font-extrabold text-slate-800 tracking-wider">Mixer Grinder</span>
+                                <div class="flex items-center gap-1.5 mt-0.5 font-bold">
+                                    <span class="text-brand-600">Our: ₹3,499</span>
+                                    <span class="text-slate-600 line-through text-[8px] sm:text-[9px]">MRP: ₹4,299</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <img src="hero.jpg?v=2.7" alt="Avadhanula Stores 3D Bento Grid" class="w-full h-full object-cover rounded-xl group-hover:scale-[1.02] transition-transform duration-500">
+                        <!-- Glassmorphic overlay tags -->
+                        <div class="hidden sm:flex absolute bottom-4 left-4 bg-dark-950/80 border border-slate-800 backdrop-blur-md px-3 py-1.5 rounded-xl text-[9px] font-bold text-slate-900 items-center gap-1 shadow-md select-none">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Glassmorphic UI Orbit active
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filters & Search Toolbar -->
+        <section id="catalog" class="flex flex-col md:flex-row gap-2 sm:gap-4 items-stretch justify-between bg-dark-900 border border-slate-800 rounded-2xl p-2.5 sm:p-4 shadow-lg scroll-mt-24 max-w-full overflow-hidden">
+            <!-- Search bar input -->
+            <div class="relative flex-grow max-w-md">
+                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 w-4.5 h-4.5"></i>
+                <input type="text" id="search-input" placeholder="Search products, brands, or categories..." class="w-full pl-11 pr-4 py-2.5 bg-dark-950 border border-slate-800 rounded-xl text-xs font-semibold focus:outline-none focus:border-brand-500 text-slate-900 placeholder-slate-500 transition-all">
+            </div>
+
+            <!-- Categories tags (Desktop) -->
+            <div id="categories-container" class="hidden md:flex items-center gap-2 max-w-full overflow-x-auto scrollbar-none py-1 flex-nowrap">
+                <!-- Javascript inserts category buttons here -->
+            </div>
+
+            <!-- Categories Dropdown (Mobile) -->
+            <div class="md:hidden relative">
+                <button id="category-menu-btn" class="w-full flex items-center justify-between bg-dark-950 border border-slate-800 py-2.5 px-4 rounded-xl text-xs font-bold text-slate-800">
+                    <span id="active-category-label">All Products</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-600"></i>
+                </button>
+                <div id="category-dropdown" class="hidden absolute top-[calc(100%+4px)] left-0 w-full bg-dark-900 border border-slate-800 rounded-xl shadow-2xl z-30 max-h-[70vh] overflow-y-auto">
+                    <!-- Javascript inserts mobile categories list here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading state spinner -->
+        <div id="loading-state" class="py-24 text-center select-none">
+            <div class="w-10 h-10 border-4 border-slate-800 border-t-brand-500 rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-xs text-slate-550 font-bold uppercase tracking-wider">Loading catalog...</p>
+        </div>
+
+        <!-- Products Catalog Grid -->
+        <section id="products-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
+            <!-- Statically pre-rendered default products for SEO and fast first paint -->
+            
+            <!-- Santoor Soap Card -->
+            <div class="star-border-container hover-lift group">
+                <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">Bath Soap</span>
+                            <span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
+                            </span>
+                        </div>
+                        <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">SANTOOR new soap 100 gm pack of 4 pc</h3>
+                            <span class="bg-rose-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-sm whitespace-nowrap">Save 10%</span>
+                        </div>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Santoor sandalwood and turmeric bathing soap. Pack of 4 bars of 100g each. Rejuvenates skin for a natural, healthy glow.</p>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-dark-850">
+                            <div>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="180">₹180</span>
+                            </div>
+                            <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="199">₹199</span>
+                            </div>
+                        </div>
+                        <button type=button onclick=addToCartWithBounce(event, 'prod-1')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Santoor White Card -->
+            <div class="star-border-container hover-lift group">
+                <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">Bath Soap</span>
+                            <span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
+                            </span>
+                        </div>
+                        <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">SANTOOR WHITE</h3>
+                            <span class="bg-rose-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-sm whitespace-nowrap">Save 9%</span>
+                        </div>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Santoor White Soap bar. Enriched with natural oils and skin hydration agents for soft skin texture.</p>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-dark-850">
+                            <div>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="150">₹150</span>
+                            </div>
+                            <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="165">₹165</span>
+                            </div>
+                        </div>
+                        <button onclick="addToCartWithBounce(event, 'prod-2')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preethi Mixie Card -->
+            <div class="star-border-container hover-lift group">
+                <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">Electronics</span>
+                            <span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
+                            </span>
+                        </div>
+                        <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">PREETHI 750 WT MIXIE</h3>
+                            <span class="bg-rose-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-sm whitespace-nowrap">Save 15%</span>
+                        </div>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Preethi 750 Watt high-performance Mixer Grinder. Perfect for wet and dry grinding, featuring rust-free stainless steel jars.</p>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-dark-850">
+                            <div>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="8500">₹8,500</span>
+                            </div>
+                            <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="9999">₹9,999</span>
+                            </div>
+                        </div>
+                        <button onclick="addToCartWithBounce(event, 'prod-3')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prestige Mixie Card -->
+            <div class="star-border-container hover-lift group">
+                <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">Electronics</span>
+                            <span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
+                            </span>
+                        </div>
+                        <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">PRESTIGE 750 WT MIXIE</h3>
+                            <span class="bg-rose-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-sm whitespace-nowrap">Save 16%</span>
+                        </div>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Prestige 750W durable mixer grinder. Features sleek styling, speed controls, overload protection, and high-efficiency blades.</p>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-dark-850">
+                            <div>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="3200">₹3,200</span>
+                            </div>
+                            <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="3799">₹3,799</span>
+                            </div>
+                        </div>
+                        <button onclick="addToCartWithBounce(event, 'prod-4')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Havells Fan Card -->
+            <div class="star-border-container hover-lift group">
+                <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">Electronics</span>
+                            <span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
+                            </span>
+                        </div>
+                        <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">HAVELLS CEILING FAN</h3>
+                            <span class="bg-rose-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-sm whitespace-nowrap">Save 12%</span>
+                        </div>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Havells high-speed air ceiling fan. Energy efficient, double ball-bearing design, and rust-free body coating.</p>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-dark-850">
+                            <div>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="2200">₹2,200</span>
+                            </div>
+                            <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="2499">₹2,499</span>
+                            </div>
+                        </div>
+                        <button onclick="addToCartWithBounce(event, 'prod-5')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orient Kettle Card -->
+            <div class="star-border-container hover-lift group">
+                <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">Electronics</span>
+                            <span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
+                            </span>
+                        </div>
+                        <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">ORIENT KETTLE</h3>
+                            <span class="bg-rose-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-sm whitespace-nowrap">Save 25%</span>
+                        </div>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Orient Electric Kettle. 1.5 Litres capacity, automatic shut-off safety sensor, and stainless steel heating plate.</p>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-dark-850">
+                            <div>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="450">₹450</span>
+                            </div>
+                            <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="599">₹599</span>
+                            </div>
+                        </div>
+                        <button onclick="addToCartWithBounce(event, 'prod-6')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pigeon Kettle Card -->
+            <div class="star-border-container hover-lift group">
+                <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">Electronics</span>
+                            <span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
+                            </span>
+                        </div>
+                        <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">PIGEON KETTLE</h3>
+                            <span class="bg-rose-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-sm whitespace-nowrap">Save 25%</span>
+                        </div>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Pigeon Multipurpose Electric Kettle. Fast-boiling operation, comfortable grip, cordless swivel base, and dry boil protection.</p>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-dark-850">
+                            <div>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="450">₹450</span>
+                            </div>
+                            <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="599">₹599</span>
+                            </div>
+                        </div>
+                        <button onclick="addToCartWithBounce(event, 'prod-7')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prestige Kettle Card -->
+            <div class="star-border-container hover-lift group">
+                <div class="border-gradient-bottom" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="border-gradient-top" style="background: radial-gradient(circle, #10b981, transparent 10%);"></div>
+                <div class="inner-content p-3 sm:p-5 flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex items-center justify-between gap-1 mb-1.5 sm:mb-2.5">
+                            <span class="text-[8px] sm:text-[10px] font-bold text-slate-600 uppercase tracking-wider truncate max-w-[60%]">Electronics</span>
+                            <span class="inline-flex items-center gap-1 text-[8px] sm:text-[10px] font-bold text-emerald-700 bg-brand-500/15 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md border border-brand-500/20 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> In Stock
+                            </span>
+                        </div>
+                        <div class="flex items-start justify-between gap-1 mb-1 sm:mb-2">
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-base group-hover:text-brand-600 transition-colors leading-snug line-clamp-2">PRESTIGE KETTLE</h3>
+                            <span class="bg-rose-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md shadow-sm whitespace-nowrap">Save 25%</span>
+                        </div>
+                        <p class="text-[10px] sm:text-xs text-slate-700 line-clamp-1 sm:line-clamp-2 leading-tight sm:leading-relaxed mb-2 sm:mb-4">Prestige Electric Kettle. Durable construction with single-touch lock lid, automatic cutout, and power indicator light.</p>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="flex flex-row items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 bg-dark-950 rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 border border-dark-850">
+                            <div>
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">Our Price</span>
+                                <span class="text-base sm:text-xl font-black text-slate-900 price-value" data-price="450">₹450</span>
+                            </div>
+                            <div class="sm:border-l border-slate-800 sm:pl-2.5 sm:ml-1">
+                                <span class="block text-[8px] sm:text-[9px] text-slate-600 font-extrabold uppercase leading-none">MRP</span>
+                                <span class="text-[10px] sm:text-xs text-slate-600 line-through font-semibold mrp-value" data-mrp="599">₹599</span>
+                            </div>
+                        </div>
+                        <button onclick="addToCartWithBounce(event, 'prod-8')" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-850 text-white font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all duration-100 shadow-md flex items-center justify-center gap-1 sm:gap-1.5 will-change-transform">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Empty state layout -->
+        <div id="empty-state" class="hidden py-20 text-center select-none max-w-sm mx-auto animate-fade-in-up">
+            <div class="w-16 h-16 bg-dark-900 border border-slate-800 text-slate-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="package-search" class="w-8 h-8"></i>
+            </div>
+            <h3 class="font-bold text-slate-800 text-base mb-1">No products found</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">We couldn't find any products matching your search criteria. Try using different search keywords or filter values.</p>
+        </div>
+
+        <!-- ================= GALLERY SECTION ================= -->
+        <section id="gallery" class="py-6 sm:py-12 border-t border-dark-850 select-none scroll-mt-24">
+            <div class="mb-4 sm:mb-8">
+                <span class="text-[10px] font-bold text-brand-600 uppercase tracking-widest bg-brand-500/15 px-2.5 py-1 rounded-md border border-brand-500/20">Visual Highlights</span>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2">Store Gallery</h2>
+                <p class="text-xs text-slate-700 mt-1 hidden sm:block">Sneak peek at our clean aisles, organic soap bars, cosmetic counters, and fresh arrivals.</p>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+                <div class="gallery-item aspect-square bg-dark-900 group shadow-lg border border-slate-800">
+                    <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&auto=format&fit=crop&q=80" alt="Grocery Aisle" class="w-full h-full object-cover">
+                    <div class="gallery-overlay">
+                        <span class="text-[10px] font-bold text-brand-600 uppercase tracking-wider">Aisle 1</span>
+                        <h4 class="text-sm font-bold text-slate-900 leading-tight mt-0.5">Fresh Grocery Items</h4>
+                    </div>
+                </div>
+                <div class="gallery-item aspect-square bg-dark-900 group shadow-lg border border-slate-800">
+                    <img src="https://images.unsplash.com/photo-1607006342411-925f20361f36?w=500&auto=format&fit=crop&q=80" alt="Bath & Body Shop" class="w-full h-full object-cover">
+                    <div class="gallery-overlay">
+                        <span class="text-[10px] font-bold text-brand-600 uppercase tracking-wider">Section 2</span>
+                        <h4 class="text-sm font-bold text-slate-900 leading-tight mt-0.5">Handcrafted Soap Display</h4>
+                    </div>
+                </div>
+                <div class="gallery-item aspect-square bg-dark-900 group shadow-lg border border-slate-800">
+                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&auto=format&fit=crop&q=80" alt="Cosmetic Counter" class="w-full h-full object-cover">
+                    <div class="gallery-overlay">
+                        <span class="text-[10px] font-bold text-brand-600 uppercase tracking-wider">Aisle 3</span>
+                        <h4 class="text-sm font-bold text-slate-900 leading-tight mt-0.5">Premium Cosmetics</h4>
+                    </div>
+                </div>
+                <div class="gallery-item aspect-square bg-dark-900 group shadow-lg border border-slate-800">
+                    <img src="https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=500&auto=format&fit=crop&q=80" alt="Stationery Shelf" class="w-full h-full object-cover">
+                    <div class="gallery-overlay">
+                        <span class="text-[10px] font-bold text-brand-600 uppercase tracking-wider">Section 4</span>
+                        <h4 class="text-sm font-bold text-slate-900 leading-tight mt-0.5">School & Office Essentials</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= OTHER SERVICES SECTION ================= -->
+        <section id="services" class="py-6 sm:py-12 border-t border-dark-850 select-none scroll-mt-24">
+            <div class="mb-4 sm:mb-8">
+                <span class="text-[10px] font-bold text-brand-600 uppercase tracking-widest bg-brand-500/15 px-2.5 py-1 rounded-md border border-brand-500/20">Value Added Options</span>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2">Our Premium Services</h2>
+                <p class="text-xs text-slate-700 mt-1 hidden sm:block">Explore additional specialized support and custom tailoring options we offer.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6">
+                <div class="bg-dark-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-lg flex flex-col justify-between hover-lift">
+                    <div>
+                        <div class="w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-brand-500/15 text-brand-600 border border-brand-500/20 flex items-center justify-center mb-2 sm:mb-4">
+                            <i data-lucide="store" class="w-4 h-4 sm:w-6 sm:h-6"></i>
+                        </div>
+                        <h3 class="text-xs sm:text-base font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-1">Store Pickup</h3>
+                        <p class="hidden sm:block text-xs text-slate-700 leading-relaxed mb-4">Browse our real-time catalog online and collect your wholesale packages directly from our store showroom. Verify details instantly via WhatsApp.</p>
+                    </div>
+                    <span class="text-[10px] font-bold text-brand-600 flex items-center gap-1 cursor-pointer hover:underline">Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
+                </div>
+                <div class="bg-dark-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-lg flex flex-col justify-between hover-lift">
+                    <div>
+                        <div class="w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-amber-500/15 text-amber-700 border border-amber-500/20 flex items-center justify-center mb-2 sm:mb-4">
+                            <i data-lucide="sparkles" class="w-4 h-4 sm:w-6 sm:h-6"></i>
+                        </div>
+                        <h3 class="text-xs sm:text-base font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-none">Custom Soap</h3>
+                        <p class="hidden sm:block text-xs text-slate-700 leading-relaxed mb-4">Order personalized organic soaps in bulk with custom shapes, scents, and branding wrapper designs for corporate gifting or events.</p>
+                    </div>
+                    <span class="text-[10px] font-bold text-amber-700 flex items-center gap-1 cursor-pointer hover:underline">Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
+                </div>
+                <div class="bg-dark-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-lg flex flex-col justify-between hover-lift">
+                    <div>
+                        <div class="w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-rose-500/15 text-rose-700 border border-rose-500/20 flex items-center justify-center mb-2 sm:mb-4">
+                            <i data-lucide="gift" class="w-4 h-4 sm:w-6 sm:h-6"></i>
+                        </div>
+                        <h3 class="text-xs sm:text-base font-bold text-slate-900 mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-none">Gift Packing</h3>
+                        <p class="hidden sm:block text-xs text-slate-700 leading-relaxed mb-4">Beautifully wrapped custom hampers containing soaps, cosmetic sets, and premium honey jars, tailored perfectly for festive seasons.</p>
+                    </div>
+                    <span class="text-[10px] font-bold text-rose-700 flex items-center gap-1 cursor-pointer hover:underline">Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= LOCATION & CONTACT SECTION ================= -->
+        <section id="location" class="py-6 sm:py-12 border-t border-dark-850 scroll-mt-24">
+            <div class="mb-4 sm:mb-8">
+                <span class="text-[10px] font-bold text-brand-600 uppercase tracking-widest bg-brand-500/15 px-2.5 py-1 rounded-md border border-brand-500/20">Visit Our Mart</span>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2">Location & Timings</h2>
+                <p class="text-xs text-slate-700 mt-1 hidden sm:block">Stop by our brick-and-mortar storefront for direct purchases and wholesale distributions.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Location Details Card -->
+                <div class="bg-dark-900 border border-slate-800 rounded-3xl p-6 shadow-lg flex flex-col gap-6 lg:col-span-1 hover-lift">
+                    <div class="flex flex-col gap-4">
+                        <div class="flex gap-3.5 items-start">
+                            <div class="w-8.5 h-8.5 rounded-xl bg-brand-500/15 text-brand-600 border border-brand-500/20 flex items-center justify-center shrink-0">
+                                <i data-lucide="map-pin" class="w-4.5 h-4.5"></i>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-600 font-extrabold uppercase mb-0.5">Address</span>
+                                <p class="text-xs text-slate-800 leading-relaxed font-bold">Ashok Nagar,<br>Kurnool, Andhra Pradesh - 518002</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3.5 items-start">
+                            <div class="w-8.5 h-8.5 rounded-xl bg-amber-500/15 text-amber-700 border border-amber-500/20 flex items-center justify-center shrink-0">
+                                <i data-lucide="clock" class="w-4.5 h-4.5"></i>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-600 font-extrabold uppercase mb-0.5">Working Hours</span>
+                                <p class="text-xs text-slate-800 font-bold">Monday - Saturday: 9:00 AM - 9:00 PM<br>Sunday: Closed</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3.5 items-start">
+                            <div class="w-8.5 h-8.5 rounded-xl bg-teal-500/15 text-teal-700 border border-teal-500/20 flex items-center justify-center shrink-0">
+                                <i data-lucide="phone-call" class="w-4.5 h-4.5"></i>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-600 font-extrabold uppercase mb-0.5">Support & Inquiry</span>
+                                <a href="tel:8008668066" class="text-xs font-black text-brand-600 hover:underline">8008668066</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="tel:8008668066" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-1.5 transition-colors border border-brand-700">
+                        <i data-lucide="phone-call" class="w-4 h-4"></i> Call Support Line
+                    </a>
+                </div>
+
+                <!-- Map Mock Card -->
+                <div class="bg-dark-900 border border-slate-800 rounded-3xl p-2.5 shadow-lg lg:col-span-2 overflow-hidden h-[280px] lg:h-auto min-h-[250px] relative hover-lift">
+                    <div class="absolute inset-0 bg-dark-950 flex items-center justify-center flex-col gap-2 p-6 text-center select-none">
+                        <div class="w-12 h-12 rounded-full bg-brand-500/15 border border-brand-500/20 text-brand-600 flex items-center justify-center shadow-md animate-bounce mb-2">
+                            <i data-lucide="map" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-sm font-extrabold text-slate-900">Ashok Nagar, Kurnool Main Branch</h4>
+                        <p class="text-xs text-slate-700 max-w-sm">Ashok Nagar, Kurnool. Private parking space and bulk loading docks available behind the main mart.</p>
+                        <a href="https://maps.google.com" target="_blank" class="mt-3 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2 px-3.5 rounded-lg flex items-center gap-1 transition-all shadow-sm">
+                            <i data-lucide="navigation" class="w-3.5 h-3.5"></i> Open Google Maps
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Page Footer -->
+    <footer class="bg-dark-900 border-t border-dark-850 py-8 px-4 mt-16 text-xs">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-brand-600 text-white rounded-xl flex items-center justify-center">
+                    <i data-lucide="shopping-bag" class="w-4.5 h-4.5"></i>
+                </div>
+                <span class="font-bold text-sm text-slate-900">Avadhanula Stores</span>
+            </div>
+            
+            <p class="text-xs text-slate-600 font-semibold">&copy; 2026 Avadhanula Stores. All rights reserved.</p>
+            
+            <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Support Line:</span>
+                <span id="footer-phone" class="text-xs font-extrabold text-slate-900">8008668066</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= SHOPPING CART SIDE DRAWER ================= -->
+    <div id="cart-drawer-container" class="cart-drawer-container">
+        <div class="cart-backdrop" onclick="toggleCartDrawer(false)"></div>
+        <div class="cart-drawer flex flex-col justify-between h-full bg-dark-900 border-l border-dark-850">
+            <div class="p-5 border-b border-dark-850 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <i data-lucide="shopping-cart" class="w-5 h-5 text-brand-600"></i>
+                    <h3 class="text-base font-extrabold text-slate-900">Your Shopping Cart</h3>
+                </div>
+                <button onclick="toggleCartDrawer(false)" class="w-8 h-8 bg-dark-800 hover:bg-dark-700 text-slate-700 rounded-lg flex items-center justify-center transition-colors">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Cart list -->
+            <div class="flex-grow overflow-y-auto p-5 space-y-4" id="cart-items-container">
+                <!-- Loaded dynamically -->
+            </div>
+
+            <div class="p-5 border-t border-dark-850 bg-dark-950 flex flex-col gap-4">
+                <div class="bg-dark-900 border border-slate-800 rounded-2xl p-4 space-y-2 text-xs shadow-md">
+                    <div class="flex justify-between items-center text-slate-700 font-semibold">
+                        <span>Total Items:</span>
+                        <span id="cart-total-qty" class="text-slate-900 font-bold">0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-slate-700 font-semibold">
+                        <span>Total MRP:</span>
+                        <span id="cart-total-mrp" class="text-slate-600 line-through">₹0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center font-bold text-slate-900 text-sm">
+                        <span>Wholesale Price:</span>
+                        <span id="cart-total-wholesale" class="text-brand-600 font-black">₹0.00</span>
+                    </div>
+                    <div class="border-t border-slate-800 pt-2 flex justify-between items-center text-brand-600 font-bold">
+                        <span>Total Savings:</span>
+                        <span id="cart-total-savings" class="bg-brand-500/15 px-2 py-0.5 rounded border border-brand-500/20">₹0.00</span>
+                    </div>
+                </div>
+
+                <form id="cart-checkout-form" onsubmit="handleCartCheckout(event)" class="space-y-3">
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-600 uppercase tracking-widest mb-1">Your Full Name</label>
+                        <input type="text" id="cart-customer-name" required placeholder="e.g. Rahul Sharma" class="w-full bg-dark-900 border border-slate-800 py-2 px-3 rounded-xl text-xs font-semibold focus:outline-none focus:border-brand-500 text-slate-900 placeholder-slate-500">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-600 uppercase tracking-widest mb-1">WhatsApp Number</label>
+                        <input type="tel" id="cart-customer-phone" required placeholder="e.g. 9876543210" class="w-full bg-dark-900 border border-slate-800 py-2 px-3 rounded-xl text-xs font-semibold focus:outline-none focus:border-brand-500 text-slate-900 placeholder-slate-500">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-600 uppercase tracking-widest mb-1">Notes (Optional)</label>
+                        <textarea id="cart-customer-notes" rows="1" placeholder="e.g. deliver in morning..." class="w-full bg-dark-900 border border-slate-800 py-2 px-3 rounded-xl text-xs font-semibold focus:outline-none focus:border-brand-500 text-slate-900 placeholder-slate-500 resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-1.5">
+                        <i data-lucide="check-square" class="w-4 h-4"></i> Reserve & Message WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lucide Icons & Supabase CDN Libraries -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="js/database.js?v=3.2"></script>
+    <script src="js/customer.js?v=3.2"></script>
+    <script type="module" src="js/side-rays.js?v=3.2"></script>
+    <!-- Disabled Lightfall Script (Preserved) -->
+    <!-- <script type="module" src="js/lightfall.js?v=3.1"></script> -->
+</body>
 </html>
