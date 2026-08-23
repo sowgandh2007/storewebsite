@@ -10,6 +10,7 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_
 let products = [];
 let sales = [];
 let activities = [];
+let branches = [];
 let activeView = "dashboard-view";
 let currentFilter = "all";
 let searchQuery = "";
@@ -53,7 +54,12 @@ async function loadData(showLoading = true) {
             .order('name', { ascending: true });
 
         if (prodError) throw prodError;
-        products = dbProducts || [];
+        
+        initBranches();
+        products = (dbProducts || []).map(p => ({
+            ...p,
+            branch: p.branch || "Ashok Nagar (Kurnool)"
+        }));
 
         // Fetch sales
         const { data: dbSales, error: salesError } = await supabaseClient
@@ -69,7 +75,9 @@ async function loadData(showLoading = true) {
         renderDashboard();
         renderInventory();
         renderSalesLog();
+        renderBranchesView();
         populateCategoryFilter();
+        populateBranchSelectors();
     } catch (e) {
         console.error("Error loading Supabase data:", e);
         showToast("Database fetch failed", true);
@@ -219,26 +227,30 @@ function renderDashboard() {
 }
 
 // --- RENDER PRODUCTS INVENTORY TABLE ---
-function renderInventory() {
     const tbody = document.getElementById("inventory-table-body");
+    if (!tbody) return;
     tbody.innerHTML = "";
 
     // Filters
     const catSelect = document.getElementById("category-filter");
     const activeCategory = catSelect ? catSelect.value : "all";
+    const branchSelect = document.getElementById("branch-filter");
+    const activeBranch = branchSelect ? branchSelect.value : "all";
     const sortVal = document.getElementById("inventory-sort").value;
 
     let filtered = products.filter(p => {
         const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                             p.category.toLowerCase().includes(searchQuery.toLowerCase());
+                             p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                             (p.branch && p.branch.toLowerCase().includes(searchQuery.toLowerCase()));
         
         let matchesStatus = true;
         if (currentFilter === "instock") matchesStatus = parseInt(p.quantity) > 0;
         if (currentFilter === "outstock") matchesStatus = parseInt(p.quantity) === 0;
 
         const matchesCategory = activeCategory === "all" || p.category === activeCategory;
+        const matchesBranch = activeBranch === "all" || p.branch === activeBranch;
 
-        return matchesSearch && matchesStatus && matchesCategory;
+        return matchesSearch && matchesStatus && matchesCategory && matchesBranch;
     });
 
     // Sorting
@@ -280,6 +292,9 @@ function renderInventory() {
             ? `<span class="px-2 py-1 text-[10px] font-black text-amber-400 bg-amber-500/10 rounded-md border border-amber-500/10">Low Stock (${p.quantity})</span>`
             : `<span class="px-2 py-1 text-[10px] font-black text-emerald-400 bg-emerald-500/10 rounded-md border border-emerald-500/10">${p.quantity} Units</span>`;
 
+        const branchName = p.branch || "Ashok Nagar (Kurnool)";
+        const branchBadge = `<span class="px-2 py-1 text-[10px] font-bold bg-indigo-500/10 text-indigo-400 rounded-md border border-indigo-500/20 truncate max-w-[140px] flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3 text-indigo-400 shrink-0"></i> ${branchName}</span>`;
+
         tr.innerHTML = `
             <td class="p-4">
                 <div class="font-bold text-slate-100 text-sm leading-tight">${p.name}</div>
@@ -289,7 +304,8 @@ function renderInventory() {
             <td class="p-4 text-right font-semibold text-slate-300">₹${parseFloat(p.sell_price).toFixed(2)}</td>
             <td class="p-4 text-right font-bold text-brand-500">₹${(parseFloat(p.sell_price) - parseFloat(p.buy_price)).toFixed(2)} (${Math.round(markup)}%)</td>
             <td class="p-4">
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 flex-wrap">
+                    ${branchBadge}
                     ${stockBadge}
                     <span class="px-2 py-1 text-[10px] font-bold bg-dark-600 rounded-md text-slate-400 border border-slate-700">${p.category}</span>
                 </div>
@@ -432,6 +448,7 @@ window.handleProductSubmit = async function(e) {
     const mrp = parseFloat(document.getElementById("product-mrp").value) || 0;
     const quantity = parseInt(document.getElementById("product-quantity").value) || 0;
     const category = document.getElementById("product-category").value.trim() || "General";
+    const branch = (document.getElementById("product-branch") ? document.getElementById("product-branch").value : "") || "Ashok Nagar (Kurnool)";
     const supplier = document.getElementById("product-supplier").value.trim() || "";
     const description = document.getElementById("product-desc").value.trim() || "";
 
@@ -444,6 +461,7 @@ window.handleProductSubmit = async function(e) {
         mrp,
         quantity,
         category,
+        branch,
         supplier,
         description,
         image_url
@@ -591,6 +609,8 @@ window.openProductModal = function(mode, productId = null) {
     // Always clear image state first
     clearProductImage(true);
 
+    populateBranchSelectors();
+    
     if (mode === "edit" && productId) {
         title.textContent = "Edit Product Details";
         const p = products.find(prod => prod.id === productId);
@@ -602,6 +622,8 @@ window.openProductModal = function(mode, productId = null) {
             document.getElementById("product-mrp").value = p.mrp || 0.00;
             document.getElementById("product-quantity").value = p.quantity;
             document.getElementById("product-category").value = p.category;
+            const branchEl = document.getElementById("product-branch");
+            if (branchEl) branchEl.value = p.branch || "Ashok Nagar (Kurnool)";
             document.getElementById("product-supplier").value = p.supplier;
             document.getElementById("product-desc").value = p.description;
             // Populate existing image if any
@@ -1026,4 +1048,301 @@ window.clearProductImage = function(silent = false) {
     const ci = document.getElementById("product-image-camera");
     if (fi) fi.value = "";
     if (ci) ci.value = "";
+};
+
+// ============================================================
+// STORE BRANCHES & BULK PRODUCT ASSIGNMENT CONTROLLERS
+// ============================================================
+
+function initBranches() {
+    const saved = localStorage.getItem("store_branches");
+    if (saved) {
+        try { branches = JSON.parse(saved); } catch(e) { branches = []; }
+    }
+    if (!branches || !Array.isArray(branches) || branches.length === 0) {
+        branches = ["Ashok Nagar (Kurnool)", "Main Bazar (Visakhapatnam)"];
+        localStorage.setItem("store_branches", JSON.stringify(branches));
+    }
+}
+
+function populateBranchSelectors() {
+    initBranches();
+    const productBranchSelect = document.getElementById("product-branch");
+    const branchFilterSelect = document.getElementById("branch-filter");
+    const bulkTargetBranchSelect = document.getElementById("bulk-target-branch");
+
+    const branchOptionsHtml = branches.map(b => `<option value="${b}">${b}</option>`).join('');
+
+    if (productBranchSelect) {
+        const cur = productBranchSelect.value;
+        productBranchSelect.innerHTML = branchOptionsHtml;
+        if (cur && branches.includes(cur)) productBranchSelect.value = cur;
+    }
+    if (bulkTargetBranchSelect) {
+        const cur = bulkTargetBranchSelect.value;
+        bulkTargetBranchSelect.innerHTML = branchOptionsHtml;
+        if (cur && branches.includes(cur)) bulkTargetBranchSelect.value = cur;
+    }
+    if (branchFilterSelect) {
+        const currentVal = branchFilterSelect.value;
+        branchFilterSelect.innerHTML = `<option value="all">All Branches (${branches.length})</option>` + branchOptionsHtml;
+        if (currentVal) branchFilterSelect.value = currentVal;
+    }
+}
+
+function renderBranchesView() {
+    const container = document.getElementById("branches-cards-container");
+    const tbody = document.getElementById("branch-products-tbody");
+    const summaryCountEl = document.getElementById("branch-products-summary-count");
+
+    if (!container || !tbody) return;
+
+    initBranches();
+    container.innerHTML = "";
+    tbody.innerHTML = "";
+
+    branches.forEach(b => {
+        const branchProds = products.filter(p => (p.branch || "Ashok Nagar (Kurnool)") === b);
+        const totalStock = branchProds.reduce((sum, p) => sum + (parseInt(p.quantity) || 0), 0);
+
+        const card = document.createElement("div");
+        card.className = "glass-card rounded-2xl p-5 border border-slate-800 flex flex-col justify-between gap-4";
+        card.innerHTML = `
+            <div class="flex items-start justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold">
+                        <i data-lucide="map-pin" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-extrabold text-white leading-tight">${b}</h3>
+                        <span class="text-[10px] text-slate-400 font-semibold block mt-0.5">${branchProds.length} Products Assigned</span>
+                    </div>
+                </div>
+                ${branches.length > 1 ? `
+                <button onclick="handleDeleteBranch('${b.replace(/'/g, "\\'")}')" title="Delete Branch" class="w-7 h-7 rounded-lg bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white transition-all flex items-center justify-center border border-rose-500/10">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                </button>
+                ` : ''}
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 bg-dark-800/60 p-3 rounded-xl border border-slate-800/50 text-xs">
+                <div>
+                    <span class="text-[9px] text-slate-500 font-bold uppercase tracking-wider block">Assigned Items</span>
+                    <span class="text-sm font-black text-white">${branchProds.length}</span>
+                </div>
+                <div>
+                    <span class="text-[9px] text-slate-500 font-bold uppercase tracking-wider block">Total Stock Units</span>
+                    <span class="text-sm font-black text-emerald-400">${totalStock}</span>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-1">
+                <button onclick="openBulkBranchModal('${b.replace(/'/g, "\\'")}')" class="w-full bg-brand-500/15 hover:bg-brand-500 text-brand-400 hover:text-white font-bold text-xs py-2 px-3 rounded-xl transition-all border border-brand-500/20 flex items-center justify-center gap-1.5">
+                    <i data-lucide="layers" class="w-3.5 h-3.5"></i> Bulk Assign Products to Branch
+                </button>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+
+    if (summaryCountEl) {
+        summaryCountEl.textContent = `${products.length} Products Across ${branches.length} Branches`;
+    }
+
+    if (products.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" class="p-6 text-center text-slate-500 font-medium">No products available.</td>
+            </tr>
+        `;
+        return;
+    }
+
+    products.forEach(p => {
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-800/10 transition-colors";
+        const branchName = p.branch || "Ashok Nagar (Kurnool)";
+        
+        tr.innerHTML = `
+            <td class="p-3 font-bold text-slate-200">${p.name}</td>
+            <td class="p-3 text-slate-400"><span class="px-2 py-0.5 text-[10px] font-bold bg-dark-600 rounded text-slate-400 border border-slate-700">${p.category}</span></td>
+            <td class="p-3 font-semibold text-indigo-400"><i data-lucide="map-pin" class="w-3 h-3 inline mr-1"></i>${branchName}</td>
+            <td class="p-3 text-right font-semibold text-slate-300">₹${parseFloat(p.sell_price).toFixed(2)}</td>
+            <td class="p-3 text-right font-bold text-white">${p.quantity} Units</td>
+        `;
+        tbody.appendChild(tr);
+    });
+
+    lucide.createIcons();
+}
+
+window.openAddBranchModal = function() {
+    document.getElementById("new-branch-name").value = "";
+    document.getElementById("add-branch-modal").classList.remove("hidden");
+};
+
+window.closeAddBranchModal = function() {
+    document.getElementById("add-branch-modal").classList.add("hidden");
+};
+
+window.handleAddBranchSubmit = function(e) {
+    e.preventDefault();
+    const newBranch = document.getElementById("new-branch-name").value.trim();
+    if (!newBranch) return;
+
+    initBranches();
+    if (branches.includes(newBranch)) {
+        showToast("Branch already exists!", true);
+        return;
+    }
+
+    branches.push(newBranch);
+    localStorage.setItem("store_branches", JSON.stringify(branches));
+    showToast(`Added new branch: ${newBranch}`);
+    addActivity("Branch", `Created new branch: ${newBranch}`);
+
+    populateBranchSelectors();
+    renderBranchesView();
+    renderInventory();
+    closeAddBranchModal();
+};
+
+window.handleDeleteBranch = function(branchName) {
+    if (branches.length <= 1) {
+        alert("You must keep at least one store branch.");
+        return;
+    }
+
+    if (!confirm(`Are you sure you want to remove branch "${branchName}"? Products in this branch will be moved to default branch.`)) return;
+
+    const defaultBranch = branches.find(b => b !== branchName) || "Ashok Nagar (Kurnool)";
+    branches = branches.filter(b => b !== branchName);
+    localStorage.setItem("store_branches", JSON.stringify(branches));
+
+    // Reassign local products in deleted branch
+    products.forEach(p => {
+        if (p.branch === branchName) p.branch = defaultBranch;
+    });
+
+    showToast(`Removed branch "${branchName}"`);
+    addActivity("Branch", `Removed branch ${branchName}`);
+    populateBranchSelectors();
+    renderBranchesView();
+    renderInventory();
+};
+
+// --- BULK PRODUCT BRANCH ASSIGNMENT MODAL ---
+window.openBulkBranchModal = function(targetBranch = null) {
+    const modal = document.getElementById("bulk-branch-modal");
+    populateBranchSelectors();
+
+    if (targetBranch) {
+        document.getElementById("bulk-target-branch").value = targetBranch;
+    }
+
+    document.getElementById("bulk-product-search").value = "";
+    renderBulkProductList();
+    modal.classList.remove("hidden");
+    lucide.createIcons();
+};
+
+window.closeBulkBranchModal = function() {
+    document.getElementById("bulk-branch-modal").classList.add("hidden");
+};
+
+window.renderBulkProductList = function() {
+    const container = document.getElementById("bulk-products-list");
+    if (!container) return;
+
+    const query = (document.getElementById("bulk-product-search").value || "").toLowerCase();
+    const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+
+    if (filtered.length === 0) {
+        container.innerHTML = `<div class="p-6 text-center text-slate-500 font-medium text-xs">No products found matching criteria.</div>`;
+        updateBulkSelectedCount();
+        return;
+    }
+
+    container.innerHTML = filtered.map(p => {
+        const imageThumb = p.image_url 
+            ? `<img src="${p.image_url}" class="w-8 h-8 object-cover rounded-lg border border-slate-700 shrink-0">`
+            : `<div class="w-8 h-8 rounded-lg bg-dark-700 border border-slate-700 flex items-center justify-center text-slate-500 shrink-0"><i data-lucide="package" class="w-4 h-4"></i></div>`;
+
+        const curBranch = p.branch || "Ashok Nagar (Kurnool)";
+
+        return `
+            <label class="flex items-center justify-between p-3 hover:bg-slate-800/40 transition-colors cursor-pointer select-none">
+                <div class="flex items-center gap-3">
+                    <input type="checkbox" class="bulk-prod-checkbox w-4 h-4 rounded border-slate-700 text-brand-500 focus:ring-brand-500 bg-dark-800" value="${p.id}" onchange="updateBulkSelectedCount()">
+                    ${imageThumb}
+                    <div>
+                        <div class="font-bold text-slate-200 text-xs">${p.name}</div>
+                        <div class="text-[10px] text-slate-400 font-semibold">${p.category} &bull; <span class="text-indigo-400">${curBranch}</span></div>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <div class="font-bold text-slate-200 text-xs">₹${parseFloat(p.sell_price).toFixed(2)}</div>
+                    <div class="text-[10px] text-slate-500 font-bold">${p.quantity} in stock</div>
+                </div>
+            </label>
+        `;
+    }).join('');
+
+    updateBulkSelectedCount();
+    lucide.createIcons();
+};
+
+window.toggleSelectAllBulkProducts = function(shouldSelect) {
+    document.querySelectorAll(".bulk-prod-checkbox").forEach(cb => {
+        cb.checked = shouldSelect;
+    });
+    updateBulkSelectedCount();
+};
+
+window.updateBulkSelectedCount = function() {
+    const checked = document.querySelectorAll(".bulk-prod-checkbox:checked");
+    const badge = document.getElementById("bulk-selected-count-badge");
+    if (badge) {
+        badge.textContent = `${checked.length} Products Selected`;
+    }
+};
+
+window.handleBulkBranchAssignSubmit = async function() {
+    const checkedEls = document.querySelectorAll(".bulk-prod-checkbox:checked");
+    const selectedIds = Array.from(checkedEls).map(cb => cb.value);
+    const targetBranch = document.getElementById("bulk-target-branch").value;
+
+    if (selectedIds.length === 0) {
+        alert("Please select at least one product using the checkboxes.");
+        return;
+    }
+
+    try {
+        // 1. Batch update in Supabase database
+        const { error } = await supabaseClient
+            .from('products')
+            .update({ branch: targetBranch })
+            .in('id', selectedIds);
+
+        if (error) {
+            console.warn("Supabase batch branch update error:", error);
+        }
+
+        // 2. Update local state
+        products.forEach(p => {
+            if (selectedIds.includes(p.id)) {
+                p.branch = targetBranch;
+            }
+        });
+
+        showToast(`Assigned ${selectedIds.length} products to ${targetBranch}`);
+        addActivity("Branch", `Assigned ${selectedIds.length} products to ${targetBranch}`);
+        
+        renderInventory();
+        renderBranchesView();
+        closeBulkBranchModal();
+    } catch (err) {
+        console.error(err);
+        showToast("Bulk branch assignment failed", true);
+    }
 };

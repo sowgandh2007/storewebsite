@@ -64,6 +64,12 @@
                             <span>Sales Log</span>
                         </div>
                     </div>
+                    <div class="nav-item" data-target="branches-view" onclick="switchView('branches-view')">
+                        <div class="nav-link">
+                            <i data-lucide="git-branch" class="w-4 h-4"></i>
+                            <span>Store Branches</span>
+                        </div>
+                    </div>
                 </nav>
             </div>
 
@@ -192,6 +198,9 @@
                         <button class="px-3.5 py-2 text-xs font-semibold rounded-lg border border-slate-800 bg-dark-800 text-slate-400 hover:text-white" id="filter-instock" onclick="setFilter('instock')">In Stock</button>
                         <button class="px-3.5 py-2 text-xs font-semibold rounded-lg border border-slate-800 bg-dark-800 text-slate-400 hover:text-white" id="filter-outstock" onclick="setFilter('outstock')">Out of Stock</button>
                         
+                        <select id="branch-filter" onchange="applyFilters()" class="bg-dark-700 border border-slate-800 text-xs font-semibold rounded-lg px-3 py-2 text-white focus:outline-none">
+                            <option value="all">All Branches</option>
+                        </select>
                         <select id="category-filter" onchange="applyFilters()" class="bg-dark-700 border border-slate-800 text-xs font-semibold rounded-lg px-3 py-2 text-white focus:outline-none">
                             <option value="all">All Categories</option>
                         </select>
@@ -216,7 +225,7 @@
                                     <th class="p-4 text-right">Buy Price</th>
                                     <th class="p-4 text-right">Sell Price</th>
                                     <th class="p-4 text-right">Proj. Profit</th>
-                                    <th class="p-4">Stock & Category</th>
+                                    <th class="p-4">Branch & Stock</th>
                                     <th class="p-4 text-right">Actions</th>
                                 </tr>
                             </thead>
@@ -288,6 +297,55 @@
                 </div>
             </section>
 
+            <!-- ================= STORE BRANCHES VIEW ================= -->
+            <section id="branches-view" class="view-section animate-fade-in flex flex-col gap-6 hidden">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl font-extrabold text-white tracking-tight">Store Branches & Assignments</h1>
+                        <p class="text-xs text-slate-400 mt-1">Manage physical store locations and assign multiple existing products to each branch.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="openAddBranchModal()" class="bg-dark-700 hover:bg-dark-600 active:bg-dark-600 text-slate-300 font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center gap-1.5 border border-slate-800">
+                            <i data-lucide="plus-circle" class="w-4 h-4 text-brand-500"></i> Add Branch
+                        </button>
+                        <button onclick="openBulkBranchModal()" class="bg-brand-500 hover:bg-brand-600 active:bg-brand-600 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center gap-1.5">
+                            <i data-lucide="layers" class="w-4 h-4"></i> Bulk Assign Products
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Active Branches Cards Grid -->
+                <div id="branches-cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Cards loaded dynamically -->
+                </div>
+
+                <!-- Branch Products Overview Table -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800 flex flex-col gap-4 p-6">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-base font-bold text-white flex items-center gap-2">
+                            <i data-lucide="boxes" class="w-4.5 h-4.5 text-brand-500"></i> Branch Assigned Products Overview
+                        </h2>
+                        <span id="branch-products-summary-count" class="text-xs font-bold text-slate-400">0 Products</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-dark-800 text-slate-400 font-bold border-b border-slate-800 uppercase tracking-wider select-none">
+                                    <th class="p-3">Product Name</th>
+                                    <th class="p-3">Category</th>
+                                    <th class="p-3">Assigned Branch</th>
+                                    <th class="p-3 text-right">Price</th>
+                                    <th class="p-3 text-right">Stock Level</th>
+                                </tr>
+                            </thead>
+                            <tbody id="branch-products-tbody" class="divide-y divide-slate-800/50">
+                                <!-- Loaded dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
         </main>
     </div>
 
@@ -335,9 +393,15 @@
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Supplier / Vendor</label>
-                    <input type="text" id="product-supplier" placeholder="e.g. Wipro Distributions" class="form-input">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Branch Location</label>
+                        <select id="product-branch" class="form-input text-white bg-dark-700 border-slate-800 font-semibold"></select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Supplier / Vendor</label>
+                        <input type="text" id="product-supplier" placeholder="e.g. Wipro Distributions" class="form-input">
+                    </div>
                 </div>
 
                 <div>
@@ -428,6 +492,89 @@
                     <button type="submit" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition-all">Record Sale</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- ================= ADD BRANCH MODAL ================= -->
+    <div id="add-branch-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50 flex">
+        <div class="glass-card rounded-3xl max-w-md w-full p-6 flex flex-col gap-6 animate-fade-in border border-slate-800 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="git-branch" class="w-5 h-5 text-brand-500"></i> Add New Store Branch
+                </h2>
+                <button onclick="closeAddBranchModal()" class="w-8 h-8 bg-dark-700 hover:bg-dark-600 text-slate-400 hover:text-white rounded-xl flex items-center justify-center transition-colors">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <form id="add-branch-form" onsubmit="handleAddBranchSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Branch Name / Address</label>
+                    <input type="text" id="new-branch-name" required placeholder="e.g. Main Bazar (Visakhapatnam)" class="form-input font-semibold">
+                </div>
+                <div class="flex justify-end gap-3 pt-4 border-t border-slate-800">
+                    <button type="button" onclick="closeAddBranchModal()" class="px-4 py-2.5 text-xs font-semibold rounded-xl bg-dark-700 text-slate-400 hover:text-white">Cancel</button>
+                    <button type="submit" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-brand-500 hover:bg-brand-600 text-white shadow-md">Add Branch</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= BULK ASSIGN PRODUCTS TO BRANCH MODAL ================= -->
+    <div id="bulk-branch-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50 flex">
+        <div class="glass-card rounded-3xl max-w-2xl w-full overflow-hidden border border-slate-800 shadow-2xl p-6 flex flex-col gap-5 animate-fade-in max-h-[90vh]">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                <div>
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i data-lucide="layers" class="w-5 h-5 text-brand-500"></i> Bulk Assign Products to Branch
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Select multiple existing products to assign them to a target branch location.</p>
+                </div>
+                <button onclick="closeBulkBranchModal()" class="w-8 h-8 bg-dark-700 hover:bg-dark-600 text-slate-400 hover:text-white rounded-xl flex items-center justify-center transition-colors shrink-0">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Target Branch Selection & Controls Bar -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-dark-800/60 p-3.5 rounded-2xl border border-slate-800">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Target Branch</label>
+                    <select id="bulk-target-branch" class="form-input text-xs font-bold text-white bg-dark-700 border-slate-800"></select>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Search Products</label>
+                    <div class="relative">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5"></i>
+                        <input type="text" id="bulk-product-search" oninput="renderBulkProductList()" placeholder="Filter by product name..." class="w-full pl-9 pr-3 py-2 bg-dark-700 border border-slate-800 rounded-xl text-xs text-white focus:outline-none">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkbox Controls Header -->
+            <div class="flex items-center justify-between px-1">
+                <div class="flex items-center gap-3">
+                    <button type="button" onclick="toggleSelectAllBulkProducts(true)" class="text-xs font-bold text-brand-500 hover:underline">Select All</button>
+                    <span class="text-slate-600">|</span>
+                    <button type="button" onclick="toggleSelectAllBulkProducts(false)" class="text-xs font-bold text-slate-400 hover:underline">Deselect All</button>
+                </div>
+                <span id="bulk-selected-count-badge" class="bg-brand-500/15 text-brand-400 text-xs font-black px-2.5 py-1 rounded-lg border border-brand-500/20">
+                    0 Products Selected
+                </span>
+            </div>
+
+            <!-- Scrollable Products Checkbox List -->
+            <div class="overflow-y-auto max-h-[320px] border border-slate-800 rounded-2xl divide-y divide-slate-800/60 bg-dark-900/40">
+                <div id="bulk-products-list" class="divide-y divide-slate-800/60">
+                    <!-- Rows loaded dynamically with checkboxes -->
+                </div>
+            </div>
+
+            <!-- Modal Actions Footer -->
+            <div class="flex items-center justify-between pt-4 border-t border-slate-800">
+                <button type="button" onclick="closeBulkBranchModal()" class="px-4 py-2.5 text-xs font-semibold rounded-xl bg-dark-700 text-slate-400 hover:text-white">Cancel</button>
+                <button type="button" onclick="handleBulkBranchAssignSubmit()" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-brand-500 hover:bg-brand-600 text-white shadow-lg transition-all flex items-center gap-1.5">
+                    <i data-lucide="check-circle-2" class="w-4 h-4"></i> Assign Selected Products to Branch
+                </button>
+            </div>
         </div>
     </div>
 
