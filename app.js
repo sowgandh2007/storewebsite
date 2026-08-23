@@ -227,6 +227,7 @@ function renderDashboard() {
 }
 
 // --- RENDER PRODUCTS INVENTORY TABLE ---
+function renderInventory() {
     const tbody = document.getElementById("inventory-table-body");
     if (!tbody) return;
     tbody.innerHTML = "";
