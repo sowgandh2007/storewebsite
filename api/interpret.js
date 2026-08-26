@@ -63,12 +63,22 @@ Output JSON format:
         if (!response.ok) {
             const errBody = await response.text();
             console.error("Gemini API Error:", errBody);
-            return res.status(502).json({ error: 'Failed to communicate with LLM API' });
+            let errMsg = 'Failed to communicate with LLM API';
+            try {
+                const parsed = JSON.parse(errBody);
+                if (parsed.error && parsed.error.message) {
+                    errMsg = "Gemini Error: " + parsed.error.message;
+                }
+            } catch(e) {}
+            return res.status(502).json({ error: errMsg });
         }
 
         const data = await response.json();
-        const responseText = data.candidates[0].content.parts[0].text;
+        let responseText = data.candidates[0].content.parts[0].text;
         
+        // Strip markdown code blocks if present
+        responseText = responseText.replace(/^```json\n?/g, '').replace(/^```\n?/g, '').replace(/```$/g, '').trim();
+
         let parsedData;
         try {
             parsedData = JSON.parse(responseText);

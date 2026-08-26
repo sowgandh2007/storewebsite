@@ -96,7 +96,13 @@ async function processVoiceInput(transcript) {
         });
 
         if (!response.ok) {
-            throw new Error('API processing failed');
+            let errorMsg = 'API processing failed';
+            try {
+                const errData = await response.json();
+                if (errData.error) errorMsg = errData.error;
+                if (errData.raw) console.error("Raw response:", errData.raw);
+            } catch(e) {}
+            throw new Error(errorMsg);
         }
 
         const data = await response.json();
