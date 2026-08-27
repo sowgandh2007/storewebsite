@@ -3,9 +3,9 @@ module.exports = async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const { text } = req.body;
-    if (!text) {
-        return res.status(400).json({ error: 'No text provided' });
+    const { imageBase64, mimeType } = req.body;
+    if (!imageBase64) {
+        return res.status(400).json({ error: 'No image provided' });
     }
 
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -13,31 +13,43 @@ module.exports = async function handler(req, res) {
         return res.status(500).json({ error: 'GEMINI_API_KEY not configured on server' });
     }
 
-    // Prepare prompt
     const systemInstruction = `
-You are an inventory data extraction assistant for an Indian retail store.
-The user will speak a sentence in Telugu, English, or a mix of both (code-switching).
-Your job is to extract the product details into a strict JSON format.
+You are an advanced inventory data extraction assistant.
+The user provides an image (photo of a handwritten list, printed invoice, or table) containing inventory items.
+Extract the inventory records from the image and return a JSON array.
 
-Existing fields that can be populated:
-- name (string) : The name/brand of the product. Keep original English terms if used (e.g. "Nike shoes", "Black shirt").
-- quantity (number) : Extract numeric quantity.
-- sell_price (number) : Extract price if mentioned.
-- category (string) : Guess a short 1-2 word category based on the product.
+Map the extracted data to these fields:
+- name (string) : Product name (Required)
+- sku (string) : SKU, Product Code, or Barcode if present
+- category (string) : Infer a short category if not explicitly listed
+- quantity (number) : Quantity/Stock count
+- buy_price (number) : Purchase price / Cost
+- sell_price (number) : Selling price
+- supplier (string) : Brand or supplier name
+- confidence (string) : "high", "medium", or "low". 
+  - Use "high" if clearly readable.
+  - Use "medium" if some characters are blurry but decipherable.
+  - Use "low" if handwriting is very messy, ambiguous, or if a number could be either price or quantity.
 
 Rules:
-1. ONLY return valid JSON. Do not include markdown blocks like \`\`\`json.
-2. If a field is not mentioned, do NOT include it in the JSON.
-3. Translate Telugu context (e.g. "పది" -> 10, "ఐదు వందలు" -> 500) into English data.
-4. "add చేయండి", "పెట్టు", etc. just means to add.
+1. ONLY return a valid JSON array. Do not include markdown blocks like \`\`\`json.
+2. If a field is not present in the image for a specific row, omit it or set it to null.
+3. Translate prices and quantities to raw numbers.
+4. If there are no items, return an empty array [].
 
 Output JSON format:
-{
-  "name": "Product Name",
-  "quantity": 10,
-  "sell_price": 500,
-  "category": "Apparel"
-}
+[
+  {
+    "name": "Product Name",
+    "sku": "ABC-123",
+    "category": "Category",
+    "quantity": 10,
+    "buy_price": 500,
+    "sell_price": 600,
+    "supplier": "Brand Name",
+    "confidence": "high"
+  }
+]
 `;
 
     try {
@@ -51,7 +63,15 @@ Output JSON format:
                     parts: { text: systemInstruction }
                 },
                 contents: [{
-                    parts: [{ text: text }]
+                    parts: [
+                        { text: "Extract inventory items from this image." },
+                        {
+                            inline_data: {
+                                mime_type: mimeType || "image/jpeg",
+                                data: imageBase64.replace(/^data:image\/\w+;base64,/, "")
+                            }
+                        }
+                    ]
                 }],
                 generationConfig: {
                     temperature: 0.1,
@@ -86,10 +106,14 @@ Output JSON format:
             return res.status(500).json({ error: 'Failed to parse LLM response', raw: responseText });
         }
 
+        if (!Array.isArray(parsedData)) {
+            parsedData = [parsedData];
+        }
+
         return res.status(200).json(parsedData);
 
     } catch (error) {
         console.error("Server Error:", error);
-        return res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({ error: 'Internal server error: ' + error.message });
     }
 }
