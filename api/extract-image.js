@@ -84,23 +84,19 @@ Output JSON format:
 ]
 `;
 
-        const geminiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`, {
+        const geminiResponse = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                system_instruction: {
-                    parts: { text: systemInstruction }
-                },
                 contents: [{
                     parts: [
-                        { text: "Extract inventory items from this raw OCR text:\n\n" + extractedText }
+                        { text: systemInstruction + "\n\nExtract inventory items from this raw OCR text:\n\n" + extractedText }
                     ]
                 }],
                 generationConfig: {
-                    temperature: 0.1,
-                    response_mime_type: "application/json"
+                    temperature: 0.1
                 }
             })
         });
