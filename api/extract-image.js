@@ -66,8 +66,8 @@ Output JSON format:
                     parts: [
                         { text: "Extract inventory items from this image." },
                         {
-                            inline_data: {
-                                mime_type: mimeType || "image/jpeg",
+                            inlineData: {
+                                mimeType: mimeType || "image/jpeg",
                                 data: imageBase64.replace(/^data:image\/\w+;base64,/, "")
                             }
                         }

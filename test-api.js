@@ -1,9 +1,10 @@
-const handler = require('./api/interpret.js');
+const handler = require('./api/extract-image.js');
 
 const req = {
     method: 'POST',
     body: {
-        text: 'పది బ్లాక్ షర్ట్స్ యాడ్ చేయండి, ఒక్కొక్కటి ఐదు వందల తొంభై తొమ్మిది రూపాయలు'
+        imageBase64: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+        mimeType: 'image/png'
     }
 };
 
@@ -18,6 +19,4 @@ const res = {
     }
 };
 
-// Assuming GEMINI_API_KEY is not in env, we can't fully test it without a key.
-// But we can test if it fails gracefully.
 handler(req, res);
