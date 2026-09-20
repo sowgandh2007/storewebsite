@@ -9,6 +9,7 @@ jobs:
   web-deploy:
     name: FTP Deploy
     runs-on: ubuntu-latest
+    if: github.repository == 'sowgandh2007/storewebsite'
 
     steps:
       - name: Checkout repository
